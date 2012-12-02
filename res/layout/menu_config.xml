@@ -1,0 +1,7 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+ 
+<item android:id="@+id/menu_config" 
+     android:title="Configuration"
+     android:icon="@drawable/gear_icone"
+     />
+</menu>
