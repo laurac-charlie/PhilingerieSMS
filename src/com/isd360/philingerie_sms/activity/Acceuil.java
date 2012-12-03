@@ -1,9 +1,14 @@
 package com.isd360.philingerie_sms.activity;
 
+import java.io.File;
+
+import com.isd360.philingerie_sms.util.FTPManager;
+import com.isd360.philingerie_sms.util.ParserCSV;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.telephony.gsm.SmsManager;
+import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -49,19 +54,20 @@ public class Acceuil extends Activity {
 	};
 	
 	private OnClickListener clickSendListener = new OnClickListener() {
-		@SuppressWarnings("deprecation")
 		public void onClick(View view) {
-			String num = "0690126858";
+			//Toast.makeText(getApplicationContext(),Environment.getExternalStorageDirectory().getPath(), 300).show();
+			
+			//ParserCSV psr = new ParserCSV("/PHILINGERIE-SMS.csv");
+			//Toast.makeText(getApplicationContext(),psr.parseRecipient().get(1).getFirstName(), 300).show();
+			FTPManager.DownloadCSVfile("smsg05.csv");
+			
+			/*String num = "0690126858";
 			String msg = "Message de Test Android";
-			//Si le numéro est supérieur à 4 charactère et que le message n'est pas vide on lance la procédure d'envoi
-			if(num.length()>= 4 && msg.length() > 0){
-				//Grâce à l'objet de gestion de SMS (SmsManager) que l'on récupère grâce à la méthode static getDefault()
-				//On envoit le SMS à l'aide de la méthode sendTextMessage
-				SmsManager.getDefault().sendTextMessage(num, null, msg, null, null);
-			}else{
-				//On affiche un petit message d'erreur dans un Toast
-				Toast.makeText(Acceuil.this, "Enter le numero et/ou le message", Toast.LENGTH_SHORT).show();
-			}
+			
+			if (SmsSender.SendMessage(num, msg))
+				Toast.makeText(Acceuil.this, "Le message a bien été envoyé", Toast.LENGTH_SHORT).show();
+			else
+				Toast.makeText(Acceuil.this, "Erreur d'envoi du message", Toast.LENGTH_SHORT).show();*/
 		}
 	};
 }
