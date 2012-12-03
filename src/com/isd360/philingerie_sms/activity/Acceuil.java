@@ -57,9 +57,10 @@ public class Acceuil extends Activity {
 		public void onClick(View view) {
 			//Toast.makeText(getApplicationContext(),Environment.getExternalStorageDirectory().getPath(), 300).show();
 			
-			//ParserCSV psr = new ParserCSV("/PHILINGERIE-SMS.csv");
-			//Toast.makeText(getApplicationContext(),psr.parseRecipient().get(1).getFirstName(), 300).show();
-			FTPManager.DownloadCSVfile("smsg05.csv");
+			ParserCSV psr = new ParserCSV("/PHILINGERIE-SMS.csv");
+			Toast.makeText(getApplicationContext(),psr.parseRecipient().get(2).getNumero(), 500).show();
+			//Toast.makeText(getApplicationContext(),psr.parseFile().get(0), 500).show();
+			//FTPManager.DownloadCSVfile("smsg05.csv");
 			
 			/*String num = "0690126858";
 			String msg = "Message de Test Android";
