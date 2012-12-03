@@ -1,14 +1,15 @@
 package com.isd360.philingerie_sms.activity;
 
-import java.io.File;
+import java.util.ArrayList;
 
+import com.isd360.philingerie_sms.entity.Destinataire;
 import com.isd360.philingerie_sms.util.FTPManager;
 import com.isd360.philingerie_sms.util.ParserCSV;
+import com.isd360.philingerie_sms.util.SmsSender;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -54,21 +55,31 @@ public class Acceuil extends Activity {
 	};
 	
 	private OnClickListener clickSendListener = new OnClickListener() {
-		public void onClick(View view) {
-			//Toast.makeText(getApplicationContext(),Environment.getExternalStorageDirectory().getPath(), 300).show();
+		public void onClick(View view) {			
 			
-			ParserCSV psr = new ParserCSV("/PHILINGERIE-SMS.csv");
-			Toast.makeText(getApplicationContext(),psr.parseRecipient().get(2).getNumero(), 500).show();
-			//Toast.makeText(getApplicationContext(),psr.parseFile().get(0), 500).show();
-			//FTPManager.DownloadCSVfile("smsg05.csv");
+			String filename = "test.csv";
+			ParserCSV psr = null;
 			
-			/*String num = "0690126858";
-			String msg = "Message de Test Android";
+			try {
+				FTPManager.DownloadCSVfile(filename,Acceuil.this);
+				psr = new ParserCSV(filename);
+			} catch (Exception e) {
+				Toast.makeText(Acceuil.this,e.getMessage(),300).show();
+			}
 			
-			if (SmsSender.SendMessage(num, msg))
-				Toast.makeText(Acceuil.this, "Le message a bien été envoyé", Toast.LENGTH_SHORT).show();
-			else
-				Toast.makeText(Acceuil.this, "Erreur d'envoi du message", Toast.LENGTH_SHORT).show();*/
+			
+			for (Destinataire d : psr.parseRecipient())
+			{
+				try 
+					{Thread.sleep(1000);} 
+				catch (InterruptedException e) 
+					{e.printStackTrace();}
+				
+				if (SmsSender.SendMessage(d))
+					Toast.makeText(Acceuil.this, "Le message a bien été envoyé à" + d.getLastName() + " " + d.getFirstName(), Toast.LENGTH_SHORT).show();
+				else
+					Toast.makeText(Acceuil.this, "Erreur d'envoi du message", Toast.LENGTH_SHORT).show();
+			}
 		}
 	};
 }

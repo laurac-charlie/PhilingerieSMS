@@ -1,18 +1,17 @@
 package com.isd360.philingerie_sms.entity;
 
-public class Destinataire {
+public class Destinataire{
 
 	public Destinataire(){}
 	
 	/**
-	 * 
+	 * Constructeur de la classe destinataire avec tous les paramètres
 	 * @param civilite
 	 * @param prenom
 	 * @param nom
 	 * @param numero
 	 */
 	public Destinataire(String civilite, String prenom, String nom,String numero) {
-		super();
 		this.civilite = civilite;
 		this.prenom = prenom;
 		this.nom = nom;

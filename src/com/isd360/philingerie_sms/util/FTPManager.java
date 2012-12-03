@@ -1,16 +1,13 @@
 package com.isd360.philingerie_sms.util;
 
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
-import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
 
+import android.content.Context;
 import android.os.Environment;
-import android.util.Log;
 
 public class FTPManager {
 
@@ -18,61 +15,51 @@ public class FTPManager {
 
 	/**
 	 * Télécharge le fichier csv depuis le ftp
-	 * @param context
 	 * @param filename
+	 * @param cnt
 	 * @return
 	 */
-	public static boolean DownloadCSVfile( String filename) {
+	public static void DownloadCSVfile(String filename, Context cnt) throws Exception{
+		// On instancie les variables ainsi que le client FTP
 		FTPClient ftp = new FTPClient();
-		ftp = new FTPClient();
+		FileOutputStream fos = null;
+		String workDir = "", localpath = "";
 		
-		String workDir = "";
-		BufferedInputStream buffIn = null;
+		String host = "94.23.35.183";
+		String login = "tablette";
+		String pass = "tablette";
 		
-		try {
-			
-			ftp.connect("94.23.35.183",21); // Using port no=21
-			if(FTPReply.isPositiveCompletion(ftp.getReplyCode()))
-			{
-				boolean status = ftp.login("tablette", "tablette");
-				ftp.setFileType(FTP.BINARY_FILE_TYPE);
+		// On donne l'emplacement local qu'aura le ficheir CSV
+		localpath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/"+ filename;
+		
+		// On se conencte au serveur en utilisant le bon pour pour le ftp, par défaut 21
+		ftp.connect(host, 21);
+		
+		// On vérifie que le serveur est bien disponible
+		if (FTPReply.isPositiveCompletion(ftp.getReplyCode())) {
+			// On s'identifie sur le ftp
+			if (!ftp.login(login, pass))
+				throw new Exception("L'identification au serveur ftp : " + host +  " a échoué.");
 				
-				String localpath = /*Environment.getExternalStoragePublicDirectory(null) + "/" +*/ filename;
-				workDir = ftp.printWorkingDirectory();
-				
-				buffIn = new BufferedInputStream(new FileInputStream("smsg05.csv"));
-				ftp.enterLocalPassiveMode();
-				ftp.storeFile(workDir + filename, buffIn);
-				buffIn.close();
-				ftp.logout();
-				ftp.disconnect();
-			}
-		/*
-		FileTransferClient ftp = new FileTransferClient();
-		Log.i("test", "test");
-		try 
-		{
-			ftp.setRemoteHost("94.23.35.183"); // smsg05.csv
-			ftp.setUserName("tablette");
-			ftp.setPassword("tablette");
-			Log.i("test", "here");
-			ftp.connect();
-			String[] files = ftp.directoryNameList();
-			Log.i("test", "where");
+			ftp.setFileType(FTP.BINARY_FILE_TYPE);
 			
-			ftp.downloadFile(Environment.getExternalStorageDirectory() + "/" + filename, "ftp://94.23.35.183/" + filename);
-			//ftp.downloadURLFile(filename, "ftp://94.23.35.183/" + filename);
+			// On récupère le répertoire racine du ftp
+			workDir = ftp.printWorkingDirectory();
+
+			ftp.enterLocalPassiveMode();
+			// On télécharge le fichier en utilisant l'outpuStream du fichier local pour y écrire
 			
-			File file = new File(Environment.getExternalStorageDirectory() + "/" + filename);
-			if(file.exists())
-				return true;
-			else 
-				return false;
-				*/
-			return true;
-		} catch (Exception e) {
-			Log.e("Erreur FTP", "La connexion a échoué");
-			return false;
+			fos = new FileOutputStream(localpath,false);
+	        if(!ftp.retrieveFile(workDir + filename, fos))
+	        	throw new Exception ("Le téléchargement du fichier ftp://" + host + "/" + filename + " a échoué. Veuillez vérifier les paramètres et l'existance du fichier.");
+	        
+	        //On ferme tout
+	        fos.close();
+			ftp.logout();
+			ftp.disconnect();
 		}
+		else
+			throw new Exception("Le serveur ftp : " + host +" n'existe pas ou n'est pas disponible.");
+
 	}
 }
