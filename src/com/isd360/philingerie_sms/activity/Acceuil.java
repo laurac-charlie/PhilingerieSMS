@@ -10,6 +10,7 @@ import com.isd360.philingerie_sms.util.SmsSender;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.view.Menu;
@@ -27,6 +28,7 @@ public class Acceuil extends Activity {
 	
 	private TextView listLogs = null;
 	private TextView statusCount = null;
+	private TextView statusMessage = null;
 	
     /** Called when the activity is first created. */
     @Override
@@ -36,9 +38,9 @@ public class Acceuil extends Activity {
         
         //On déclare les textbox et on met un mouvement de scroll
         this.statusCount = (TextView)this.findViewById(R.id.txt_status_count);
+        this.statusMessage = (TextView)this.findViewById(R.id.txt_status_msg);
         this.listLogs = (TextView)this.findViewById(R.id.txt_listEnvoi);
         this.listLogs.setMovementMethod(new ScrollingMovementMethod());
-        
         
         Button btn = (Button) findViewById(R.id.sendMessage);
 		btn.setOnClickListener(this.clickSendListener);
@@ -52,7 +54,7 @@ public class Acceuil extends Activity {
     	super.onStart();
     	this.listLogs.setText("");
     	this.totalDestinataire = 0;
-    	this.updateStatus(0);
+    	this.updateStatusCount(0);
     }
     
     @Override
@@ -90,7 +92,8 @@ public class Acceuil extends Activity {
 				FTPManager.DownloadCSVfile(filename,Acceuil.this);
 				
 			} catch (Exception e) {
-				Toast.makeText(Acceuil.this,e.getMessage(),300).show();
+				Toast.makeText(Acceuil.this,e.getMessage(),500).show();
+				Acceuil.this.updateStatusMsg(e.getMessage());
 			}
 			
 			//On lance le Thread d'envoi des messages
@@ -124,11 +127,21 @@ public class Acceuil extends Activity {
 	 * Met à jout le nombre de destinataires à qui le msg a été envoyé
 	 * @param countDest nombre de destinataires actuels
 	 */
-	private void updateStatus(int countDest){
+	private void updateStatusCount(int countDest){
 		final int count = countDest;
 		runOnUiThread(new Runnable() {
 			public void run() {
 				Acceuil.this.statusCount.setText(count + "/" + Acceuil.this.getTotalDestinataire());
+			}
+		});
+	}
+	
+	private void updateStatusMsg(String statusMsg){
+		final String msg = statusMsg;
+		runOnUiThread(new Runnable() {
+			public void run() {
+				Acceuil.this.statusMessage.setTextColor(Color.RED);
+				Acceuil.this.statusMessage.setText(msg);
 			}
 		});
 	}
@@ -163,6 +176,7 @@ public class Acceuil extends Activity {
 				runOnUiThread(new Runnable() {
 					public void run() {
 						Toast.makeText(Acceuil.this, "Le fichier spécifié n'a pas été trouvé. Vérifier d'il existe.", 500).show();
+						Acceuil.this.updateStatusMsg("Le fichier spécifié n'a pas été trouvé. Vérifier d'il existe.");
 					}
 				});
 			}
@@ -193,7 +207,7 @@ public class Acceuil extends Activity {
 				
 				//On met à jour la liste de log et le statut
 				Acceuil.this.addMessage(MessageThread.this.logMsg);
-				Acceuil.this.updateStatus(count);
+				Acceuil.this.updateStatusCount(count);
 				
 				//TODO:Vérifier la latence
 				try 
