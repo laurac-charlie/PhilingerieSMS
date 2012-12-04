@@ -19,7 +19,7 @@ public class SmsSender {
 	}
 	
 	/**
-	 * 
+	 * Envoi d'un sms en précisanr le destinaraire
 	 * @param numero
 	 * @param message
 	 * @return
@@ -29,9 +29,9 @@ public class SmsSender {
 		//A terme on doit récupéré le message depuis la liste des messages prédéfinies (et le parser pour les accolades)
 		String message = MessageFormat.format("Bonjour {0} {1} {2},\nNous vous annonçons une réduction exceptionnel sur les strings léopard noirs jusqu'au 31 Décembre.\nPhilingerie",dest.getCivility(),dest.getLastName(),dest.getFirstName());
 		
-		if(dest.getNumero().length() >= 10 && message.length() > 0){
-			//Grâce à l'objet de gestion de SMS (SmsManager) que l'on récupère grâce à la méthode static getDefault()
-			//On envoit le SMS à l'aide de la méthode sendTextMessage
+		//TODO: Mettre une meilleur vérification (regex)
+		if(dest.getNumero().length() == 10 && message.length() > 0){
+			//Envoie du SMS grâce à SMSmanager
 			SmsManager.getDefault().sendTextMessage(dest.getNumero(), null, message, null, null);
 			return true;
 		}

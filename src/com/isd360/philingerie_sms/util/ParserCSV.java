@@ -38,7 +38,6 @@ public class ParserCSV {
 	}
 
 	public ArrayList<Destinataire> parseRecipient(){
-		//TODO: Permettre à l'utilisateur de savoir si le fichier existe bien.
 		ArrayList<Destinataire> list = new ArrayList<Destinataire>();
 		FileReader fr = null;
 		BufferedReader br = null;

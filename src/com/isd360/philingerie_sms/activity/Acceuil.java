@@ -1,6 +1,7 @@
 package com.isd360.philingerie_sms.activity;
 
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 
 import com.isd360.philingerie_sms.entity.Destinataire;
 import com.isd360.philingerie_sms.util.FTPManager;
@@ -22,7 +23,10 @@ import android.widget.Toast;
 
 public class Acceuil extends Activity {
 	
-	private TextView txtV = null;
+	private int totalDestinataire = 0;
+	
+	private TextView listLogs = null;
+	private TextView statusCount = null;
 	
     /** Called when the activity is first created. */
     @Override
@@ -30,12 +34,25 @@ public class Acceuil extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         
-        //On déclare la textbox et on met un mouvement de scroll
-        this.txtV = (TextView)this.findViewById(R.id.txt_listEnvoi);
-        this.txtV.setMovementMethod(new ScrollingMovementMethod());
+        //On déclare les textbox et on met un mouvement de scroll
+        this.statusCount = (TextView)this.findViewById(R.id.txt_status_count);
+        this.listLogs = (TextView)this.findViewById(R.id.txt_listEnvoi);
+        this.listLogs.setMovementMethod(new ScrollingMovementMethod());
+        
         
         Button btn = (Button) findViewById(R.id.sendMessage);
 		btn.setOnClickListener(this.clickSendListener);
+    }
+    
+    /**
+     * On remet les champs à zéro lorsque l'on redémarre l'application
+     */
+    @Override
+    public void onStart(){
+    	super.onStart();
+    	this.listLogs.setText("");
+    	this.totalDestinataire = 0;
+    	this.updateStatus(0);
     }
     
     @Override
@@ -66,7 +83,8 @@ public class Acceuil extends Activity {
 	private OnClickListener clickSendListener = new OnClickListener() {
 		public void onClick(View view) {			
 			
-			String filename = "test.csv";
+			//TODO:Fichier de données csv à rendre paramétrable
+			String filename = "datasms.csv";
 			
 			try {
 				FTPManager.DownloadCSVfile(filename,Acceuil.this);
@@ -75,23 +93,59 @@ public class Acceuil extends Activity {
 				Toast.makeText(Acceuil.this,e.getMessage(),300).show();
 			}
 			
+			//On lance le Thread d'envoi des messages
 			MessageThread mt = new MessageThread(filename);
 			mt.start();
 			
 		}
 	};
 	
+	/**
+	 * Ajout d'un message à la ligne dans la testBox des logs
+	 * @param message
+	 */
 	private void addMessage(String message){
-        //On ajoute la ligne à la TextView
-        this.txtV.append(message+"\n");
-        //On va ensuite scroller si nécessaire
-        final int scrollAmount = this.txtV.getLayout().getLineTop(this.txtV.getLineCount()) - this.txtV.getHeight();
-        if(scrollAmount>0)
-            this.txtV.scrollTo(0, scrollAmount);
-        else
-            this.txtV.scrollTo(0,0);
+		final String msg = message;
+		runOnUiThread(new Runnable() {
+			public void run() {
+				//On ajoute la ligne à la TextView
+		        Acceuil.this.listLogs.append(msg+"\n");
+		        //On va ensuite scroller si nécessaire
+		        final int scrollAmount = Acceuil.this.listLogs.getLayout().getLineTop(Acceuil.this.listLogs.getLineCount()) - Acceuil.this.listLogs.getHeight();
+		        if(scrollAmount>0)
+		            Acceuil.this.listLogs.scrollTo(0, scrollAmount);
+		        else
+		            Acceuil.this.listLogs.scrollTo(0,0);
+			}
+		});
     }
 	
+	/**
+	 * Met à jout le nombre de destinataires à qui le msg a été envoyé
+	 * @param countDest nombre de destinataires actuels
+	 */
+	private void updateStatus(int countDest){
+		final int count = countDest;
+		runOnUiThread(new Runnable() {
+			public void run() {
+				Acceuil.this.statusCount.setText(count + "/" + Acceuil.this.getTotalDestinataire());
+			}
+		});
+	}
+	
+	public int getTotalDestinataire() {
+		return totalDestinataire;
+	}
+
+	public void setTotalDestinataire(int totalDestinataire) {
+		this.totalDestinataire = totalDestinataire;
+	}
+
+	/**
+	 * 
+	 * @author Charlie
+	 *
+	 */
 	private class MessageThread extends Thread{
 		
 		public MessageThread(String filename){
@@ -115,40 +169,40 @@ public class Acceuil extends Activity {
 			
 			runOnUiThread(new Runnable() {
 				public void run() {
-					Acceuil.this.txtV.setText("");
+					Acceuil.this.listLogs.setText("");
 				}
 			});
 			
-			for (Destinataire d : psr.parseRecipient())
+			//On récupère la liste des destinataires à partir du fichier CSV
+			ArrayList<Destinataire> listDest = psr.parseRecipient();
+			//On met à jour le nombre de destinataires à traiter
+			Acceuil.this.setTotalDestinataire(listDest.size());
+			int count = 0;
+			
+			for (Destinataire d : listDest)
 			{
-				/*if (SmsSender.SendMessage(d))
-					Toast.makeText(Acceuil.this, "Le message a bien été envoyé à" + d.getLastName() + " " + d.getFirstName(), Toast.LENGTH_SHORT).show();
-				else
-					Toast.makeText(Acceuil.this, "Erreur d'envoi du message", Toast.LENGTH_SHORT).show();
-				*/
-				
 				if(SmsSender.SendMessage(d))
+				{
 					this.logMsg = "Envoi : " + d.getLastName() + " " + d.getFirstName() + " [OK]";
+					count++;
+				}
 				else
+				{
 					this.logMsg = "Envoi : " + d.getLastName() + " " + d.getFirstName() + " [KO]";
+				}
 				
-				runOnUiThread(new Runnable() {
-					public void run() {
-						addMessage(MessageThread.this.logMsg);
-					}
-				});
+				//On met à jour la liste de log et le statut
+				Acceuil.this.addMessage(MessageThread.this.logMsg);
+				Acceuil.this.updateStatus(count);
 				
+				//TODO:Vérifier la latence
 				try 
-					{Thread.sleep(500);} 
+					{Thread.sleep(300);} 
 				catch (InterruptedException e) 
 					{e.printStackTrace();}
 			}
 			
-			runOnUiThread(new Runnable() {
-				public void run() {
-					addMessage("Fin");
-				}
-			});
+			Acceuil.this.addMessage("Fin de la campagne");
 		}
 	}
 }
