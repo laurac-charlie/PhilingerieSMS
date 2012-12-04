@@ -15,14 +15,26 @@ public class Destinataire{
 		this.civilite = civilite;
 		this.prenom = prenom;
 		this.nom = nom;
-		this.numero = numero;
+		//On supprime les espaces dans le numéro
+		this.numero = numero.replaceAll("\\p{Zs}", "");
+	}
+	
+	public Destinataire(String civilite, String prenom, String nom,String numero, String moisNaiss, String mag) {
+		this.civilite = civilite;
+		this.prenom = prenom;
+		this.nom = nom;
+		//On supprime les espaces dans le numéro
+		this.numero = numero.replaceAll("\\p{Zs}", "");
+		this.moisNaissance = moisNaiss;
+		this.magasin = mag;
 	}
 	
 	private String civilite = "";
 	private String prenom = "";
 	private String nom = "";
 	private String numero = "";
-	
+	private String moisNaissance = "";
+	private String magasin = "";
 	
 	public String getCivility() {
 		return civilite;
@@ -47,5 +59,21 @@ public class Destinataire{
 	}
 	public void setNumero(String numero) {
 		this.numero = numero;
+	}
+
+	public String getMoisNaissance() {
+		return moisNaissance;
+	}
+
+	public void setMoisNaissance(String moisNaissance) {
+		this.moisNaissance = moisNaissance;
+	}
+
+	public String getMagasin() {
+		return magasin;
+	}
+
+	public void setMagasin(String magasin) {
+		this.magasin = magasin;
 	}
 }

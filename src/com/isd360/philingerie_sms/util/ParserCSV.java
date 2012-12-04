@@ -12,6 +12,11 @@ import com.isd360.philingerie_sms.entity.Destinataire;
 
 public class ParserCSV {
 
+	/**
+	 * 
+	 * @param fileName
+	 * @throws FileNotFoundException
+	 */
 	public ParserCSV(String fileName)throws FileNotFoundException {
 		//On reconstitue le path avec le support de sauvegarde interne
 		String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/"+ fileName;

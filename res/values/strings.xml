@@ -3,7 +3,8 @@
 
     <string name="app_name">PhilingerieSMS</string>
 
-    <string name="send">Send</string>
+    <string name="send">Envoyer</string>
+    <string name="dowloadCsv">Télcharger fichier csv</string>
     
     <!-- Configuration files names-->
     <string name="pref_conf_ftp_srv"></string>
