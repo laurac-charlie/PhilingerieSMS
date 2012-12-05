@@ -54,6 +54,7 @@ public class ParserCSV {
 	        lcsvp.changeDelimiter(';');
 	        //On charge les données du fichier CSV dans une liste de destinataires
 	        while(lcsvp.getLine() != null){
+	        	//TODO: Ajouter moi de naissance et magasin
 	        	list.add(new Destinataire(lcsvp.getValueByLabel("Civilite"),lcsvp.getValueByLabel("Prenom"),lcsvp.getValueByLabel("Nom"),lcsvp.getValueByLabel("Portable")));
 	        }
 	        br.close();

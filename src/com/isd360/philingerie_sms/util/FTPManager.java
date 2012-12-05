@@ -6,7 +6,6 @@ import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPReply;
 
-import android.content.Context;
 import android.os.Environment;
 
 public class FTPManager {
@@ -19,7 +18,7 @@ public class FTPManager {
 	 * @param cnt
 	 * @return
 	 */
-	public static void DownloadCSVfile(String filename, Context cnt) throws Exception{
+	public static void DownloadCSVfile(String filename) throws Exception{
 		// On instancie les variables ainsi que le client FTP
 		FTPClient ftp = new FTPClient();
 		FileOutputStream fos = null;
