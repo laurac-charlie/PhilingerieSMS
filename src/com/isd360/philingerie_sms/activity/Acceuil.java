@@ -1,6 +1,7 @@
 package com.isd360.philingerie_sms.activity;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import com.isd360.philingerie_sms.entity.Destinataire;
@@ -29,6 +30,7 @@ public class Acceuil extends Activity {
 	private TextView listLogs = null;
 	private TextView statusCount = null;
 	private TextView statusMessage = null;
+	private Button sendButton = null;
 	
     /** Called when the activity is first created. */
     @Override
@@ -42,8 +44,8 @@ public class Acceuil extends Activity {
         this.listLogs = (TextView)this.findViewById(R.id.txt_listEnvoi);
         this.listLogs.setMovementMethod(new ScrollingMovementMethod());
         
-        Button btn = (Button) findViewById(R.id.sendMessage);
-		btn.setOnClickListener(this.clickSendListener);
+        this.sendButton = (Button) findViewById(R.id.sendMessage);
+		this.sendButton.setOnClickListener(this.clickSendListener);
 		
 		//SmsSender.SendMessage(new Destinataire("M.","éèàüôïäâù","GRONNIER","0696326012"));
 		//SmsSender.SendMessage(new Destinataire("M.","éèàüôïäâù","GRONNIER","0690126858"));
@@ -94,12 +96,11 @@ public class Acceuil extends Activity {
 			String filename = "datasms.csv";
 			
 			try {
-				Acceuil.this.updateStatusMsg("Téléchargement du fichier : " + filename,Color.BLUE);
+				Acceuil.this.updateStatusMsg("Téléchargement du fichier : " + filename,Color.BLUE,false);
 				FTPManager.DownloadCSVfile(filename);
 				
 			} catch (Exception e) {
-				Toast.makeText(Acceuil.this,e.getMessage(),500).show();
-				Acceuil.this.updateStatusMsg(e.getMessage(),Color.RED);
+				Acceuil.this.updateStatusMsg(e.getMessage(),Color.RED,true);
 			}
 			
 			//On lance le Thread d'envoi des messages
@@ -111,7 +112,7 @@ public class Acceuil extends Activity {
 	
 	/**
 	 * Ajout d'un message à la ligne dans la testBox des logs
-	 * @param message
+	 * @param message le message à notifier
 	 */
 	private void addMessage(String message){
 		final String msg = message;
@@ -143,17 +144,29 @@ public class Acceuil extends Activity {
 	}
 	
 	/**
-	 * 
-	 * @param statusMsg
-	 * @param colorMsg
+	 * Notifie le status de l'application 
+	 * @param statusMsg Message du status à afficher
+	 * @param colorMsg Couleur du message à afficher
+	 * @param toast Vrai si une notfication Toast avec le message doit être affichée
 	 */
-	private void updateStatusMsg(String statusMsg,int colorMsg){
+	private void updateStatusMsg(String statusMsg,int colorMsg,boolean toast){
 		final String msg = statusMsg;
 		final int color = colorMsg;
+		final boolean makeToast = toast;
 		runOnUiThread(new Runnable() {
 			public void run() {
+				if(makeToast) Toast.makeText(Acceuil.this, msg, 500).show();
 				Acceuil.this.statusMessage.setTextColor(color);
 				Acceuil.this.statusMessage.setText(msg);
+			}
+		});
+	}
+	
+	private void setButtonEnable(boolean enable){
+		final boolean ena = enable;
+		runOnUiThread(new Runnable() {
+			public void run() {
+				Acceuil.this.sendButton.setEnabled(ena);
 			}
 		});
 	}
@@ -180,33 +193,40 @@ public class Acceuil extends Activity {
 		private String filename = "";
 		private String logMsg = "";
 		
+		@Override
 		public void run(){
+			//On désactive le button d'envoi
+			Acceuil.this.setButtonEnable(false);
+			
 			ParserCSV psr = null;
-			try {
-				Acceuil.this.updateStatusMsg("Chargement du fichier CSV",Color.BLUE);
+			ArrayList<Destinataire> listDest = null;
+			
+			try 
+			{
+				Acceuil.this.updateStatusMsg("Chargement du fichier CSV",Color.BLUE,false);
+				
+				//On récupère la liste des destinataires à partir du fichier CSV
 				psr = new ParserCSV(this.filename);
-			} catch (FileNotFoundException fnf) {
-				runOnUiThread(new Runnable() {
-					public void run() {
-						Toast.makeText(Acceuil.this, "Le fichier spécifié n'a pas été trouvé. Vérifier d'il existe.", 500).show();
-						Acceuil.this.updateStatusMsg("Le fichier spécifié n'a pas été trouvé. Vérifier d'il existe.",Color.RED);
-					}
-				});
+				listDest = psr.parseRecipient(';');
+			} catch (FileNotFoundException ex) {
+				Acceuil.this.updateStatusMsg(ex.getMessage(),Color.RED,true);
+			} catch (IOException ex) {
+				Acceuil.this.updateStatusMsg(ex.getMessage(),Color.RED,true);
 			}
 			
+			//On lance la notification sur le Thread de l'UI
 			runOnUiThread(new Runnable() {
 				public void run() {
 					Acceuil.this.listLogs.setText("");
 				}
 			});
 			
-			//On récupère la liste des destinataires à partir du fichier CSV
-			ArrayList<Destinataire> listDest = psr.parseRecipient();
+			
 			//On met à jour le nombre de destinataires à traiter
 			Acceuil.this.setTotalDestinataire(listDest.size());
 			int count = 0;
 			
-			Acceuil.this.updateStatusMsg("Traitement envoi SMS...",Color.BLUE);
+			Acceuil.this.updateStatusMsg("Traitement envoi SMS...",Color.BLUE,false);
 						
 			for (Destinataire d : listDest)
 			{
@@ -222,15 +242,18 @@ public class Acceuil extends Activity {
 				Acceuil.this.addMessage(MessageThread.this.logMsg);
 				Acceuil.this.updateStatusCount(count);
 				
-				//TODO:Vérifier la latence
+				//TODO:Vérifier la latence 5s
 				try 
-					{Thread.sleep(1000);} 
+					{Thread.sleep(5000);} 
 				catch (InterruptedException e) 
-					{e.printStackTrace();}
+					{Acceuil.this.updateStatusMsg(e.getMessage(),Color.RED,true);}
 			}
 			
-			Acceuil.this.updateStatusMsg("Traitement terminé",Color.GREEN);
+			Acceuil.this.updateStatusMsg("Traitement terminé",Color.GREEN,false);
 			Acceuil.this.addMessage("Fin de la campagne");
+			
+			//On réactive le button d'envoi
+			Acceuil.this.setButtonEnable(true);
 		}
 	}
 }

@@ -20,18 +20,25 @@ public class SmsSender {
 	}
 
 	/**
-	 * Envoi d'un sms en précisanr le destinaraire
-	 * 
-	 * @param numero
-	 * @param message
+	 * Envoi Un sms au destinataire donné en paramètre
+	 * @param dest
 	 * @return
 	 */
 	public static boolean SendMessage(Destinataire dest) {
-		// TODO:A terme on doit récupéré le message depuis la config
-		// prédéfinies (et le parser pour les accolades)
-		// String message =
-		// MessageFormat.format("Bonjour {0} {1} {2},\nNous vous annonçons une réduction exceptionnel sur les strings léopard noirs jusqu'au 31 Décembre.\nPhilingerie",dest.getCivility(),dest.getLastName(),dest.getFirstName());
-		String message = MessageFormat.format("Bonjour {0} ,\nPHILINGERIE fete ses 16 ans, tout le magasin est en PROMO de -16% a -80% jusqu au 15/12 venez vite !\n 0596755850 www.philingerie.com",dest.getFirstName());
+		
+		String message = "";
+		//Par défaut le numéro de Philingerie est celui de la martinique
+		String numPhilingerie = "0596755850";
+		
+		//Selon le numéro de magasin commence G => numéro de guadeloupe, R => numéro de Robert
+		if(dest.getMagasin().substring(0, 1).equals("G"))
+			numPhilingerie = "0590859156";
+		if(dest.getMagasin().substring(0, 1).equals("R"))
+			numPhilingerie = "0596538492";
+		
+		// TODO:A terme on doit récupérer le message depuis la config prédéfinies (et le parser pour les accolades)
+		// String message = MessageFormat.format("Bonjour {0} {1} {2},\nNous vous annonçons une réduction exceptionnel sur les strings léopard noirs jusqu'au 31 Décembre.\nPhilingerie",dest.getCivility(),dest.getLastName(),dest.getFirstName());
+		message = MessageFormat.format("Bonjour {0} ,\nPHILINGERIE fete ses 16 ans, tout le magasin est en PROMO de -16% a -80% jusqu au 15/12 venez vite !\n{1} www.philingerie.com",dest.getFirstName(),numPhilingerie);
 		message = formatMsg(message);
 		
 		// TODO: Mettre une meilleur vérification (regex)

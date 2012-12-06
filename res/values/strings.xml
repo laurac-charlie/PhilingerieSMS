@@ -3,7 +3,7 @@
 
     <string name="app_name">PhilingerieSMS</string>
 
-    <string name="send">Envoyer</string>
+    <string name="send">Démarrer la campagne</string>
     <string name="dowloadCsv">Télcharger fichier csv</string>
     <string name="txt_status_count">0/0</string>
     <string name="txt_status_msg">OK</string>
