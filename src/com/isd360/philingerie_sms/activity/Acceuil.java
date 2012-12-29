@@ -93,7 +93,7 @@ public class Acceuil extends Activity {
 		public void onClick(View view) {			
 			
 			//TODO:Fichier de données csv à rendre paramétrable
-			String filename = "datasms.csv";
+			String filename = "datasmsg.csv";
 			
 			try {
 				Acceuil.this.updateStatusMsg("Téléchargement du fichier : " + filename,Color.BLUE,false);
@@ -241,6 +241,9 @@ public class Acceuil extends Activity {
 				//On met à jour la liste de log et le statut
 				Acceuil.this.addMessage(MessageThread.this.logMsg);
 				Acceuil.this.updateStatusCount(count);
+				
+				//On met à jour le nombre de destinataires à traiter
+				Acceuil.this.setTotalDestinataire(listDest.size());
 				
 				//TODO:Vérifier la latence 5s
 				try 

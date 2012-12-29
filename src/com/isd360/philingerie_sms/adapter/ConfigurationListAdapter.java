@@ -2,6 +2,7 @@ package com.isd360.philingerie_sms.adapter;
 
 import java.util.List;
 
+import com.isd360.philingerie_sms.activity.R;
 import com.isd360.philingerie_sms.entity.Configuration;
 
 import android.content.Context;
@@ -36,33 +37,31 @@ public class ConfigurationListAdapter extends BaseAdapter {
 	}
 
 	public long getItemId(int position) {
-		return this.getItemId(position);
+		return this.getItem(position).getId();
 	}
 
 	public View getView(int position, View convertView, ViewGroup parent) {
 		LinearLayout layoutItem = null;
 		//TODO: Adapter à l'item
-		/*if (convertView == null) 
-			layoutItem = (LinearLayout) mInflater.inflate(R.layout.itemtemplate, parent, false);
+		if (convertView == null) 
+			layoutItem = (LinearLayout) mInflater.inflate(R.layout.list_conf_template, parent, false);
 		else
 			layoutItem = (LinearLayout) convertView;
 
-		TextView subject = (TextView) layoutItem.findViewById(R.id.item_subject);
-		TextView state = (TextView) layoutItem.findViewById(R.id.item_state);
-		TextView period = (TextView) layoutItem.findViewById(R.id.item_period);
-		subject.setTextColor(Color.WHITE);
-		state.setTextColor(Color.WHITE);
-		period.setTextColor(Color.WHITE);
+		TextView name = (TextView) layoutItem.findViewById(R.id.conf_name);
+		TextView description = (TextView) layoutItem.findViewById(R.id.conf_description);
+		
+		name.setTextColor(Color.WHITE);
+		description.setTextColor(Color.WHITE);
 
-		subject.setText(this.interventions.get(position).getSubject());
-		state.setText("is " + this.interventions.get(position).getStatus().toLowerCase());
-		period.setText("From : " + this.interventions.get(position).getBeginDate().toString() + " to : " + this.interventions.get(position).getEndDate().toString());
+		name.setText(this.configurations.get(position).getName());
+		description.setText(this.configurations.get(position).getDescription());
 
 		if (position % 2 == 0)
 			layoutItem.setBackgroundColor(Color.DKGRAY);
 		else
 			layoutItem.setBackgroundColor(Color.BLACK);
-		*/
+		
 		return layoutItem;
 	}
 	

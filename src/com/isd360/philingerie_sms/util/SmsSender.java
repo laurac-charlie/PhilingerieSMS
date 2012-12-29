@@ -38,7 +38,8 @@ public class SmsSender {
 		
 		// TODO:A terme on doit récupérer le message depuis la config prédéfinies (et le parser pour les accolades)
 		// String message = MessageFormat.format("Bonjour {0} {1} {2},\nNous vous annonçons une réduction exceptionnel sur les strings léopard noirs jusqu'au 31 Décembre.\nPhilingerie",dest.getCivility(),dest.getLastName(),dest.getFirstName());
-		message = MessageFormat.format("Bonjour {0} ,\nPHILINGERIE fete ses 16 ans, tout le magasin est en PROMO de -16% a -80% jusqu au 15/12 venez vite !\n{1} www.philingerie.com",dest.getFirstName(),numPhilingerie);
+		message = MessageFormat.format("Bonjour {0} ,\nPHILINGERIE fete ses 16 ans, venez beneficier d une PROMO exceptionnelle  de -20% a -80% avant le 31/12!\n{1} www.philingerie.com",dest.getFirstName(),numPhilingerie);
+		//message = MessageFormat.format("Cher(e) {0} , c est bientot votre anniversaire, nous vous offrons 1 bon de -25% sur 1 article au choix, valable jusqu au 30/12 \n{1} www.philingerie.com",dest.getFirstName(),numPhilingerie);
 		message = formatMsg(message);
 		
 		// TODO: Mettre une meilleur vérification (regex)
@@ -71,6 +72,7 @@ public class SmsSender {
 		msg = msg.replace('ù', 'u');
 		msg = msg.replace('î', 'i');
 		msg = msg.replace('ï', 'i');
+		msg = msg.replace('\'', ' ');
 		
 		return msg;
 	}

@@ -17,8 +17,8 @@ public final class R {
         public static final int retour_icone=0x7f020003;
     }
     public static final class id {
+        public static final int conf_description=0x7f050002;
         public static final int conf_name=0x7f050001;
-        public static final int item_description=0x7f050002;
         public static final int linear_status=0x7f050005;
         public static final int listViewConfiguration=0x7f050000;
         public static final int menu_config=0x7f050009;
