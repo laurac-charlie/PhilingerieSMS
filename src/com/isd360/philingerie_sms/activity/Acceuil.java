@@ -47,8 +47,6 @@ public class Acceuil extends Activity {
         this.sendButton = (Button) findViewById(R.id.sendMessage);
 		this.sendButton.setOnClickListener(this.clickSendListener);
 		
-		//SmsSender.SendMessage(new Destinataire("M.","יטאüפןהגש","GRONNIER","0696326012"));
-		//SmsSender.SendMessage(new Destinataire("M.","יטאüפןהגש","GRONNIER","0690126858"));
     }
     
     /**

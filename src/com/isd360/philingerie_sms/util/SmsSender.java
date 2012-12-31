@@ -37,13 +37,13 @@ public class SmsSender {
 			numPhilingerie = "0596538492";
 		
 		// TODO:A terme on doit récupérer le message depuis la config prédéfinies (et le parser pour les accolades)
-		// String message = MessageFormat.format("Bonjour {0} {1} {2},\nNous vous annonçons une réduction exceptionnel sur les strings léopard noirs jusqu'au 31 Décembre.\nPhilingerie",dest.getCivility(),dest.getLastName(),dest.getFirstName());
-		message = MessageFormat.format("Bonjour {0} ,\nPHILINGERIE fete ses 16 ans, venez beneficier d une PROMO exceptionnelle  de -20% a -80% avant le 31/12!\n{1} www.philingerie.com",dest.getFirstName(),numPhilingerie);
-		//message = MessageFormat.format("Cher(e) {0} , c est bientot votre anniversaire, nous vous offrons 1 bon de -25% sur 1 article au choix, valable jusqu au 30/12 \n{1} www.philingerie.com",dest.getFirstName(),numPhilingerie);
+		message = MessageFormat.format("Bonjour {0} ,\nPHILINGERIE fete ses 16 ans, venez beneficier d une PROMO exceptionnelle  de -20% a -80% avant le 31/01!\n{1} www.philingerie.com",dest.getFirstName(),numPhilingerie);
+		//message = MessageFormat.format("Cher(e) {0} , c est bientot votre anniversaire, nous vous offrons 1 bon de -25% sur 1 article au choix, valable jusqu au 31/01 \n{1} www.philingerie.com",dest.getFirstName(),numPhilingerie);
 		message = formatMsg(message);
 		
 		// TODO: Mettre une meilleur vérification (regex)
-		if (dest.getNumero().length() == 10 && message.length() > 0) {
+		//if (dest.getNumero().length() == 10 && message.length() > 0) {
+		if (!StringChecker.formatPhoneNumber(dest.getNumero(),dest.getMagasin().charAt(0)).equals("") && message.length() > 0) {
 			try {
 				// Envoie du SMS grâce à SMSmanager
 				SmsManager.getDefault().sendTextMessage(dest.getNumero(),null, message, null, null);

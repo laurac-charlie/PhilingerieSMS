@@ -65,6 +65,7 @@ public class ParserCSV {
 
 		// On initialise un csv parser pour lire le fichier
 		LabeledCSVParser lcsvp = new LabeledCSVParser(new CSVParser(br));
+		
 		// On change le délimiter pour correspondre au bon fichier csv
 		lcsvp.changeDelimiter(carac);
 		// On charge les données du fichier CSV dans une liste de destinataires

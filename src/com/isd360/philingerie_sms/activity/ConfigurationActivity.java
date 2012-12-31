@@ -27,7 +27,7 @@ public class ConfigurationActivity extends Activity {
         setContentView(R.layout.configuration);
         
         //On crée les 2 menus de configuration 
-        this.list_intervention.add(new Configuration(0,"Serveur ftp","Changer le l'adresse IP du serveur ftp utiliser."));
+        this.list_intervention.add(new Configuration(0,"Serveur FTP","Réglage des paramètres du serveur FTP."));
         this.list_intervention.add(new Configuration(1,"Fichier CSV","Fichier CSV du ftp à utiliser pour obtenir la liste des contacts."));
         this.loadConfiguration();
     }
