@@ -36,25 +36,27 @@ public class SmsSender {
 		if(dest.getMagasin().substring(0, 1).equals("R"))
 			numPhilingerie = "0596538492";
 		
-		// TODO:A terme on doit récupérer le message depuis la config prédéfinies (et le parser pour les accolades)
-		message = MessageFormat.format("Bonjour {0} ,\nPHILINGERIE fete ses 16 ans, venez beneficier d une PROMO exceptionnelle  de -20% a -80% avant le 31/01!\n{1} www.philingerie.com",dest.getFirstName(),numPhilingerie);
-		//message = MessageFormat.format("Cher(e) {0} , c est bientot votre anniversaire, nous vous offrons 1 bon de -25% sur 1 article au choix, valable jusqu au 31/01 \n{1} www.philingerie.com",dest.getFirstName(),numPhilingerie);
+		// TODO:A terme on doit récupérer le message depuis la config prédéfinies (et le parser pour les accolades) (ne doit pas dépasser 159 caractères)
+		//message = MessageFormat.format("Bonjour {0},\nPHILINGERIE fete ses 16 ans, venez beneficier d une PROMO exceptionnelle  de -20% a -80% avant le 31/01!\n{1} www.philingerie.com",dest.getFirstName(),numPhilingerie);
+		message = MessageFormat.format("Cher(e) {0}, c est bientot votre anniversaire, nous vous offrons 1 bon de -25% sur 1 article au choix, valable jusqu au 31/01\n{1} www.philingerie.com",dest.getFirstName(),numPhilingerie);
 		message = formatMsg(message);
 		
-		// TODO: Mettre une meilleur vérification (regex)
+		String phone = StringChecker.formatPhoneNumber(dest.getNumero(),dest.getMagasin().charAt(0));
+		
 		//if (dest.getNumero().length() == 10 && message.length() > 0) {
-		if (!StringChecker.formatPhoneNumber(dest.getNumero(),dest.getMagasin().charAt(0)).equals("") && message.length() > 0) {
+		//if (!phone.equals("") && message.length() > 0) {
+		if (!phone.equals("") && !message.equals("")){
 			try {
 				// Envoie du SMS grâce à SMSmanager
-				SmsManager.getDefault().sendTextMessage(dest.getNumero(),null, message, null, null);
+				SmsManager.getDefault().sendTextMessage(phone,null, message, null, null);
 				//SmsManager.getDefault().sendDataMessage( dest.getNumero(), null,new Short("16008"), message.getBytes(), null, null);
-				
 			} catch (Exception iae) {
 				return false;
 			}
 			return true;
-		} else
+		} else{
 			return false;
+		}
 	}
 	
 	public static String formatMsg(String msg){
@@ -72,7 +74,7 @@ public class SmsSender {
 		msg = msg.replace('ù', 'u');
 		msg = msg.replace('î', 'i');
 		msg = msg.replace('ï', 'i');
-		msg = msg.replace('\'', ' ');
+		msg = msg.replaceAll("\'", " ");
 		
 		return msg;
 	}

@@ -24,6 +24,7 @@ public class FTPManager {
 		FileOutputStream fos = null;
 		String workDir = "", localpath = "";
 		
+		//TODO: Rendre paramétrable
 		String host = "94.23.35.183";
 		String login = "tablette";
 		String pass = "tablette";

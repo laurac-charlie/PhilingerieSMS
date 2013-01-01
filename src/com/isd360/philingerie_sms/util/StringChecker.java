@@ -6,14 +6,23 @@ package com.isd360.philingerie_sms.util;
  */
 public class StringChecker {
 	
+	/**
+	 * 
+	 * @param phone Numéro du destinataire
+	 * @param mag Caractère représentant le magasin du destinataire
+	 * @return
+	 */
 	public static String formatPhoneNumber(String phone, char mag){
 		//On retire les points et les espaces
 		phone = phone.replaceAll("\\.", "");
 		phone = phone.replaceAll("\\s", "");
 		
 		//On vérifie qu'il n'y a plus que des chiffres, sinon on arrête le traitement en renvoyant rien
-		if(phone.matches("([0-9]*)"))
+		try{
+			Integer.parseInt(phone);
+		}catch(NumberFormatException ne){
 			return "";
+		}
 		
 		switch(phone.length()){
 			case 6 : 
@@ -31,7 +40,7 @@ public class StringChecker {
 			break;
 		}
 		
-		if(phone.length() != 13)	phone = "";
+		if(phone.length() != 13) phone = "";
 		
 		return phone;
 	}

@@ -90,6 +90,9 @@ public class Acceuil extends Activity {
 	private OnClickListener clickSendListener = new OnClickListener() {
 		public void onClick(View view) {			
 			
+			//On désactive le button d'envoi
+			Acceuil.this.setButtonEnable(false);
+			
 			//TODO:Fichier de données csv à rendre paramétrable
 			String filename = "datasmsg.csv";
 			
@@ -105,6 +108,9 @@ public class Acceuil extends Activity {
 			MessageThread mt = new MessageThread(filename);
 			mt.start();
 			
+
+			//On réactive le button d'envoi
+			Acceuil.this.setButtonEnable(true);
 		}
 	};
 	
@@ -193,8 +199,6 @@ public class Acceuil extends Activity {
 		
 		@Override
 		public void run(){
-			//On désactive le button d'envoi
-			Acceuil.this.setButtonEnable(false);
 			
 			ParserCSV psr = null;
 			ArrayList<Destinataire> listDest = null;
@@ -253,8 +257,6 @@ public class Acceuil extends Activity {
 			Acceuil.this.updateStatusMsg("Traitement terminé",Color.GREEN,false);
 			Acceuil.this.addMessage("Fin de la campagne");
 			
-			//On réactive le button d'envoi
-			Acceuil.this.setButtonEnable(true);
 		}
 	}
 }

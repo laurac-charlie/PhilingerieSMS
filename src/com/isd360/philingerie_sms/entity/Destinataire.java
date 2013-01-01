@@ -16,7 +16,8 @@ public class Destinataire{
 		this.prenom = prenom;
 		this.nom = nom;
 		//On supprime les espaces dans le numéro
-		this.numero = numero.replaceAll("\\p{Zs}", "");
+		//this.numero = numero.replaceAll("\\p{Zs}", "");
+		this.numero = numero;
 	}
 	
 	public Destinataire(String civilite, String prenom, String nom,String numero, String moisNaiss, String mag) {
@@ -24,7 +25,8 @@ public class Destinataire{
 		this.prenom = prenom;
 		this.nom = nom;
 		//On supprime les espaces dans le numéro
-		this.numero = numero.replaceAll("\\p{Zs}", "");
+		//this.numero = numero.replaceAll("\\p{Zs}", "");
+		this.numero = numero;
 		this.moisNaissance = moisNaiss;
 		this.magasin = mag;
 	}
