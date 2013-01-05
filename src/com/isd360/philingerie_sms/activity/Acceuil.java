@@ -73,19 +73,13 @@ public class Acceuil extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
            case R.id.menu_config:
-        	   Acceuil.this.clickMenuListener.onClick(getCurrentFocus());
+        	   Intent intent = new Intent(Acceuil.this,ConfigurationActivity.class);
+        	   startActivity(intent);
               return true;
            default:
               return false;
         }
     }
-    
-    private OnClickListener clickMenuListener = new OnClickListener() {
-		public void onClick(View view) {
-				Intent intent = new Intent(Acceuil.this,ConfigurationActivity.class);
-				startActivity(intent);
-		}
-	};
 	
 	private OnClickListener clickSendListener = new OnClickListener() {
 		public void onClick(View view) {			
