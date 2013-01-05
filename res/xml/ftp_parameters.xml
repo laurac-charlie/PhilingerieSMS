@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="Serveur ftp" >
+        <EditTextPreference
+            android:key="param_serveur_ip"
+            android:title="Adresse IP"
+            android:summary="Adresse Ip du serveur a contacté exemple: 91.20.201.20"
+            android:dialogTitle="Adresse IP"
+            android:positiveButtonText="Enregistrer"
+            android:negativeButtonText="Annuler" />
+        
+        <EditTextPreference
+            android:key="param_serveur_login"
+            android:title="Login"
+            android:summary="Nom de l'utilisateur utilisé pour la connexion au ftp."
+            android:dialogTitle="Login"
+            android:positiveButtonText="Enregistrer"
+            android:negativeButtonText="Annuler" />
+        
+        <EditTextPreference
+            android:key="param_serveur_pass"
+            android:title="Mot de passe"
+            android:summary="Mot de passe pour la connexion au ftp."
+            android:dialogTitle="Mot de passe"
+            android:positiveButtonText="Enregistrer"
+            android:negativeButtonText="Annuler"
+            android:inputType="textPassword" />
+        
+    </PreferenceCategory>
+
+</PreferenceScreen>

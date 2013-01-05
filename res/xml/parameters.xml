@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    <Preference
+        android:key="button_serv_ftp"
+        android:title="Serveur FTP"
+        android:summary="Configuration des paramètres du serveur FTP." />
+    
+    <PreferenceCategory android:title="Fichier ftp" >
+        <EditTextPreference
+            android:key="param_fichier_csv"
+            android:title="Fichier CSV"
+            android:summary="Nom du fichier csv, sur le ftp, contenant les contacts. Exemple : datasmsg.csv"
+            android:dialogTitle="Fichier csv"
+            android:positiveButtonText="Enregistrer"
+            android:negativeButtonText="Annuler" />
+        
+        <EditTextPreference
+            android:key="param_fichier_texte_sms"
+            android:title="Fichier message"
+            android:summary="Nom du fichier txt, sur le ftp, contenant le modèle du message. Exemple : sms.txt"
+            android:dialogTitle="Fichier message"
+            android:positiveButtonText="Enregistrer"
+            android:negativeButtonText="Annuler" />
+    </PreferenceCategory>
+    
+    
+
+</PreferenceScreen>
