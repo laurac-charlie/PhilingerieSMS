@@ -1,35 +1,25 @@
 package com.isd360.philingerie_sms.activity;
 
-import java.util.ArrayList;
-
-import com.isd360.philingerie_sms.adapter.ConfigurationListAdapter;
-import com.isd360.philingerie_sms.entity.Configuration;
-
-import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.preference.Preference;
+import android.preference.Preference.OnPreferenceClickListener;
+import android.preference.PreferenceActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.AdapterView.OnItemClickListener;
 
-public class ConfigurationActivity extends Activity {
-	
-	private ArrayList<Configuration> list_intervention = new ArrayList<Configuration>();
-	private ConfigurationListAdapter adapter = null;
+public class ConfigurationActivity extends PreferenceActivity{
 	
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.configuration);
+        //setContentView(R.layout.configuration);
+        this.addPreferencesFromResource(R.xml.parameters);
         
-        //On crée les 2 menus de configuration 
-        this.list_intervention.add(new Configuration(0,"Serveur FTP","Réglage des paramètres du serveur FTP."));
-        this.list_intervention.add(new Configuration(1,"Fichier CSV","Fichier CSV du ftp à utiliser pour obtenir la liste des contacts."));
-        this.loadConfiguration();
+        Preference button_ftp = (Preference)this.findPreference("button_serv_ftp");
+        button_ftp.setOnPreferenceClickListener(ftpClickListener);
     }
     
     @Override
@@ -50,7 +40,17 @@ public class ConfigurationActivity extends Activity {
         }
     }
     
-
+    private OnPreferenceClickListener ftpClickListener = new OnPreferenceClickListener() {
+		
+		public boolean onPreferenceClick(Preference preference) {
+			Intent intent = new Intent(ConfigurationActivity.this,ConfigFtpActivity.class);
+     	   	startActivity(intent);
+			return true;
+		}
+	};
+    
+    
+/*
     private void loadConfiguration(){
     	if(this.list_intervention != null)
 		{
@@ -68,5 +68,5 @@ public class ConfigurationActivity extends Activity {
 			
 		}
     };
-    
+    */
 }
