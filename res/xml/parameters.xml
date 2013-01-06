@@ -9,7 +9,7 @@
         <EditTextPreference
             android:key="param_fichier_csv"
             android:title="Fichier CSV"
-            android:summary="Nom du fichier csv, sur le ftp, contenant les contacts. Exemple : datasmsg.csv"
+            android:summary="Nom du fichier csv, sur le ftp, contenant les contacts. Exemple : datasms.csv"
             android:dialogTitle="Fichier csv"
             android:positiveButtonText="Enregistrer"
             android:negativeButtonText="Annuler" />

@@ -39,7 +39,7 @@ public class SmsSender {
 		// TODO:A terme on doit récupérer le message depuis la config prédéfinies (et le parser pour les accolades) (ne doit pas dépasser 159 caractères)
 		//message = MessageFormat.format("Bonjour {0},\nPHILINGERIE fete ses 16 ans, venez beneficier d une PROMO exceptionnelle  de -20% a -80% avant le 31/01!\n{1} www.philingerie.com",dest.getFirstName(),numPhilingerie);
 		message = MessageFormat.format("Cher(e) {0}, c est bientot votre anniversaire, nous vous offrons 1 bon de -25% sur 1 article au choix, valable < 31/01\n{1} www.philingerie.com",dest.getFirstName(),numPhilingerie);
-		message = formatMsg(message);
+		message = StringChecker.formatMsg(message);
 		
 		//Test Multipart
 		//ArrayList<String> parts = new ArrayList<String>();
@@ -65,25 +65,5 @@ public class SmsSender {
 		} else{
 			return false;
 		}
-	}
-	
-	public static String formatMsg(String msg){
-		msg = msg.replace('à', 'a');
-		msg = msg.replace('â', 'a');
-		msg = msg.replace('ä', 'a');
-		msg = msg.replace('é', 'e');
-		msg = msg.replace('è', 'e');
-		msg = msg.replace('ê', 'e');
-		msg = msg.replace('ë', 'e');
-		msg = msg.replace('ô', 'o');
-		msg = msg.replace('ö', 'o');
-		msg = msg.replace('û', 'u');
-		msg = msg.replace('ü', 'u');
-		msg = msg.replace('ù', 'u');
-		msg = msg.replace('î', 'i');
-		msg = msg.replace('ï', 'i');
-		msg = msg.replaceAll("\'", " ");
-		
-		return msg;
 	}
 }

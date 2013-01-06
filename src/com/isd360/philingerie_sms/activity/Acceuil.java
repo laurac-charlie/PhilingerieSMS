@@ -1,5 +1,6 @@
 package com.isd360.philingerie_sms.activity;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -8,11 +9,15 @@ import com.isd360.philingerie_sms.entity.Destinataire;
 import com.isd360.philingerie_sms.util.FTPManager;
 import com.isd360.philingerie_sms.util.ParserCSV;
 import com.isd360.philingerie_sms.util.SmsSender;
+import com.isd360.philingerie_sms.util.StringChecker;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.text.method.ScrollingMovementMethod;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -89,22 +94,53 @@ public class Acceuil extends Activity {
 			//On désactive le button d'envoi
 			Acceuil.this.setButtonEnable(false);
 			
-			//TODO:Fichier de données csv à rendre paramétrable
-			String csvfile = "datasmsg.csv";
+			//On initialise les paramètres à partir des préférences préconfigurées
+			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(Acceuil.this);
+			boolean connectionOk = true;
+			String ftp_host = (StringChecker.validIP(prefs.getString("param_serveur_ip", ""))) ? prefs.getString("param_serveur_ip", "") : "";
+			String ftp_login = prefs.getString("param_serveur_login", "");
+			String ftp_pass = prefs.getString("param_serveur_pass", "");
 			
-			try {
-				Acceuil.this.updateStatusMsg("Téléchargement du fichier : " + csvfile,Color.BLUE,false);
-				//Télchagement du fichier de contact
-				FTPManager.DownloadCSVfile(csvfile);
-				
-			} catch (Exception e) {
-				Acceuil.this.updateStatusMsg(e.getMessage(),Color.RED,true);
+			boolean fileOk = true;
+			String csvfile = prefs.getString("param_fichier_csv", "");
+			//csvfile = "datasmsg.csv";
+			
+			FTPManager ftpManager = new FTPManager(ftp_host, ftp_login, ftp_pass);
+			
+			//On teste la validité des paramètres
+			if(!ftpManager.tryFtpConnection(Acceuil.this))
+			{
+				connectionOk = false;
+				Acceuil.this.updateStatusMsg("Les paramètres de connexion au serveur ftp sont incorrectes, veuillez les vérifier.", Color.RED, true);
 			}
 			
-			//On lance le Thread d'envoi des messages
-			MessageThread mt = new MessageThread(csvfile);
-			mt.start();
+			if(csvfile.equals(""))
+			{
+				fileOk = false;
+				Acceuil.this.updateStatusMsg("Le nom du fichier de contact csv n'a pas été configuré.", Color.RED, true);
+			}
 			
+			//Si le fichier existe en local et que son nom a bien été renseigné on peut lancer le traitement (quand bien même la connection aurait échoué)
+			//Ou si la connection est disponible et que le nom du fichier existe bien, on va tenter le téléchargement
+			if((fileOk && (new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + csvfile)).exists()) || (fileOk && connectionOk))
+			{
+				//Si la connection fonctionne, on va tenté de télécharger le fichier csv
+				if(connectionOk)
+				{
+					try {
+						Acceuil.this.updateStatusMsg("Téléchargement du fichier : " + csvfile,Color.BLUE,false);
+						//Télchagement du fichier de contact
+						ftpManager.DownloadCSVfile(csvfile);
+						
+					} catch (Exception e) {
+						Acceuil.this.updateStatusMsg(e.getMessage(),Color.RED,true);
+					}
+				}
+				
+				//On lance le Thread d'envoi des messages
+				MessageThread mt = new MessageThread(csvfile);
+				mt.start();
+			}
 
 			//On réactive le button d'envoi
 			Acceuil.this.setButtonEnable(true);
@@ -187,25 +223,25 @@ public class Acceuil extends Activity {
 	 */
 	private class MessageThread extends Thread{
 		
-		public MessageThread(String filename){
-			this.filename = filename;
-		}
-		
-		private String filename = "";
+		private String csvfile = "";
 		private String logMsg = "";
+		
+		public MessageThread(String csvfile){
+			this.csvfile = csvfile;
+		}
 		
 		@Override
 		public void run(){
 			
 			ParserCSV psr = null;
-			ArrayList<Destinataire> listDest = null;
+			ArrayList<Destinataire> listDest = new ArrayList<Destinataire>();
 			
 			try 
 			{
 				Acceuil.this.updateStatusMsg("Chargement du fichier CSV",Color.BLUE,false);
 				
 				//On récupère la liste des destinataires à partir du fichier CSV
-				psr = new ParserCSV(this.filename);
+				psr = new ParserCSV(this.csvfile);
 				listDest = psr.parseRecipient(';');
 			} catch (FileNotFoundException ex) {
 				Acceuil.this.updateStatusMsg(ex.getMessage(),Color.RED,true);
