@@ -55,6 +55,7 @@ public class Acceuil extends Activity {
     @Override
     public void onStart(){
     	super.onStart();
+    	//On réinitialise les champs au démarrage de l'application
     	this.listLogs.setText("");
     	Acceuil.this.statusMessage.setTextColor(Color.GREEN);
     	this.statusMessage.setText("Prêt");
@@ -71,6 +72,7 @@ public class Acceuil extends Activity {
     
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+    	//Si on clique sur le bouton de menu, on va vers l'activité de configuration
         switch (item.getItemId()) {
            case R.id.menu_config:
         	   Intent intent = new Intent(Acceuil.this,ConfigurationActivity.class);
@@ -88,18 +90,19 @@ public class Acceuil extends Activity {
 			Acceuil.this.setButtonEnable(false);
 			
 			//TODO:Fichier de données csv à rendre paramétrable
-			String filename = "datasmsg.csv";
+			String csvfile = "datasmsg.csv";
 			
 			try {
-				Acceuil.this.updateStatusMsg("Téléchargement du fichier : " + filename,Color.BLUE,false);
-				FTPManager.DownloadCSVfile(filename);
+				Acceuil.this.updateStatusMsg("Téléchargement du fichier : " + csvfile,Color.BLUE,false);
+				//Télchagement du fichier de contact
+				FTPManager.DownloadCSVfile(csvfile);
 				
 			} catch (Exception e) {
 				Acceuil.this.updateStatusMsg(e.getMessage(),Color.RED,true);
 			}
 			
 			//On lance le Thread d'envoi des messages
-			MessageThread mt = new MessageThread(filename);
+			MessageThread mt = new MessageThread(csvfile);
 			mt.start();
 			
 

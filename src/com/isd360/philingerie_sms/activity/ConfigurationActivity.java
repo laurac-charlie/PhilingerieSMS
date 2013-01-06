@@ -8,7 +8,11 @@ import android.preference.PreferenceActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-
+/**
+ * 
+ * @author Charlie
+ *
+ */
 public class ConfigurationActivity extends PreferenceActivity{
 	
     /** Called when the activity is first created. */
@@ -18,6 +22,7 @@ public class ConfigurationActivity extends PreferenceActivity{
         //setContentView(R.layout.configuration);
         this.addPreferencesFromResource(R.xml.parameters);
         
+        //Le premier paramètre (serveur ftp) envoi vers une activité de paramétrage spécial pour la connexion
         Preference button_ftp = (Preference)this.findPreference("button_serv_ftp");
         button_ftp.setOnPreferenceClickListener(ftpClickListener);
     }
@@ -43,6 +48,7 @@ public class ConfigurationActivity extends PreferenceActivity{
     private OnPreferenceClickListener ftpClickListener = new OnPreferenceClickListener() {
 		
 		public boolean onPreferenceClick(Preference preference) {
+			//On va sur l'activité de configuration du serveur ftp
 			Intent intent = new Intent(ConfigurationActivity.this,ConfigFtpActivity.class);
      	   	startActivity(intent);
 			return true;

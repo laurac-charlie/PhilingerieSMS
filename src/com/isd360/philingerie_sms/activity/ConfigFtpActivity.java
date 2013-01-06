@@ -5,7 +5,11 @@ import android.preference.PreferenceActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-
+/**
+ * 
+ * @author Charlie
+ *
+ */
 public class ConfigFtpActivity extends PreferenceActivity {
 
 	/** Called when the activity is first created. */
@@ -13,6 +17,7 @@ public class ConfigFtpActivity extends PreferenceActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.configuration);
+        //On ajoute pas une vue mais un ensemble de préférence pour créer l'interace de l'activité
         this.addPreferencesFromResource(R.xml.ftp_parameters);
     }
     
