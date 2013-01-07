@@ -6,7 +6,7 @@ import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPReply;
 
-import com.isd360.philingerie_sms.activity.Acceuil;
+import com.isd360.philingerie_sms.view.MainActivity;
 
 import android.os.Environment;
 
@@ -46,7 +46,7 @@ public class FTPManager {
 	}
 
 
-	public boolean tryFtpConnection(Acceuil activity){
+	public boolean tryFtpConnection(MainActivity activity){
 		
 		if(this.host.equals("") || this.login.equals("") || this.pass.equals(""))
 			return false;

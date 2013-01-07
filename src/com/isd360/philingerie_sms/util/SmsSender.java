@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import android.telephony.SmsManager;
 
-import com.isd360.philingerie_sms.entity.Destinataire;
+import com.isd360.philingerie_sms.model.Destinataire;
 
 public class SmsSender {
 

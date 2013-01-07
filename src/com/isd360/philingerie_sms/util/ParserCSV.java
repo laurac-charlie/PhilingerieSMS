@@ -7,7 +7,7 @@ import android.os.Environment;
 
 import com.Ostermiller.util.CSVParser;
 import com.Ostermiller.util.LabeledCSVParser;
-import com.isd360.philingerie_sms.entity.Destinataire;
+import com.isd360.philingerie_sms.model.Destinataire;
 
 /**
  * Classe de Parasage des fichier CSV
