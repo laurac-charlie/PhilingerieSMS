@@ -1,19 +1,12 @@
 package com.isd360.philingerie_sms.view;
 
-import java.io.File;
-
 import com.isd360.philingerie_sms.view.R;
-import com.isd360.philingerie_sms.controller.CampagneThread;
-import com.isd360.philingerie_sms.util.FTPManager;
-import com.isd360.philingerie_sms.util.StringChecker;
+import com.isd360.philingerie_sms.controller.MainController;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Environment;
-import android.preference.PreferenceManager;
 import android.text.method.ScrollingMovementMethod;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,6 +17,11 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * Activité de la page principal de l'application
+ * @author Charlie
+ *
+ */
 public class MainActivity extends Activity {
 	
 	private int totalDestinataire = 0;
@@ -90,54 +88,10 @@ public class MainActivity extends Activity {
 			//On désactive le button d'envoi
 			MainActivity.this.setButtonEnable(false);
 			
-			//On initialise les paramètres à partir des préférences préconfigurées
-			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-			boolean connectionOk = true;
-			String ftp_host = (StringChecker.validIP(prefs.getString("param_serveur_ip", ""))) ? prefs.getString("param_serveur_ip", "") : "";
-			String ftp_login = prefs.getString("param_serveur_login", "");
-			String ftp_pass = prefs.getString("param_serveur_pass", "");
+			//On utilise le controlleur pour lancer les traitements relatif à la campagne
+			MainController main = new MainController(MainActivity.this);
+			main.launchCampaign();
 			
-			boolean fileOk = true;
-			String csvfile = prefs.getString("param_fichier_csv", "");
-			//csvfile = "datasmsg.csv";
-			
-			FTPManager ftpManager = new FTPManager(ftp_host, ftp_login, ftp_pass);
-			
-			//On teste la validité des paramètres
-			if(!ftpManager.tryFtpConnection(MainActivity.this))
-			{
-				connectionOk = false;
-				MainActivity.this.updateStatusMsg("Les paramètres de connexion au serveur ftp sont incorrectes, veuillez les vérifier.", Color.RED, true);
-			}
-			
-			if(csvfile.equals(""))
-			{
-				fileOk = false;
-				MainActivity.this.updateStatusMsg("Le nom du fichier de contact csv n'a pas été configuré.", Color.RED, true);
-			}
-			
-			//Si le fichier existe en local et que son nom a bien été renseigné on peut lancer le traitement (quand bien même la connection aurait échoué)
-			//Ou si la connection est disponible et que le nom du fichier existe bien, on va tenter le téléchargement
-			if((fileOk && (new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + csvfile)).exists()) || (fileOk && connectionOk))
-			{
-				//Si la connection fonctionne, on va tenté de télécharger le fichier csv
-				if(connectionOk)
-				{
-					try {
-						MainActivity.this.updateStatusMsg("Téléchargement du fichier : " + csvfile,Color.BLUE,false);
-						//Télchagement du fichier de contact
-						ftpManager.DownloadCSVfile(csvfile);
-						
-					} catch (Exception e) {
-						MainActivity.this.updateStatusMsg(e.getMessage(),Color.RED,true);
-					}
-				}
-				
-				//On lance le Thread d'envoi des messages
-				CampagneThread mt = new CampagneThread(MainActivity.this,csvfile);
-				mt.start();
-			}
-
 			//On réactive le button d'envoi
 			MainActivity.this.setButtonEnable(true);
 		}
