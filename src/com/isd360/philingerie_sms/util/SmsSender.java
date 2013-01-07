@@ -7,6 +7,11 @@ import android.telephony.SmsManager;
 
 import com.isd360.philingerie_sms.model.Destinataire;
 
+/**
+ * Classe de gestion de l'envoi des SMS
+ * @author Charlie
+ *
+ */
 public class SmsSender {
 
 	private ArrayList<Destinataire> listDestinataires = new ArrayList<Destinataire>();

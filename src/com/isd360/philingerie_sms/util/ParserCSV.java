@@ -19,11 +19,8 @@ public class ParserCSV {
 
 	/**
 	 * Crée un objet de traitement de fichier CSV
-	 * 
-	 * @param fileName
-	 *            nom du fichier
-	 * @throws FileNotFoundException
-	 *             Si on ne trouve pas le fichier une exception est levé
+	 * @param fileName Nom du fichier
+	 * @throws FileNotFoundException Si on ne trouve pas le fichier une exception est levé
 	 */
 	public ParserCSV(String fileName) throws FileNotFoundException {
 		// On reconstitue le path avec le support de sauvegarde interne
@@ -41,15 +38,9 @@ public class ParserCSV {
 		return csvFile;
 	}
 
-	public void setCsvFile(File csvFile) {
-		this.csvFile = csvFile;
-	}
-
 	/**
 	 * Crée à partir du fichier csv de l'objet une liste de destinataires
-	 * 
-	 * @param carac
-	 *            Delimiteur de champ dans le fichier CSV
+	 * @param Caractère delimiteur de champ dans le fichier CSV
 	 * @return liste des destinataires créées à partir du fichier csv
 	 */
 	public ArrayList<Destinataire> parseRecipient(char carac) throws IOException {
@@ -68,11 +59,10 @@ public class ParserCSV {
 		lcsvp.changeDelimiter(carac);
 		// On charge les données du fichier CSV dans une liste de destinataires
 		while (lcsvp.getLine() != null) {
-			list.add(new Destinataire(lcsvp.getValueByLabel("Civilite"), lcsvp
-					.getValueByLabel("Prenom"), lcsvp.getValueByLabel("Nom"),
-					lcsvp.getValueByLabel("Portable"), lcsvp
-							.getValueByLabel("MoisNaissance"), lcsvp
-							.getValueByLabel("MagasinCreation")));
+			list.add(new Destinataire(lcsvp.getValueByLabel("Civilite"), 
+					lcsvp.getValueByLabel("Prenom"), lcsvp.getValueByLabel("Nom"),
+					lcsvp.getValueByLabel("Portable"), lcsvp.getValueByLabel("MoisNaissance"), 
+					lcsvp.getValueByLabel("MagasinCreation")));
 		}
 		// On ferme les readers
 		br.close();

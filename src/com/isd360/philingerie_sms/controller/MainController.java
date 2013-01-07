@@ -11,6 +11,11 @@ import com.isd360.philingerie_sms.util.FTPManager;
 import com.isd360.philingerie_sms.util.StringChecker;
 import com.isd360.philingerie_sms.view.MainActivity;
 
+/**
+ * Classe de traitement pour le lancement de la campagne
+ * @author Charlie
+ *
+ */
 public class MainController {
 
 	private MainActivity main = null;
@@ -29,8 +34,8 @@ public class MainController {
 		
 		boolean csvOk = true;
 		String csvfile = prefs.getString("param_fichier_csv", "");
-		//boolean smsOK = true;
-		//String smsfile = prefs.getString("param_fichier_texte_sms", "");
+		boolean smsOK = true;
+		String smsfile = prefs.getString("param_fichier_texte_sms", "");
 		
 		FTPManager ftpManager = new FTPManager(ftp_host, ftp_login, ftp_pass);
 		
@@ -38,7 +43,7 @@ public class MainController {
 		if(!ftpManager.tryFtpConnection())
 		{
 			connectionOk = false;
-			this.main.updateStatusMsg("Les paramètres de connexion au serveur ftp sont incorrectes, veuillez les vérifier.", Color.RED, true);
+			this.main.updateStatusMsg("La connexion au serveur ftp a échoué, veuillez les vérifier paramètres de connection et que la 3g est activé.", Color.RED, true);
 		}
 		
 		if(csvfile.equals(""))
@@ -47,9 +52,15 @@ public class MainController {
 			this.main.updateStatusMsg("Le nom du fichier de contact csv n'a pas été configuré.", Color.RED, true);
 		}
 		
-		//Si le fichier existe en local et que son nom a bien été renseigné on peut lancer le traitement (quand bien même la connection aurait échoué)
-		//Ou si la connection est disponible et que le nom du fichier existe bien, on va tenter le téléchargement
-		if((csvOk && (new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + csvfile)).exists()) || (csvOk && connectionOk))
+		if(smsfile.equals(""))
+		{
+			smsOK = false;
+			this.main.updateStatusMsg("Le nom du fichier du texte sms n'a pas été configuré.", Color.RED, true);
+		}
+		
+		//Si les noms des fichiers csv et du texte sms sont renseignés et que les fichiers sont présent ou que la connection au ftp est disponible, on continue le traitement
+		//if((csvOk && (new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + csvfile)).exists()) || (csvOk && connectionOk))
+		if(csvOk && smsOK && (((new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + csvfile)).exists() && (new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + smsfile)).exists()) || connectionOk))
 		{
 			//Si la connection fonctionne, on va tenté de télécharger le fichier csv
 			if(connectionOk)
@@ -58,11 +69,15 @@ public class MainController {
 					this.main.updateStatusMsg("Téléchargement du fichier : " + csvfile,Color.BLUE,false);
 					//Télchagement du fichier de contact
 					ftpManager.downloadCSVfile(csvfile);
-					
+					//Télchagement du fichier du texte sms
+					ftpManager.downloadSMSfile(smsfile);
 				} catch (Exception e) {
 					this.main.updateStatusMsg(e.getMessage(),Color.RED,true);
 				}
 			}
+			
+			//TODO: Vérifier la validité du texte du message récupéré depuis le fichier
+			
 			
 			//On lance le Thread d'envoi des messages
 			CampagneThread mt = new CampagneThread(this.main,csvfile);

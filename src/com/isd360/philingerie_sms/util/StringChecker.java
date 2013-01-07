@@ -3,7 +3,7 @@ package com.isd360.philingerie_sms.util;
 import java.util.regex.Pattern;
 
 /**
- * 
+ * Classe de vérification et formatage de châine de caractères
  * @author Charlie
  *
  */
@@ -91,5 +91,11 @@ public class StringChecker {
 			return true;
 		else 
 			return false;
+	}
+	
+	
+	public static boolean validSMStext(String smstext){
+		//TODO: Implement
+		return true;
 	}
 }
