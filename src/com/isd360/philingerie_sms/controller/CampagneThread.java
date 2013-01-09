@@ -1,13 +1,10 @@
 package com.isd360.philingerie_sms.controller;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import android.graphics.Color;
 
 import com.isd360.philingerie_sms.model.Destinataire;
-import com.isd360.philingerie_sms.util.ParserCSV;
 import com.isd360.philingerie_sms.util.SmsSender;
 import com.isd360.philingerie_sms.view.MainActivity;
 
@@ -18,18 +15,26 @@ import com.isd360.philingerie_sms.view.MainActivity;
  */
 public class CampagneThread extends Thread{
 	
-	private String csvfile = "";
-	private String logMsg = "";
 	private MainActivity main = null;
+	private ArrayList<Destinataire> listDest = null;
+	private String logMsg = "";
+	private String smsText = "";
 	
-	public CampagneThread(MainActivity main,String csvfile){
-		this.csvfile = csvfile;
+	/**
+	 * Initialise le thread d'envoi des SMS 
+	 * @param main Activité de la page priincipal à mettre à jour
+	 * @param listDest Liste des destinataires à qui envoyé les sms
+	 * @param smsText Texte du sms
+	 */
+	public CampagneThread(MainActivity main,ArrayList<Destinataire> listDest,String smsText){
 		this.main = main;
+		this.listDest = listDest;
+		this.smsText = smsText;
 	}
 	
 	@Override
 	public void run(){
-		
+		/*
 		ParserCSV psr = null;
 		ArrayList<Destinataire> listDest = new ArrayList<Destinataire>();
 		
@@ -44,20 +49,20 @@ public class CampagneThread extends Thread{
 			this.main.updateStatusMsg(ex.getMessage(),Color.RED,true);
 		} catch (IOException ex) {
 			this.main.updateStatusMsg(ex.getMessage(),Color.RED,true);
-		}
+		}*/
 		
 		//On vide la liste de logs
 		this.main.emptyLogs();
 		
 		//On met à jour le nombre de destinataires à traiter
-		this.main.setTotalDestinataire(listDest.size());
+		this.main.setTotalDestinataire(this.listDest.size());
 		int count = 0;
 		
 		this.main.updateStatusMsg("Traitement envoi SMS...",Color.BLUE,false);
 					
-		for (Destinataire d : listDest)
+		for (Destinataire d : this.listDest)
 		{
-			if(SmsSender.SendMessage(d))
+			if(SmsSender.SendMessage(d,this.smsText))
 			{
 				this.logMsg = "Envoi : " + d.getLastName() + " " + d.getFirstName() + " [OK]";
 				count++;

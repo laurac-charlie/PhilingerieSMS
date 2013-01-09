@@ -1,35 +1,54 @@
 package com.isd360.philingerie_sms.util;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.text.MessageFormat;
-import java.util.ArrayList;
 
 import android.telephony.SmsManager;
 
+import com.isd360.philingerie_sms.controller.MainController;
 import com.isd360.philingerie_sms.model.Destinataire;
 
 /**
- * Classe de gestion de l'envoi des SMS
+ * Classe de gestion de l'envoi des 
  * @author Charlie
  *
  */
 public class SmsSender {
 
-	private ArrayList<Destinataire> listDestinataires = new ArrayList<Destinataire>();
-
-	public ArrayList<Destinataire> getListDestinataires() {
-		return listDestinataires;
+	/**
+	 * Lit le fichier SMS donné en paramètre
+	 * @param smsfile Fichier sms présent en local
+	 * @return Retourne le texte contneu dans le fichier sms
+	 * @throws FileNotFoundException Si le fichier n'existe pas, une exception est levé
+	 * @throws IOException Si une erreur quelquonque se produit pendant la lecture du fichier, une exception est levé
+	 */
+	public static String readSMSfile(String smsfile) throws FileNotFoundException,IOException {
+		String smsText = "";
+		FileReader fr = new FileReader(MainController.PHIL_DIRECTORY + smsfile);
+		BufferedReader br = new BufferedReader(fr);
+		String ligne;
+		
+		//Lecture ligne par ligne en remplaçant les sauts de ligne par des espaces
+		while ((ligne=br.readLine())!=null)
+			smsText +=ligne +" ";
+		
+		//on ferme les readers
+		br.close(); 
+		fr.close();
+		
+		return smsText;
 	}
-
-	public void setListDestinataires(ArrayList<Destinataire> listDestinataires) {
-		this.listDestinataires = listDestinataires;
-	}
-
+	
 	/**
 	 * Envoi Un sms au destinataire donné en paramètre
-	 * @param dest
-	 * @return
+	 * @param dest Destinataire à qui envoyé le message
+	 * @param smsText texte du SMS
+	 * @return Renvoi vrai si l'envoi a été correctement effectué
 	 */
-	public static boolean SendMessage(Destinataire dest) {
+	public static boolean SendMessage(Destinataire dest,String smsText) {
 		
 		String message = "";
 		//Par défaut le numéro de Philingerie est celui de la martinique

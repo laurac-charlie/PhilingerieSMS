@@ -3,10 +3,9 @@ package com.isd360.philingerie_sms.util;
 import java.io.*;
 import java.util.ArrayList;
 
-import android.os.Environment;
-
 import com.Ostermiller.util.CSVParser;
 import com.Ostermiller.util.LabeledCSVParser;
+import com.isd360.philingerie_sms.controller.MainController;
 import com.isd360.philingerie_sms.model.Destinataire;
 
 /**
@@ -24,7 +23,8 @@ public class ParserCSV {
 	 */
 	public ParserCSV(String fileName) throws FileNotFoundException {
 		// On reconstitue le path avec le support de sauvegarde interne
-		String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + fileName;
+		//String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + fileName;
+		String path = MainController.PHIL_DIRECTORY + fileName;
 		File file = new File(path);
 		if (file.exists())
 			this.csvFile = file;

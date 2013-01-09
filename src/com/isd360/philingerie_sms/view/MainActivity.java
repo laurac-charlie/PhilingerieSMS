@@ -45,7 +45,6 @@ public class MainActivity extends Activity {
         
         this.sendButton = (Button) findViewById(R.id.sendMessage);
 		this.sendButton.setOnClickListener(this.clickSendListener);
-		
     }
     
     /**

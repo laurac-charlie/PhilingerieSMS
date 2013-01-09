@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 public class StringChecker {
 	
 	/**
-	 * 
+	 * Reconstitue le numéro au format internatinal si c'est possible
 	 * @param phone Numéro du destinataire
 	 * @param mag Caractère représentant le magasin du destinataire
 	 * @return le numéro de téléphone mis au format international ou "" si la reconstitution a été impossible
@@ -52,8 +52,8 @@ public class StringChecker {
 	}
 
 	/**
-	 * 
-	 * @param msg Message de type SMS a formaté (enlevé caractères accentués et apostrophes)
+	 * Formate le message enlevant les caractères accentués et apostrophes
+	 * @param msg Message de type SMS a formaté 
 	 * @return Le message formaté
 	 */
 	public static String formatMsg(String msg){
@@ -95,6 +95,8 @@ public class StringChecker {
 	
 	
 	public static boolean validSMStext(String smstext){
+		if(smstext == null || smstext.equals("")) return false;
+		if(smstext.length() > 135) return false;
 		//TODO: Implement
 		return true;
 	}
