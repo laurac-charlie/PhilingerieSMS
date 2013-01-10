@@ -9,7 +9,7 @@ import com.isd360.philingerie_sms.util.SmsSender;
 import com.isd360.philingerie_sms.view.MainActivity;
 
 /**
- * 
+ * Thread d'envoi des SMS à la liste de destinaires
  * @author Charlie
  *
  */
@@ -19,6 +19,13 @@ public class CampagneThread extends Thread{
 	private ArrayList<Destinataire> listDest = null;
 	private String logMsg = "";
 	private String smsText = "";
+	
+	/**
+	 * Pour que l'information soit disponible partout dans l'application, on va utiliser la varible running qui sera mis à jour
+	 * manuellement pendant la vie du Thread (et en cas de plantage) plûtot que la fonction getState qui nécessiterait
+	 * d'avoir accès à l'objet.
+	 */
+	public static boolean running = false;
 	
 	/**
 	 * Initialise le thread d'envoi des SMS 
@@ -34,22 +41,8 @@ public class CampagneThread extends Thread{
 	
 	@Override
 	public void run(){
-		/*
-		ParserCSV psr = null;
-		ArrayList<Destinataire> listDest = new ArrayList<Destinataire>();
-		
-		try 
-		{
-			this.main.updateStatusMsg("Chargement du fichier CSV",Color.BLUE,false);
-			
-			//On récupère la liste des destinataires à partir du fichier CSV
-			psr = new ParserCSV(this.csvfile);
-			listDest = psr.parseRecipient(';');
-		} catch (FileNotFoundException ex) {
-			this.main.updateStatusMsg(ex.getMessage(),Color.RED,true);
-		} catch (IOException ex) {
-			this.main.updateStatusMsg(ex.getMessage(),Color.RED,true);
-		}*/
+		//On met la variale running à vrai pour dire que le thread est actif
+		CampagneThread.running = true;
 		
 		//On vide la liste de logs
 		this.main.emptyLogs();
@@ -71,7 +64,7 @@ public class CampagneThread extends Thread{
 				this.logMsg = "Envoi : " + d.getLastName() + " " + d.getFirstName() + " [KO]";
 			
 			//On met à jour la liste de log et le statut
-			this.main.addMessage(CampagneThread.this.logMsg);
+			this.main.addMessage(this.logMsg);
 			this.main.updateStatusCount(count);
 			
 			//On met à jour le nombre de destinataires à traiter
@@ -83,7 +76,8 @@ public class CampagneThread extends Thread{
 			catch (InterruptedException e) 
 				{this.main.updateStatusMsg(e.getMessage(),Color.RED,true);}
 		}
-		
+		//On remet la varibale à faut à la fin du traitement
+		CampagneThread.running = false;
 		this.main.updateStatusMsg("Traitement terminé",Color.GREEN,false);
 		this.main.addMessage("Fin de la campagne");
 		

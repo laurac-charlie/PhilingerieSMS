@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
  * @author Charlie
  *
  */
-public class StringChecker {
+public class StringFormater {
 	
 	/**
 	 * Reconstitue le numéro au format internatinal si c'est possible
@@ -93,11 +93,16 @@ public class StringChecker {
 			return false;
 	}
 	
-	
+	/**
+	 * 
+	 * @param smstext
+	 * @return
+	 */
 	public static boolean validSMStext(String smstext){
 		if(smstext == null || smstext.equals("")) return false;
-		if(smstext.length() > 135) return false;
+		if(smstext.length() > 140) return false;
 		//TODO: Implement
+		
 		return true;
 	}
 }

@@ -3,6 +3,7 @@ package com.isd360.philingerie_sms.controller;
 import java.io.File;
 import java.util.ArrayList;
 
+import android.app.Activity;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Environment;
@@ -12,7 +13,7 @@ import com.isd360.philingerie_sms.model.Destinataire;
 import com.isd360.philingerie_sms.util.FTPManager;
 import com.isd360.philingerie_sms.util.ParserCSV;
 import com.isd360.philingerie_sms.util.SmsSender;
-import com.isd360.philingerie_sms.util.StringChecker;
+import com.isd360.philingerie_sms.util.StringFormater;
 import com.isd360.philingerie_sms.view.MainActivity;
 
 /**
@@ -25,17 +26,24 @@ public class MainController {
 	public static final String PHIL_DIRECTORY = Environment.getExternalStorageDirectory().getAbsolutePath() + "/";
 	private MainActivity main = null;
 	
-	public MainController(MainActivity main){
-		this.main = main;
+	/**
+	 * On instancie un controleur princpal pour l'application
+	 * @param main Activité principale de l'application qui sera mis à jour 
+	 */
+	public MainController(Activity main){
+		this.main = (main instanceof MainActivity) ? (MainActivity)main : null;
 	}
 	
+	/**
+	 * Procédure principale lançant les traitements de l'application
+	 */
 	public void launchCampaign(){
-		if(this.main != null)
+		if(this.main != null && !CampagneThread.running)
 		{
 			//On initialise les paramètres à partir des préférences préconfigurées
 			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.main);
 			boolean connectionOk = true;
-			String ftp_host = (StringChecker.validIP(prefs.getString("param_serveur_ip", ""))) ? prefs.getString("param_serveur_ip", "") : "";
+			String ftp_host = (StringFormater.validIP(prefs.getString("param_serveur_ip", ""))) ? prefs.getString("param_serveur_ip", "") : "";
 			String ftp_login = prefs.getString("param_serveur_login", "");
 			String ftp_pass = prefs.getString("param_serveur_pass", "");
 			
@@ -69,9 +77,7 @@ public class MainController {
 				this.main.updateStatusMsg("Le nom du fichier du texte sms n'a pas été configuré.", Color.RED, true);
 			}
 			
-			//Si les noms des fichiers csv et du texte sms sont renseignés et que les fichiers sont présent ou que la connection au ftp est disponible, on continue le traitement
-			//if((csvOk && (new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + csvfile)).exists()) || (csvOk && connectionOk))
-			//if(csvOk && smsOK && (((new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + csvfile)).exists() && (new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + smsfile)).exists()) || connectionOk))
+			//Si les noms des fichiers csv et du texte sms sont renseignés et que les fichiers sont présent ou que la connection au ftp est disponible, on continue le traitement		
 			if(csvOk && smsOK && (((new File(MainController.PHIL_DIRECTORY + csvfile)).exists() && (new File(MainController.PHIL_DIRECTORY + smsfile)).exists()) || connectionOk))
 			{
 				//Si la connection fonctionne, on va tenté de télécharger le fichier csv
@@ -92,25 +98,31 @@ public class MainController {
 				{
 					//On teste la validé du sms contenu dans le fichier
 					smsText = SmsSender.readSMSfile(smsfile);
-					if(!StringChecker.validSMStext(smsText))
-						throw new Exception("Le texte du fichier sms n'est pas correct, veuillez vérifier sa longueur (135 max) et sa validité.");
+					if(!StringFormater.validSMStext(smsText))
+						throw new Exception("Le texte du fichier sms n'est pas correct, veuillez vérifier sa longueur (140 max) et sa validité.");
+					
+					//TODO: Demander à l'utilisateur une validation du template
+					
 					
 					this.main.updateStatusMsg("Chargement du fichier CSV",Color.BLUE,false);
 						
 					//On récupère la liste des destinataires à partir du fichier CSV
 					psr = new ParserCSV(csvfile);
 					listDest = psr.parseRecipient(';');
+					
+					//On lance le Thread d'envoi des messages
+					CampagneThread ct = new CampagneThread(this.main,listDest,smsText);
+					ct.start();
 				} 
 				catch (Exception e) {
+					//En cas d'exception, on s'assure que la variable running soit à false
+					CampagneThread.running = false;
 					this.main.updateStatusMsg(e.getMessage(),Color.RED,true);
 				}
-				
-				//On lance le Thread d'envoi des messages
-				CampagneThread mt = new CampagneThread(this.main,listDest,smsText);
-				mt.start();
 			}
 		}
 		else
 			this.main.updateStatusMsg("Un problème à l'initialisation ne permet pas de continuer (activité null).", Color.RED, true);
+			
 	}
 }

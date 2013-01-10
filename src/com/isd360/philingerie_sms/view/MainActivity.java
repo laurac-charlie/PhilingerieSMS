@@ -47,9 +47,7 @@ public class MainActivity extends Activity {
 		this.sendButton.setOnClickListener(this.clickSendListener);
     }
     
-    /**
-     * On remet les champs à zéro lorsque l'on redémarre l'application
-     */
+    
     @Override
     public void onStart(){
     	super.onStart();
@@ -157,6 +155,9 @@ public class MainActivity extends Activity {
 		});
 	}
 	
+	/**
+	 * Vide la liste des log d'envoi de message
+	 */
 	public void emptyLogs(){
 		//On lance la notification sur le Thread de l'UI
 		this.runOnUiThread(new Runnable() {

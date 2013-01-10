@@ -63,7 +63,7 @@ public class SmsSender {
 		// TODO:A terme on doit récupérer le message depuis la config prédéfinies (et le parser pour les accolades) (ne doit pas dépasser 159 caractères)
 		//message = MessageFormat.format("Bonjour {0},\nPHILINGERIE fete ses 16 ans, venez beneficier d une PROMO exceptionnelle  de -20% a -80% avant le 31/01!\n{1} www.philingerie.com",dest.getFirstName(),numPhilingerie);
 		message = MessageFormat.format("Cher(e) {0}, c est bientot votre anniversaire, nous vous offrons 1 bon de -25% sur 1 article au choix, valable < 31/01\n{1} www.philingerie.com",dest.getFirstName(),numPhilingerie);
-		message = StringChecker.formatMsg(message);
+		message = StringFormater.formatMsg(message);
 		
 		//Test Multipart
 		//ArrayList<String> parts = new ArrayList<String>();
@@ -73,7 +73,7 @@ public class SmsSender {
 		//	parts.add(message.substring(151,message.length()));
 		//}
 		
-		String phone = StringChecker.formatPhoneNumber(dest.getNumero(),dest.getMagasin().charAt(0));
+		String phone = StringFormater.formatPhoneNumber(dest.getNumero(),dest.getMagasin().charAt(0));
 		
 		//if (dest.getNumero().length() == 10 && message.length() > 0) {
 		//if (!phone.equals("") && message.length() > 0) {
