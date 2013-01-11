@@ -101,7 +101,6 @@ public class StringFormater {
 	public static boolean validSMStext(String smstext){
 		if(smstext == null || smstext.equals("")) return false;
 		if(smstext.length() > 140) return false;
-		//TODO: Implement
 		
 		return true;
 	}

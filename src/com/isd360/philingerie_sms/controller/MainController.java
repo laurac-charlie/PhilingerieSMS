@@ -40,6 +40,8 @@ public class MainController {
 	public void launchCampaign(){
 		if(this.main != null && !CampagneThread.running)
 		{
+			//On désactive le button d'envoi
+			this.main.setButtonEnable(false);
 			//On initialise les paramètres à partir des préférences préconfigurées
 			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.main);
 			boolean connectionOk = true;
@@ -91,6 +93,8 @@ public class MainController {
 						ftpManager.downloadSMSfile(smsfile);
 					} catch (Exception e) {
 						this.main.updateStatusMsg(e.getMessage(),Color.RED,true);
+						//On réactive le button d'envoi
+						this.main.setButtonEnable(true);
 					}
 				}
 				
@@ -118,7 +122,14 @@ public class MainController {
 					//En cas d'exception, on s'assure que la variable running soit à false
 					CampagneThread.running = false;
 					this.main.updateStatusMsg(e.getMessage(),Color.RED,true);
+					//On réactive le button d'envoi
+					this.main.setButtonEnable(true);
 				}
+			}
+			else
+			{
+				//On réactive le button d'envoi
+				this.main.setButtonEnable(true);
 			}
 		}
 		else

@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.text.MessageFormat;
 
 import android.telephony.SmsManager;
 
@@ -60,18 +59,14 @@ public class SmsSender {
 		if(dest.getMagasin().substring(0, 1).equals("R"))
 			numPhilingerie = "0596538492";
 		
-		// TODO:A terme on doit récupérer le message depuis la config prédéfinies (et le parser pour les accolades) (ne doit pas dépasser 159 caractères)
 		//message = MessageFormat.format("Bonjour {0},\nPHILINGERIE fete ses 16 ans, venez beneficier d une PROMO exceptionnelle  de -20% a -80% avant le 31/01!\n{1} www.philingerie.com",dest.getFirstName(),numPhilingerie);
-		message = MessageFormat.format("Cher(e) {0}, c est bientot votre anniversaire, nous vous offrons 1 bon de -25% sur 1 article au choix, valable < 31/01\n{1} www.philingerie.com",dest.getFirstName(),numPhilingerie);
+		//message = MessageFormat.format("Cher(e) {0}, c est bientot votre anniversaire, nous vous offrons 1 bon de -25% sur 1 article au choix, valable < 31/01\n{1} www.philingerie.com",dest.getFirstName(),numPhilingerie);
 		message = StringFormater.formatMsg(message);
-		
-		//Test Multipart
-		//ArrayList<String> parts = new ArrayList<String>();
-		//if(message.length() > 150)
-		//{
-		//	parts.add(message.substring(0, 150));
-		//	parts.add(message.substring(151,message.length()));
-		//}
+		message = message.replaceAll("#1", dest.getLastName());
+		message = message.replaceAll("#2", dest.getFirstName());
+		message = message.replaceAll("#3", dest.getCivility());
+		//Pas certain
+		message = message.replaceAll("#4", numPhilingerie);
 		
 		String phone = StringFormater.formatPhoneNumber(dest.getNumero(),dest.getMagasin().charAt(0));
 		

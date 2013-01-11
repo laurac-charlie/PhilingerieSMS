@@ -34,6 +34,7 @@ public class CampagneThread extends Thread{
 	 * @param smsText Texte du sms
 	 */
 	public CampagneThread(MainActivity main,ArrayList<Destinataire> listDest,String smsText){
+		super();
 		this.main = main;
 		this.listDest = listDest;
 		this.smsText = smsText;
@@ -78,6 +79,8 @@ public class CampagneThread extends Thread{
 		}
 		//On remet la varibale à faut à la fin du traitement
 		CampagneThread.running = false;
+		//On réactive le button d'envoi
+		this.main.setButtonEnable(true);
 		this.main.updateStatusMsg("Traitement terminé",Color.GREEN,false);
 		this.main.addMessage("Fin de la campagne");
 		

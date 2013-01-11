@@ -1,6 +1,7 @@
 package com.isd360.philingerie_sms.view;
 
 import com.isd360.philingerie_sms.view.R;
+import com.isd360.philingerie_sms.controller.CampagneThread;
 import com.isd360.philingerie_sms.controller.MainController;
 
 import android.app.Activity;
@@ -27,8 +28,11 @@ public class MainActivity extends Activity {
 	private int totalDestinataire = 0;
 	
 	private TextView listLogs = null;
+	//private String listLogstext = "";
 	private TextView statusCount = null;
+	//private String statusCountText = "";
 	private TextView statusMessage = null;
+	//private String statusMessageText = "";
 	private Button sendButton = null;
 	
     /** Called when the activity is first created. */
@@ -45,19 +49,43 @@ public class MainActivity extends Activity {
         
         this.sendButton = (Button) findViewById(R.id.sendMessage);
 		this.sendButton.setOnClickListener(this.clickSendListener);
+		
+		//Toast.makeText(getApplicationContext(),	"oncreate",500).show();
     }
     
+    /*
+    @Override
+    public void onStop(){
+    	super.onStop();
+    	this.listLogstext = this.listLogs.getText().toString();
+    	this.statusMessageText = this.statusMessage.getText().toString();
+    	this.statusCountText = this.statusCount.getText().toString();
+    }
+    */
     
     @Override
     public void onStart(){
     	super.onStart();
-    	//On réinitialise les champs au démarrage de l'application
-    	this.listLogs.setText("");
-    	MainActivity.this.statusMessage.setTextColor(Color.GREEN);
-    	this.statusMessage.setText("Prêt");
-    	this.totalDestinataire = 0;
-    	this.updateStatusCount(0);
+    	//On réinitialise les champs au démarrage de l'application seulement si Campagne Thread ne tourne plus.
+    	if(!CampagneThread.running)
+    	{
+	    	this.listLogs.setText("");
+	    	MainActivity.this.statusMessage.setTextColor(Color.GREEN);
+	    	this.statusMessage.setText("Prêt");
+	    	this.totalDestinataire = 0;
+	    	this.updateStatusCount(0);
+    	}
     }
+    
+    /*
+    @Override
+    public void onRestart(){
+    	super.onRestart();
+    	this.addMessage(this.listLogstext);
+    	this.statusCount.setText(this.statusCountText);
+    	this.statusMessage.setText(this.statusMessageText);
+    }
+    */
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -90,7 +118,7 @@ public class MainActivity extends Activity {
 			main.launchCampaign();
 			
 			//On réactive le button d'envoi
-			MainActivity.this.setButtonEnable(true);
+			//MainActivity.this.setButtonEnable(true);
 		}
 	};
 	

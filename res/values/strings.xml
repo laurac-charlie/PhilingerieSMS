@@ -6,7 +6,7 @@
     <string name="send">Démarrer la campagne</string>
     <string name="dowloadCsv">Télcharger fichier csv</string>
     <string name="txt_status_count">0/0</string>
-    <string name="txt_status_msg">OK</string>
+    <string name="txt_status_msg">Prêt</string>
     
     <!-- Configuration files names-->
     <string name="pref_conf_ftp_srv"></string>
