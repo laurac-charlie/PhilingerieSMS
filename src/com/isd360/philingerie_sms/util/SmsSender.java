@@ -49,7 +49,7 @@ public class SmsSender {
 	 */
 	public static boolean SendMessage(Destinataire dest,String smsText) {
 		
-		String message = "";
+		String message = smsText;
 		//Par défaut le numéro de Philingerie est celui de la martinique
 		String numPhilingerie = "0596755850";
 		
