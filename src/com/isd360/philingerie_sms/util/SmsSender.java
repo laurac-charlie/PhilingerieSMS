@@ -1,9 +1,11 @@
 package com.isd360.philingerie_sms.util;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import android.telephony.SmsManager;
 
@@ -26,9 +28,11 @@ public class SmsSender {
 	 */
 	public static String readSMSfile(String smsfile) throws FileNotFoundException,IOException {
 		String smsText = "";
-		FileReader fr = new FileReader(MainController.PHIL_DIRECTORY + smsfile);
+		//FileReader fr = new FileReader(MainController.PHIL_DIRECTORY + smsfile);
+		InputStream is = new FileInputStream(MainController.PHIL_DIRECTORY + smsfile);
+		InputStreamReader fr = new InputStreamReader(is,"ISO-8859-1");
 		BufferedReader br = new BufferedReader(fr);
-		String ligne;
+		String ligne = "";
 		
 		//Lecture ligne par ligne en remplaçant les sauts de ligne par des espaces
 		while ((ligne=br.readLine())!=null)
@@ -61,12 +65,12 @@ public class SmsSender {
 		
 		//message = MessageFormat.format("Bonjour {0},\nPHILINGERIE fete ses 16 ans, venez beneficier d une PROMO exceptionnelle  de -20% a -80% avant le 31/01!\n{1} www.philingerie.com",dest.getFirstName(),numPhilingerie);
 		//message = MessageFormat.format("Cher(e) {0}, c est bientot votre anniversaire, nous vous offrons 1 bon de -25% sur 1 article au choix, valable < 31/01\n{1} www.philingerie.com",dest.getFirstName(),numPhilingerie);
-		message = StringFormater.formatMsg(message);
 		message = message.replaceAll("#1", dest.getLastName());
 		message = message.replaceAll("#2", dest.getFirstName());
 		message = message.replaceAll("#3", dest.getCivility());
 		//Pas certain
 		message = message.replaceAll("#4", numPhilingerie);
+		message = StringFormater.formatMsg(message);
 		
 		String phone = StringFormater.formatPhoneNumber(dest.getNumero(),dest.getMagasin().charAt(0));
 		

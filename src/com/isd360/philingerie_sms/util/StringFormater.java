@@ -94,9 +94,9 @@ public class StringFormater {
 	}
 	
 	/**
-	 * 
-	 * @param smstext
-	 * @return
+	 * Vérifie la taille et la validité du message SMS
+	 * @param smstext Texte du SMS
+	 * @return Vrai si le message est valide, faux sinon
 	 */
 	public static boolean validSMStext(String smstext){
 		if(smstext == null || smstext.equals("")) return false;
