@@ -103,7 +103,7 @@ public class MainController {
 					//On teste la validé du sms contenu dans le fichier
 					smsText = SmsSender.readSMSfile(smsfile);
 					if(!StringFormater.validSMStext(smsText))
-						throw new Exception("Le texte du fichier sms n'est pas correct, veuillez vérifier sa longueur (140 max) et sa validité.");
+						throw new Exception("Le texte du fichier sms n'est pas correct, veuillez vérifier sa longueur (135 max) et sa validité.");
 					
 					//TODO: Demander à l'utilisateur une validation du template
 					
