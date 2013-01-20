@@ -25,7 +25,7 @@ public class CampagneThread extends Thread{
 	 * manuellement pendant la vie du Thread (et en cas de plantage) plûtot que la fonction getState qui nécessiterait
 	 * d'avoir accès à l'objet.
 	 */
-	public static boolean running = false;
+	public static boolean RUNNING = false;
 	
 	/**
 	 * Initialise le thread d'envoi des SMS 
@@ -43,7 +43,7 @@ public class CampagneThread extends Thread{
 	@Override
 	public void run(){
 		//On met la variale running à vrai pour dire que le thread est actif
-		CampagneThread.running = true;
+		CampagneThread.RUNNING = true;
 		
 		//On vide la liste de logs
 		this.main.emptyLogs();
@@ -58,11 +58,11 @@ public class CampagneThread extends Thread{
 		{
 			if(SmsSender.SendMessage(d,this.smsText))
 			{
-				this.logMsg = "Envoi : " + d.getLastName() + " " + d.getFirstName() + " [OK]";
+				this.logMsg = "Envoi [OK] : " + d.getLastName() + " " + d.getFirstName();
 				count++;
 			}
 			else
-				this.logMsg = "Envoi : " + d.getLastName() + " " + d.getFirstName() + " [KO]";
+				this.logMsg = "Envoi [KO] : " + d.getLastName() + " " + d.getFirstName();
 			
 			//On met à jour la liste de log et le statut
 			this.main.addMessage(this.logMsg);
@@ -78,7 +78,7 @@ public class CampagneThread extends Thread{
 				{this.main.updateStatusMsg(e.getMessage(),Color.RED,true);}
 		}
 		//On remet la varibale à faut à la fin du traitement
-		CampagneThread.running = false;
+		CampagneThread.RUNNING = false;
 		//On réactive le button d'envoi
 		this.main.setButtonEnable(true);
 		this.main.updateStatusMsg("Traitement terminé",Color.GREEN,false);

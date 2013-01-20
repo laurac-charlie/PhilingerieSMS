@@ -38,7 +38,7 @@ public class MainController {
 	 * Procédure principale lançant les traitements de l'application
 	 */
 	public void launchCampaign(){
-		if(this.main != null && !CampagneThread.running)
+		if(this.main != null && !CampagneThread.RUNNING)
 		{
 			//On désactive le button d'envoi
 			this.main.setButtonEnable(false);
@@ -120,7 +120,7 @@ public class MainController {
 				} 
 				catch (Exception e) {
 					//En cas d'exception, on s'assure que la variable running soit à false
-					CampagneThread.running = false;
+					CampagneThread.RUNNING= false;
 					this.main.updateStatusMsg(e.getMessage(),Color.RED,true);
 					//On réactive le button d'envoi
 					this.main.setButtonEnable(true);

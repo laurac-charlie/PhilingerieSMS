@@ -3,7 +3,7 @@ package com.isd360.philingerie_sms.util;
 import java.util.regex.Pattern;
 
 /**
- * Classe de vérification et formatage de châine de caractères
+ * Classe de vérification et formatage de chaîne de caractères
  * @author Charlie
  *
  */
@@ -31,22 +31,33 @@ public class StringFormater {
 		//Selon le nombre de caractères que le numéro de téléphone donné en paramètre contient, on tente de le reconstituer
 		switch(phone.length()){
 			case 6 : 
-				phone = (mag == 'G') ? "+590690" + phone : "+596696" + phone;
+				//phone = (mag == 'G') ? "+590690" + phone : "+596696" + phone;
+				if(mag == 'G') phone = "+590690" + phone;
+				if(mag == 'M' && mag == 'R') phone = "+596696" + phone;
 				break;
 			case 9 : 
 				if(phone.substring(0, 3).equals("690")) phone = "+590" + phone;
 				if(phone.substring(0, 3).equals("696")) phone = "+596" + phone;
+				if(phone.substring(0, 3).equals("694")) phone = "+594" + phone;
+				//Si le numéro est composé de 9 chiffres et qu'il commence par 6 ou 7 on ajoute l'indicatif de france
+				//un numéro de guadeloupe ou martinique aura déjà été traité donc ne sera pas affecté ici
+				if(phone.substring(0,1).equals("6") || phone.substring(0,1).equals("7")) phone = "+330" + phone;
 				break;
 			case 10 : 
 				if(phone.substring(0, 4).equals("0690")) phone = "+59" + phone;
 				if(phone.substring(0, 4).equals("0696")) phone = "+596" + phone.substring(1, phone.length());
+				if(phone.substring(0, 4).equals("0694")) phone = "+594" + phone.substring(1, phone.length());
+				//Si le numéro est composé de 10 chiffres et qu'il commence par 06 ou 07 on ajoute l'indicatif de france
+				//un numéro de guadeloupe ou martinique aura déjà été traité donc ne sera pas affecté ici
+				if(phone.substring(0,2).equals("06") || phone.substring(0,2).equals("07")) phone = "+33" + phone;
 				break;
 			case 13 : break;
 			default : phone = "";
 			break;
 		}
 		
-		if(phone.length() != 13) phone = "";
+		//13 caractères pour un numéro antillais et 12 pour un numéro de france à cause des indicatifs
+		if(phone.length() != 13 && phone.length() != 12) phone = "";
 		
 		return phone;
 	}

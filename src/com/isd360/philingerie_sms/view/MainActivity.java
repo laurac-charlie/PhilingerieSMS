@@ -67,7 +67,7 @@ public class MainActivity extends Activity {
     public void onStart(){
     	super.onStart();
     	//On réinitialise les champs au démarrage de l'application seulement si Campagne Thread ne tourne plus.
-    	if(!CampagneThread.running)
+    	if(!CampagneThread.RUNNING)
     	{
 	    	this.listLogs.setText("");
 	    	MainActivity.this.statusMessage.setTextColor(Color.GREEN);
