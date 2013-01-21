@@ -5,6 +5,9 @@ import com.isd360.philingerie_sms.controller.CampagneThread;
 import com.isd360.philingerie_sms.controller.MainController;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -114,8 +117,32 @@ public class MainActivity extends Activity {
 			MainActivity.this.setButtonEnable(false);
 			
 			//On utilise le controlleur pour lancer les traitements relatif à la campagne
-			MainController main = new MainController(MainActivity.this);
-			main.launchCampaign();
+			final MainController mainController = new MainController(MainActivity.this);
+			
+			if(mainController.prepareCampaign())
+			{
+				//On crée l'alertDialog qui est en faire
+				Builder helpBuilder = new Builder(MainActivity.this);
+				helpBuilder.setTitle("Prévisualation message").setMessage(mainController.getSmsText());
+				//helpBuilder.setMessage("texte du sms");
+				
+				helpBuilder.setPositiveButton("Confirmer", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						//Une fois que le texte du message a été confirmer on lance la campagne
+						mainController.launchCampaign();					
+					}
+				});
+				
+				helpBuilder.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						MainActivity.this.updateStatusMsg("Le lancement de la campagne a été annulé.", Color.RED, true);
+					}
+				});
+	
+				// On crée la popup puis on la montre
+				AlertDialog helpDialog = helpBuilder.create();
+				helpDialog.show();
+			}
 			
 			//On réactive le button d'envoi
 			//MainActivity.this.setButtonEnable(true);

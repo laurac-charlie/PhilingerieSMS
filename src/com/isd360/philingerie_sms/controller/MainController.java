@@ -19,12 +19,24 @@ import com.isd360.philingerie_sms.view.MainActivity;
 /**
  * Classe de traitement pour le lancement de la campagne
  * @author Charlie
+ * @version 1.0
  *
  */
 public class MainController {
 
 	public static final String PHIL_DIRECTORY = Environment.getExternalStorageDirectory().getAbsolutePath() + "/";
 	private MainActivity main = null;
+	private String smsfile = "";
+	private String smsText = "";
+	private String csvfile = "";
+	
+	public String getSmsText() {
+		return smsText;
+	}
+
+	public void setSmstext(String smsText) {
+		this.smsText = smsText;
+	}
 	
 	/**
 	 * On instancie un controleur princpal pour l'application
@@ -35,9 +47,10 @@ public class MainController {
 	}
 	
 	/**
-	 * Procédure principale lançant les traitements de l'application
+	 * Préaparation et vérification des paramètres nécessaires au lancement de la campagne
+	 * @return Vrai si la campagne a été correctement préparée
 	 */
-	public void launchCampaign(){
+	public boolean prepareCampaign(){
 		if(this.main != null && !CampagneThread.RUNNING)
 		{
 			//On désactive le button d'envoi
@@ -50,12 +63,10 @@ public class MainController {
 			String ftp_pass = prefs.getString("param_serveur_pass", "");
 			
 			boolean csvOk = true;
-			String csvfile = prefs.getString("param_fichier_csv", "");
-			ParserCSV psr = null;
-			ArrayList<Destinataire> listDest = null;
+			this.csvfile = prefs.getString("param_fichier_csv", "");
+			
 			boolean smsOK = true;
-			String smsfile = prefs.getString("param_fichier_texte_sms", "");
-			String smsText = "";
+			this.smsfile = prefs.getString("param_fichier_texte_sms", "");
 			
 			FTPManager ftpManager = new FTPManager(ftp_host, ftp_login, ftp_pass);
 			
@@ -67,30 +78,30 @@ public class MainController {
 				this.main.updateStatusMsg("La connexion au serveur ftp a échoué, veuillez vérifier les paramètres de connection et la 3g.", Color.RED, true);
 			}
 			
-			if(csvfile.equals(""))
+			if(this.csvfile.equals(""))
 			{
 				csvOk = false;
 				this.main.updateStatusMsg("Le nom du fichier de contact csv n'a pas été configuré.", Color.RED, true);
 			}
 			
-			if(smsfile.equals(""))
+			if(this.smsfile.equals(""))
 			{
 				smsOK = false;
 				this.main.updateStatusMsg("Le nom du fichier du texte sms n'a pas été configuré.", Color.RED, true);
 			}
 			
 			//Si les noms des fichiers csv et du texte sms sont renseignés et que les fichiers sont présent ou que la connection au ftp est disponible, on continue le traitement		
-			if(csvOk && smsOK && (((new File(MainController.PHIL_DIRECTORY + csvfile)).exists() && (new File(MainController.PHIL_DIRECTORY + smsfile)).exists()) || connectionOk))
+			if(csvOk && smsOK && (((new File(MainController.PHIL_DIRECTORY + this.csvfile)).exists() && (new File(MainController.PHIL_DIRECTORY + smsfile)).exists()) || connectionOk))
 			{
 				//Si la connection fonctionne, on va tenté de télécharger le fichier csv
 				if(connectionOk)
 				{
-					this.main.updateStatusMsg("Téléchargement des fichiers : " + csvfile + " et " + smsfile,Color.BLUE,false);
+					this.main.updateStatusMsg("Téléchargement des fichiers : " + this.csvfile + " et " + this.smsfile,Color.BLUE,false);
 					try {
 						//Télchagement du fichier de contact
-						ftpManager.downloadCSVfile(csvfile);
+						ftpManager.downloadCSVfile(this.csvfile);
 						//Télchagement du fichier du texte sms
-						ftpManager.downloadSMSfile(smsfile);
+						ftpManager.downloadSMSfile(this.smsfile);
 					} catch (Exception e) {
 						this.main.updateStatusMsg(e.getMessage(),Color.RED,true);
 						//On réactive le button d'envoi
@@ -101,22 +112,9 @@ public class MainController {
 				try 
 				{
 					//On teste la validé du sms contenu dans le fichier
-					smsText = SmsSender.readSMSfile(smsfile);
-					if(!StringFormater.validSMStext(smsText))
+					this.smsText = SmsSender.readSMSfile(this.smsfile);
+					if(!StringFormater.validSMStext(this.smsText))
 						throw new Exception("Le texte du fichier sms n'est pas correct, veuillez vérifier sa longueur (135 max) et sa validité.");
-					
-					//TODO: Demander à l'utilisateur une validation du template
-					
-					
-					this.main.updateStatusMsg("Chargement du fichier CSV",Color.BLUE,false);
-						
-					//On récupère la liste des destinataires à partir du fichier CSV
-					psr = new ParserCSV(csvfile);
-					listDest = psr.parseRecipient(';');
-					
-					//On lance le Thread d'envoi des messages
-					CampagneThread ct = new CampagneThread(this.main,listDest,smsText);
-					ct.start();
 				} 
 				catch (Exception e) {
 					//En cas d'exception, on s'assure que la variable running soit à false
@@ -124,16 +122,58 @@ public class MainController {
 					this.main.updateStatusMsg(e.getMessage(),Color.RED,true);
 					//On réactive le button d'envoi
 					this.main.setButtonEnable(true);
+					return false;
 				}
+				
+				//this.launchCampaign();
+				return true;
 			}
 			else
 			{
 				//On réactive le button d'envoi
 				this.main.setButtonEnable(true);
+				return false;
 			}
 		}
 		else
+		{
 			this.main.updateStatusMsg("Un problème à l'initialisation ne permet pas de continuer (activité null).", Color.RED, true);
+			return false;
+		}
 			
+	}
+
+	/**
+	 * Lancement de la campagne après avoir vérifié les paramètres avec la fonction prepareCampaign()
+	 * @param csvfile Nom du fichier csv de contact
+	 * @param smsfile Nom du fichier texte contenant le modèle du sms
+	 */
+	public void launchCampaign() {
+		ParserCSV psr = null;
+		ArrayList<Destinataire> listDest = null;
+		
+		if(!this.csvfile.equals("") && !this.smsfile.equals("") && !this.smsText.equals(""))
+		{
+			try 
+			{
+				//TODO: Demander à l'utilisateur une validation du template
+				this.main.updateStatusMsg("Chargement du fichier CSV",Color.BLUE,false);
+					
+				//On récupère la liste des destinataires à partir du fichier CSV
+				psr = new ParserCSV(this.csvfile);
+				listDest = psr.parseRecipient(';');
+				
+				//On lance le Thread d'envoi des messages
+				CampagneThread ct = new CampagneThread(this.main,listDest,this.smsText);
+				ct.start();
+			} 
+			catch (Exception e) {
+				//En cas d'exception, on s'assure que la variable running soit à false
+				CampagneThread.RUNNING= false;
+				this.main.updateStatusMsg(e.getMessage(),Color.RED,true);
+				//On réactive le button d'envoi
+				this.main.setButtonEnable(true);
+			}
+		}
 	}
 }
