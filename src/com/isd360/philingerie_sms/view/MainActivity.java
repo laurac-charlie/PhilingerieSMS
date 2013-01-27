@@ -31,11 +31,8 @@ public class MainActivity extends Activity {
 	private int totalDestinataire = 0;
 	
 	private TextView listLogs = null;
-	//private String listLogstext = "";
 	private TextView statusCount = null;
-	//private String statusCountText = "";
 	private TextView statusMessage = null;
-	//private String statusMessageText = "";
 	private Button sendButton = null;
 	
     /** Called when the activity is first created. */
