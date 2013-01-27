@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="fill_parent"
     android:background="@android:color/black"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:scrollbars="none" >
     
 	<LinearLayout 
 	    android:layout_width="match_parent"
@@ -15,7 +16,7 @@
 		<ImageView
 		    android:id="@+id/img_logo"
 		    android:layout_width="fill_parent"
-		    android:layout_height="50dp"
+		    android:layout_height="48dp"
 		    android:scaleType="fitStart"
 		    android:contentDescription="@string/app_name"
 		    android:src="@drawable/top_logo" />
@@ -25,23 +26,22 @@
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_gravity="right"
-	        android:textSize="9dp"
+	        android:textSize="8dp"
 	        android:textColor="@android:color/white"
 	        android:text="@string/txt_version_label" />
 		
 		<!-- Cadre pour afficher l'étape en cours -->
 		<TextView
-	        android:layout_width="240dp"
+	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:layout_gravity="center_horizontal"
-	        android:gravity="left"
+	        android:paddingLeft="10dp"
 	        android:textSize="12dp"
 	        android:textColor="@android:color/white"
 	        android:text="@string/txt_step_label" />
 		
 	    <TextView
 	        android:id="@+id/txt_step"
-	        android:layout_width="240dp"
+	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_gravity="center_horizontal"
 	        android:gravity="center"
@@ -52,25 +52,20 @@
 		
 	    <!-- Cadre contenant les différents status -->
 	    <TextView
-	        android:layout_width="240dp"
+	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:layout_gravity="center_horizontal"
-	        android:layout_marginTop="5dp"
-	        android:gravity="left"
+	        android:layout_marginTop="10dp"
+	        android:paddingLeft="10dp"
 	        android:textSize="12dp"
 	        android:textColor="@android:color/white"
 	        android:text="@string/txt_info_label" />
 	    
 	    <LinearLayout
-		    android:id="@+id/linear_status"
 	        android:layout_width="match_parent"
 	        android:layout_height="80dp"
-	        android:layout_marginLeft="40dp"
-	        android:layout_marginRight="40dp"
 	        android:orientation="vertical"
 	        android:background="@drawable/bar_info"
-	        android:textSize="12dp"
-	        android:textColor="@android:color/black" >
+	        android:textSize="12dp" >
 		    
 	        
 		    <TextView
@@ -81,7 +76,8 @@
 		        android:paddingLeft="10dp"
 		        android:textSize="12dp"
 		        android:textColor="@android:color/black"
-		        android:text="@string/stat_status_count" />
+		        android:text="@string/stat_status_count" 
+		        android:visibility="gone"/>
 		    
 		    <TextView
 		        android:id="@+id/txt_status_msg"
@@ -91,17 +87,169 @@
 		        android:paddingLeft="10dp"
 		        android:textSize="12dp"
 		        android:textColor="#33CC00"
-		        android:text="@string/stat_status_msg" />
+		        android:text="@string/stat_status_msg" 
+		        android:visibility="gone" />
+		    
+		    <!-- Statut Réseau -->
+		    <RelativeLayout 
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content" >
+		        
+		        <TextView
+		            android:id="@+id/stat_reseau_label"
+			        android:layout_width="120dp"
+			        android:layout_height="wrap_content"
+			        android:layout_marginTop="5dp"
+			        android:paddingLeft="20dp"
+		        	android:textSize="11dp"
+		        	android:textColor="@android:color/black" 
+			        android:text="@string/stat_reseau_label" />
+		        
+		        <TextView
+		            android:id="@+id/stat_reseau"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:layout_marginTop="5dp"
+			        android:layout_toRightOf="@+id/stat_reseau_label"
+			        android:paddingRight="30dp"
+		        	android:textSize="11dp"
+		        	android:textColor="#E30000" 
+			        android:text="@string/statut_KO" />
+		        
+		        <TextView
+		            android:id="@+id/stat_reseau_type"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:layout_marginTop="5dp"
+			        android:layout_toRightOf="@+id/stat_reseau"
+		        	android:textSize="11dp"
+		        	android:textColor="@android:color/black" 
+		        	android:text="@string/txt_none"/>
+		        
+		    </RelativeLayout>
+		    
+		    <!-- Statut CarteSD -->
+		    <RelativeLayout 
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content">
+		        
+		        <TextView
+		            android:id="@+id/stat_sdcard_label"
+			        android:layout_width="120dp"
+			        android:layout_height="wrap_content"
+			        android:layout_marginTop="2dp"
+			        android:paddingLeft="20dp"
+		        	android:textSize="11dp"
+		        	android:textColor="@android:color/black" 
+			        android:text="@string/stat_sdcard_label" />
+		        
+		        <TextView
+		            android:id="@+id/stat_sdcard"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:layout_marginTop="2dp"
+			        android:layout_toRightOf="@+id/stat_sdcard_label"
+			        android:paddingRight="30dp"
+		        	android:textSize="11dp"
+		        	android:textColor="#E30000" 
+			        android:text="@string/statut_KO" />
+		        
+		        <TextView
+		            android:id="@+id/stat_sdcard_type"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:layout_marginTop="2dp"
+			        android:layout_toRightOf="@+id/stat_sdcard"
+		        	android:textSize="11dp"
+		        	android:textColor="@android:color/black" 
+		        	android:text="@string/txt_none"/>
+		        
+		    </RelativeLayout>
+		    
+		    <!-- Statut Serveur FTP -->
+		    <RelativeLayout 
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content" >
+		        
+		        <TextView
+		            android:id="@+id/stat_ftpserv_label"
+			        android:layout_width="120dp"
+			        android:layout_height="wrap_content"
+			        android:layout_marginTop="2dp"
+			        android:paddingLeft="20dp"
+		        	android:textSize="11dp"
+		        	android:textColor="@android:color/black" 
+			        android:text="@string/stat_ftpserv_label" />
+		        
+		        <TextView
+		            android:id="@+id/stat_ftpserv"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:layout_marginTop="2dp"
+			        android:layout_toRightOf="@+id/stat_ftpserv_label"
+			        android:paddingRight="30dp"
+		        	android:textSize="11dp"
+		        	android:textColor="#E30000" 
+			        android:text="@string/statut_KO" />
+		        
+		        <TextView
+		            android:id="@+id/stat_ftpserv_type"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:layout_marginTop="2dp"
+			        android:layout_toRightOf="@+id/stat_ftpserv"
+		        	android:textSize="11dp"
+		        	android:textColor="@android:color/black" 
+		        	android:text="@string/txt_none"/>
+		        
+		    </RelativeLayout>
+		    
+		    <!-- Statut Serveur FTP -->
+		    <RelativeLayout 
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content" >
+		        
+		        <TextView
+		            android:id="@+id/stat_lastsent_label"
+			        android:layout_width="120dp"
+			        android:layout_height="wrap_content"
+			        android:layout_marginTop="2dp"
+			        android:paddingLeft="20dp"
+		        	android:textSize="11dp"
+		        	android:textColor="@android:color/black" 
+			        android:text="@string/stat_lastsent_label" />
+		        
+		        <TextView
+		            android:id="@+id/stat_lastsent"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:layout_marginTop="2dp"
+			        android:layout_toRightOf="@+id/stat_lastsent_label"
+			        android:paddingRight="30dp"
+		        	android:textSize="11dp"
+		        	android:textColor="#E30000" 
+			        android:text="@string/statut_KO" />
+		        
+		        <TextView
+		            android:id="@+id/stat_lastsent_type"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:layout_marginTop="2dp"
+			        android:layout_toRightOf="@+id/stat_lastsent"
+		        	android:textSize="11dp"
+		        	android:textColor="@android:color/black" 
+		        	android:text="@string/txt_none"/>
+		        
+		    </RelativeLayout>
 	
 	    </LinearLayout>
 	    
 	    <!-- Cadre contenant les informations d'envoi des messages -->
 	    <TextView
-	        android:layout_width="240dp"
+	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:layout_gravity="center_horizontal"
 	        android:layout_marginTop="5dp"
-	        android:gravity="left"
+	        android:paddingLeft="10dp"
 	        android:textSize="12dp"
 	        android:textColor="@android:color/white"
 	        android:text="@string/txt_journal_label" />
@@ -110,8 +258,6 @@
 	        android:id="@+id/txt_listEnvoi"
 	        android:layout_width="match_parent"
 	        android:layout_height="180dp"
-	        android:layout_marginLeft="40dp"
-	        android:layout_marginRight="40dp"
 	        android:paddingLeft="10dp"
 	        android:orientation="vertical"
 	        android:background="@drawable/bar_journal"
@@ -119,10 +265,19 @@
 	        android:textColor="@android:color/black" />
 	    
 	    <!-- Layout contenant les bouttons -->
+	    <TextView
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center_horizontal"
+	        android:layout_marginTop="5dp"
+	        android:gravity="center_vertical"
+	        android:textSize="9dp"
+	        android:textColor="@android:color/white"
+	        android:text="@string/txt_button_label" />
+	    
 	    <RelativeLayout
 	        android:layout_width="match_parent"
 	        android:layout_height="80dp"
-	        android:layout_marginTop="10dp"
 	        android:layout_gravity="bottom"
 	        android:orientation="horizontal"
 	        android:textColor="@android:color/black" >

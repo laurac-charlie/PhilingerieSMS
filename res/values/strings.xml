@@ -5,9 +5,11 @@
 	<string name="txt_version_label">Copyright ISD360 - v1.0 </string>
     
     <!-- Texte -->
+    <string name="txt_none">None</string>
     <string name="txt_step_label">Etape</string>
     <string name="txt_info_label">Informations</string>
     <string name="txt_journal_label">Journal</string>
+    <string name="txt_button_label">Cliquez sur une icône pour démarrer une action</string>
     <string name="txt_step">Initialisation des prérequis</string>
     <string name="txt_dowloadCsv">Télcharger fichier csv</string>
     
@@ -15,9 +17,16 @@
     <string name="btn_send">Démarrer la campagne</string>
     <string name="btn_quit">Quitter l\'application</string>
     
-    <!-- Status -->
+    <!-- Statut -->
     <string name="stat_status_count">0/0</string>
     <string name="stat_status_msg">Prêt</string>
+    <string name="stat_reseau_label">Réseau</string>
+    <string name="stat_sdcard_label">CarteSD</string>
+    <string name="stat_ftpserv_label">Serveur FTP</string>
+    <string name="stat_lastsent_label">Dernier envoi</string>
+    
+    <string name="statut_OK">[OK]</string>
+    <string name="statut_KO">[KO]</string>
     
     <!-- Configuration files names-->
     <string name="pref_conf_ftp_srv"></string>

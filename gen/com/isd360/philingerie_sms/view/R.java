@@ -32,15 +32,26 @@ public final class R {
         public static final int top_logo=0x7f02000f;
     }
     public static final class id {
-        public static final int btn_quitApp=0x7f070006;
-        public static final int btn_startApp=0x7f070007;
+        public static final int btn_quitApp=0x7f070011;
+        public static final int btn_startApp=0x7f070012;
         public static final int img_logo=0x7f070000;
-        public static final int linear_status=0x7f070002;
-        public static final int menu_config=0x7f070008;
-        public static final int menu_retour=0x7f070009;
-        public static final int txt_listEnvoi=0x7f070005;
-        public static final int txt_status_count=0x7f070003;
-        public static final int txt_status_msg=0x7f070004;
+        public static final int menu_config=0x7f070013;
+        public static final int menu_retour=0x7f070014;
+        public static final int stat_ftpserv=0x7f07000b;
+        public static final int stat_ftpserv_label=0x7f07000a;
+        public static final int stat_ftpserv_type=0x7f07000c;
+        public static final int stat_lastsent=0x7f07000e;
+        public static final int stat_lastsent_label=0x7f07000d;
+        public static final int stat_lastsent_type=0x7f07000f;
+        public static final int stat_reseau=0x7f070005;
+        public static final int stat_reseau_label=0x7f070004;
+        public static final int stat_reseau_type=0x7f070006;
+        public static final int stat_sdcard=0x7f070008;
+        public static final int stat_sdcard_label=0x7f070007;
+        public static final int stat_sdcard_type=0x7f070009;
+        public static final int txt_listEnvoi=0x7f070010;
+        public static final int txt_status_count=0x7f070002;
+        public static final int txt_status_msg=0x7f070003;
         public static final int txt_step=0x7f070001;
     }
     public static final class layout {
@@ -50,26 +61,34 @@ public final class R {
     }
     public static final class string {
         public static final int app_name=0x7f060000;
-        public static final int btn_quit=0x7f060008;
+        public static final int btn_quit=0x7f06000a;
         /**  Button 
          */
-        public static final int btn_send=0x7f060007;
-        public static final int pref_conf_ftp_login=0x7f06000c;
-        public static final int pref_conf_ftp_pass=0x7f06000d;
+        public static final int btn_send=0x7f060009;
+        public static final int pref_conf_ftp_login=0x7f060014;
+        public static final int pref_conf_ftp_pass=0x7f060015;
         /**  Configuration files names
          */
-        public static final int pref_conf_ftp_srv=0x7f06000b;
-        /**  Status 
+        public static final int pref_conf_ftp_srv=0x7f060013;
+        public static final int stat_ftpserv_label=0x7f06000f;
+        public static final int stat_lastsent_label=0x7f060010;
+        public static final int stat_reseau_label=0x7f06000d;
+        public static final int stat_sdcard_label=0x7f06000e;
+        /**  Statut 
          */
-        public static final int stat_status_count=0x7f060009;
-        public static final int stat_status_msg=0x7f06000a;
-        public static final int txt_dowloadCsv=0x7f060006;
-        public static final int txt_info_label=0x7f060003;
-        public static final int txt_journal_label=0x7f060004;
-        public static final int txt_step=0x7f060005;
+        public static final int stat_status_count=0x7f06000b;
+        public static final int stat_status_msg=0x7f06000c;
+        public static final int statut_KO=0x7f060012;
+        public static final int statut_OK=0x7f060011;
+        public static final int txt_button_label=0x7f060006;
+        public static final int txt_dowloadCsv=0x7f060008;
+        public static final int txt_info_label=0x7f060004;
+        public static final int txt_journal_label=0x7f060005;
         /**  Texte 
          */
-        public static final int txt_step_label=0x7f060002;
+        public static final int txt_none=0x7f060002;
+        public static final int txt_step=0x7f060007;
+        public static final int txt_step_label=0x7f060003;
         public static final int txt_version_label=0x7f060001;
     }
     public static final class xml {
