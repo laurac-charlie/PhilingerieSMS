@@ -1,4 +1,4 @@
-package com.isd360.philingerie_sms.view;
+package com.isd360.philingerie_sms.util;
 
 import android.app.Activity;
 import android.content.Context;
