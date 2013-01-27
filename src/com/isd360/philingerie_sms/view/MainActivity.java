@@ -39,6 +39,7 @@ public class MainActivity extends Activity {
 	private TextView statusMessage = null;
 	//private String statusMessageText = "";
 	private ImageButton sendButton = null;
+	private ImageButton quitButton = null;
 	
     /** Called when the activity is first created. */
     @Override
@@ -47,8 +48,9 @@ public class MainActivity extends Activity {
         setContentView(R.layout.main);
         
         //On déclare les textbox et on met un mouvement de scroll
-        this.statusCount = (TextView)this.findViewById(R.id.txt_status_count);
-        this.statusMessage = (TextView)this.findViewById(R.id.txt_status_msg);
+        //TODO: Remplacer par les nouveaux champs correspondants
+        //this.statusCount = (TextView)this.findViewById(R.id.txt_status_count);
+        //this.statusMessage = (TextView)this.findViewById(R.id.txt_status_msg);
         this.listLogs = (TextView)this.findViewById(R.id.txt_listEnvoi);
         this.listLogs.setMovementMethod(new ScrollingMovementMethod());
         
@@ -56,8 +58,9 @@ public class MainActivity extends Activity {
         this.sendButton = (ImageButton) findViewById(R.id.btn_startApp);
 		this.sendButton.setOnClickListener(this.clickSendListener);
 		
-		ImageButton quitButton = (ImageButton)this.findViewById(R.id.btn_quitApp);
-		quitButton.setOnClickListener(this.clickQuitListener);
+		this.quitButton = (ImageButton)this.findViewById(R.id.btn_quitApp);
+		this.quitButton.setOnClickListener(this.clickQuitListener);
+		
     }
     
     @Override
@@ -67,10 +70,11 @@ public class MainActivity extends Activity {
     	if(!CampagneThread.RUNNING)
     	{
 	    	this.listLogs.setText("");
-	    	MainActivity.this.statusMessage.setTextColor(Color.GREEN);
-	    	this.statusMessage.setText("Prêt");
-	    	this.totalDestinataire = 0;
-	    	this.updateStatusCount(0);
+	    	//TODO: Remettre en fonction
+	    	//MainActivity.this.statusMessage.setTextColor(Color.GREEN);
+	    	//MainActivity.this.statusMessage.setText("Prêt");
+	    	//MainActivity.this.totalDestinataire = 0;
+	    	//MainActivity.this.updateStatusCount(0);
     	}
     }
     
@@ -99,6 +103,7 @@ public class MainActivity extends Activity {
      */
 	private OnClickListener clickSendListener = new OnClickListener() {
 		public void onClick(View view) {
+			//ON lance l'animation alpha du boutton
 			Animation animAlpha = AnimationUtils.loadAnimation(MainActivity.this, R.anim.anim_alpha);
 			view.startAnimation(animAlpha);
 			
@@ -143,6 +148,7 @@ public class MainActivity extends Activity {
 	 */
 	private OnClickListener clickQuitListener = new OnClickListener() {
 		public void onClick(View view) {
+			//On lance l'animation alpha du boutton
 			Animation animAlpha = AnimationUtils.loadAnimation(MainActivity.this, R.anim.anim_alpha);
 			view.startAnimation(animAlpha);
 			//On arrête l'application
