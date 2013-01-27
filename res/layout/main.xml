@@ -1,34 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="fill_parent"
     android:background="@android:color/black"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical" >
+    
 	<LinearLayout 
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
-	    android:orientation="vertical" >
+	    android:orientation="vertical" 
+	    android:isScrollContainer="true" >
+
+	    <!-- Logo de l'application -->
+		<ImageView
+		    android:id="@+id/img_logo"
+		    android:layout_width="fill_parent"
+		    android:layout_height="50dp"
+		    android:scaleType="fitStart"
+		    android:contentDescription="@string/app_name"
+		    android:src="@drawable/top_logo" />
 	    
-	    <ImageView 
-	        android:id="@+id/img_logo"
-	        android:layout_width="fill_parent"
+		<!-- Version et éditeur de l'application -->
+		<TextView
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="right"
+	        android:textSize="9dp"
+	        android:textColor="@android:color/white"
+	        android:text="@string/txt_version_label" />
+		
+		<!-- Cadre pour afficher l'étape en cours -->
+		<TextView
+	        android:layout_width="240dp"
 	        android:layout_height="wrap_content"
 	        android:layout_gravity="center_horizontal"
-	        android:orientation="horizontal"
-	        android:contentDescription="@string/app_name"
-	        android:src="@drawable/top_logo" />
-	    
-	    <TextView
-		        android:id="@+id/txt_step"
-		        android:layout_width="match_parent"
-		        android:layout_height="wrap_content"
-		        android:layout_marginTop="5dp"
-		        android:paddingLeft="10dp"
-		        android:textSize="12dp"
-		        android:textColor="@android:color/black"
-		        android:text="@string/txt_step" />
+	        android:gravity="left"
+	        android:textSize="12dp"
+	        android:textColor="@android:color/white"
+	        android:text="@string/txt_step_label" />
 		
+	    <TextView
+	        android:id="@+id/txt_step"
+	        android:layout_width="240dp"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center_horizontal"
+	        android:gravity="center"
+	        android:background="@drawable/bar_step"
+	        android:textSize="12dp"
+	        android:textColor="@android:color/black"
+	        android:text="@string/txt_step" />
+		
+	    <!-- Cadre contenant les différents status -->
+	    <TextView
+	        android:layout_width="240dp"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center_horizontal"
+	        android:layout_marginTop="5dp"
+	        android:gravity="left"
+	        android:textSize="12dp"
+	        android:textColor="@android:color/white"
+	        android:text="@string/txt_info_label" />
+	    
 	    <LinearLayout
 		    android:id="@+id/linear_status"
 	        android:layout_width="match_parent"
@@ -63,19 +95,30 @@
 	
 	    </LinearLayout>
 	    
+	    <!-- Cadre contenant les informations d'envoi des messages -->
+	    <TextView
+	        android:layout_width="240dp"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center_horizontal"
+	        android:layout_marginTop="5dp"
+	        android:gravity="left"
+	        android:textSize="12dp"
+	        android:textColor="@android:color/white"
+	        android:text="@string/txt_journal_label" />
+	    
 	    <TextView
 	        android:id="@+id/txt_listEnvoi"
 	        android:layout_width="match_parent"
 	        android:layout_height="180dp"
 	        android:layout_marginLeft="40dp"
 	        android:layout_marginRight="40dp"
-	        android:layout_marginTop="20dp"
 	        android:paddingLeft="10dp"
 	        android:orientation="vertical"
 	        android:background="@drawable/bar_journal"
 	        android:textSize="12dp"
 	        android:textColor="@android:color/black" />
 	    
+	    <!-- Layout contenant les bouttons -->
 	    <RelativeLayout
 	        android:layout_width="match_parent"
 	        android:layout_height="80dp"
@@ -84,33 +127,33 @@
 	        android:orientation="horizontal"
 	        android:textColor="@android:color/black" >
 		    
-		    <ImageButton
-		        android:id="@+id/btn_startApp"
-		        android:src="@drawable/bottom_button_start"
-		        android:layout_width="160dp"
-		        android:layout_height="wrap_content"
-		        android:scaleType="fitXY"
-		        android:layout_gravity="left"
-		        android:contentDescription="@string/btn_send" 
-		        android:background="@android:color/black"/>
-		    
-		    <View
-				android:layout_width="1dp"
-				android:layout_height="78dp"
-				android:layout_gravity="bottom"
-				android:background="@android:color/white" />
-		    
-		    <ImageButton
+	        <ImageButton
 		        android:id="@+id/btn_quitApp"
 		        android:src="@drawable/bottom_button_quit"
 		        android:layout_width="160dp"
 		        android:layout_height="wrap_content"
 		        android:scaleType="fitXY"
 		        android:layout_alignParentRight="true"
-		        android:layout_gravity="right"
 		        android:contentDescription="@string/btn_quit" 
 		        android:background="@android:color/black" />
-		 
+	        
+	        <View
+				android:layout_width="1dp"
+				android:layout_height="77dp"
+				android:layout_marginTop="3dp"
+				android:layout_gravity="bottom"
+				android:layout_toRightOf="@+id/btn_startApp"
+				android:background="@android:color/white" />
+	        
+		    <ImageButton
+		        android:id="@+id/btn_startApp"
+		        android:src="@drawable/bottom_button_start"
+		        android:layout_width="160dp"
+		        android:layout_height="wrap_content"
+		        android:scaleType="fitXY"
+		        android:contentDescription="@string/btn_send" 
+		        android:background="@android:color/black"/>
+		    
 		</RelativeLayout>
 	
 	</LinearLayout>

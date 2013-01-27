@@ -17,6 +17,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -50,8 +52,12 @@ public class MainActivity extends Activity {
         this.listLogs = (TextView)this.findViewById(R.id.txt_listEnvoi);
         this.listLogs.setMovementMethod(new ScrollingMovementMethod());
         
+        //On déclare les bouttons et on leur associe leurs évènements
         this.sendButton = (ImageButton) findViewById(R.id.btn_startApp);
 		this.sendButton.setOnClickListener(this.clickSendListener);
+		
+		ImageButton quitButton = (ImageButton)this.findViewById(R.id.btn_quitApp);
+		quitButton.setOnClickListener(this.clickQuitListener);
     }
     
     @Override
@@ -88,8 +94,13 @@ public class MainActivity extends Activity {
         }
     }
 	
+    /**
+     * Evenement du boutton pour lancer la campagne
+     */
 	private OnClickListener clickSendListener = new OnClickListener() {
 		public void onClick(View view) {
+			Animation animAlpha = AnimationUtils.loadAnimation(MainActivity.this, R.anim.anim_alpha);
+			view.startAnimation(animAlpha);
 			
 			//On désactive le button d'envoi
 			MainActivity.this.setButtonEnable(false);
@@ -124,6 +135,18 @@ public class MainActivity extends Activity {
 			
 			//On réactive le button d'envoi
 			//MainActivity.this.setButtonEnable(true);
+		}
+	};
+	
+	/**
+	 * Evenement du boutton pour quitter l'application
+	 */
+	private OnClickListener clickQuitListener = new OnClickListener() {
+		public void onClick(View view) {
+			Animation animAlpha = AnimationUtils.loadAnimation(MainActivity.this, R.anim.anim_alpha);
+			view.startAnimation(animAlpha);
+			//On arrête l'application
+			MainActivity.this.finish();
 		}
 	};
 	
