@@ -2,6 +2,6 @@
  
 <item android:id="@+id/menu_config" 
      android:title="Configuration"
-     android:icon="@drawable/gear_icone"
+     android:icon="@drawable/menu_gear_icone"
      />
 </menu>

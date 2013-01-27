@@ -2,5 +2,5 @@
  
 <item android:id="@+id/menu_retour" 
      android:title="Retour"
-     android:icon="@drawable/retour_icone"/>
+     android:icon="@drawable/menu_retour_icone"/>
 </menu>

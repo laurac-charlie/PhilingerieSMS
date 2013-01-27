@@ -3,10 +3,17 @@
 
     <string name="app_name">PhilingerieSMS</string>
 
-    <string name="send">Démarrer la campagne</string>
-    <string name="dowloadCsv">Télcharger fichier csv</string>
-    <string name="txt_status_count">0/0</string>
-    <string name="txt_status_msg">Prêt</string>
+    <!-- Texte -->
+    <string name="txt_step"></string>
+    <string name="txt_dowloadCsv">Télcharger fichier csv</string>
+    
+    <!-- Button -->
+    <string name="btn_send">Démarrer la campagne</string>
+    <string name="btn_quit">Quitter l\'application</string>
+    
+    <!-- Status -->
+    <string name="stat_status_count">0/0</string>
+    <string name="stat_status_msg">Prêt</string>
     
     <!-- Configuration files names-->
     <string name="pref_conf_ftp_srv"></string>

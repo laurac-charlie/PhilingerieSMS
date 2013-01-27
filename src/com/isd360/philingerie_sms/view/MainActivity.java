@@ -17,7 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,7 +36,7 @@ public class MainActivity extends Activity {
 	//private String statusCountText = "";
 	private TextView statusMessage = null;
 	//private String statusMessageText = "";
-	private Button sendButton = null;
+	private ImageButton sendButton = null;
 	
     /** Called when the activity is first created. */
     @Override
@@ -50,21 +50,9 @@ public class MainActivity extends Activity {
         this.listLogs = (TextView)this.findViewById(R.id.txt_listEnvoi);
         this.listLogs.setMovementMethod(new ScrollingMovementMethod());
         
-        this.sendButton = (Button) findViewById(R.id.sendMessage);
+        this.sendButton = (ImageButton) findViewById(R.id.btn_startApp);
 		this.sendButton.setOnClickListener(this.clickSendListener);
-		
-		//Toast.makeText(getApplicationContext(),	"oncreate",500).show();
     }
-    
-    /*
-    @Override
-    public void onStop(){
-    	super.onStop();
-    	this.listLogstext = this.listLogs.getText().toString();
-    	this.statusMessageText = this.statusMessage.getText().toString();
-    	this.statusCountText = this.statusCount.getText().toString();
-    }
-    */
     
     @Override
     public void onStart(){
@@ -79,16 +67,6 @@ public class MainActivity extends Activity {
 	    	this.updateStatusCount(0);
     	}
     }
-    
-    /*
-    @Override
-    public void onRestart(){
-    	super.onRestart();
-    	this.addMessage(this.listLogstext);
-    	this.statusCount.setText(this.statusCountText);
-    	this.statusMessage.setText(this.statusMessageText);
-    }
-    */
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -111,7 +89,7 @@ public class MainActivity extends Activity {
     }
 	
 	private OnClickListener clickSendListener = new OnClickListener() {
-		public void onClick(View view) {			
+		public void onClick(View view) {
 			
 			//On désactive le button d'envoi
 			MainActivity.this.setButtonEnable(false);
@@ -194,7 +172,7 @@ public class MainActivity extends Activity {
 		final boolean makeToast = toast;
 		runOnUiThread(new Runnable() {
 			public void run() {
-				if(makeToast) Toast.makeText(MainActivity.this, msg, 500).show();
+				if(makeToast) Toast.makeText(MainActivity.this, msg, Toast.LENGTH_LONG).show();
 				MainActivity.this.statusMessage.setTextColor(color);
 				MainActivity.this.statusMessage.setText(msg);
 			}
