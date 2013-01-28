@@ -1,82 +1,182 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@android:color/background_light"
+    android:layout_height="fill_parent"
+    android:background="@android:color/black"
     android:orientation="vertical"
-    >
+    android:scrollbars="none" >
+    
 	<LinearLayout 
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
-	    android:orientation="vertical" >
+	    android:orientation="vertical"
+	    android:isScrollContainer="true" >
+
+	    <!-- Logo de l'application -->
+		<ImageView
+		    android:id="@+id/img_logo"
+		    android:layout_width="fill_parent"
+		    android:layout_height="48dp"
+		    android:scaleType="fitStart"
+		    android:contentDescription="@string/app_name"
+		    android:src="@drawable/top_logo" />
 	    
-	    <ImageView 
-	        android:id="@+id/img_logo"
+		<!-- Version et éditeur de l'application -->
+		<TextView
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="right"
+	        android:textSize="8dp"
+	        android:textColor="@android:color/white"
+	        android:text="@string/txt_version_label" />
+		
+		<!-- Cadre pour afficher l'étape en cours -->
+		<TextView
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:paddingLeft="10dp"
+	        android:textSize="12dp"
+	        android:textColor="@android:color/white"
+	        android:text="@string/txt_step_label" />
+		
+	    <TextView
+	        android:id="@+id/txt_step"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_gravity="center_horizontal"
+	        android:gravity="center"
+	        android:background="@drawable/bar_step"
+	        android:textSize="12dp"
+	        android:textColor="@android:color/black"
+	        android:text="@string/txt_step" />
+		
+	    <!-- Cadre contenant les différents status -->
+	    <TextView
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
 	        android:layout_marginTop="10dp"
-	        android:orientation="horizontal"
-	        android:contentDescription="@string/app_name"
-	        android:src="@drawable/philingerie_logo" />
-	
+	        android:paddingLeft="10dp"
+	        android:textSize="12dp"
+	        android:textColor="@android:color/white"
+	        android:text="@string/txt_info_label" />
+	    
+	    <ViewFlipper
+		    android:id="@+id/layout_status_flipper"
+		    android:layout_width="fill_parent"
+		    android:layout_height="fill_parent" >
+		    
+	    	<!-- Layout statut prérequis -->
+		    <include 
+		        android:id="@+id/layout_status_prerequisites" 
+		        layout="@layout/layout_status_prerequisites"/>
+		    <!-- Layout statut count -->
+		    <include 
+		        android:id="@+id/layout_status_count"
+		        layout="@layout/layout_status_count"/>
+	    
+	    </ViewFlipper>
+	    
+	    <!-- Cadre contenant les informations d'envoi des messages -->
+	    <TextView
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="5dp"
+	        android:paddingLeft="10dp"
+	        android:textSize="12dp"
+	        android:textColor="@android:color/white"
+	        android:text="@string/txt_journal_label" />
+	    
 	    <TextView
 	        android:id="@+id/txt_listEnvoi"
 	        android:layout_width="match_parent"
 	        android:layout_height="180dp"
-	        android:layout_marginLeft="40dp"
-	        android:layout_marginRight="40dp"
 	        android:paddingLeft="10dp"
 	        android:orientation="vertical"
-	        android:background="@drawable/cadre"
+	        android:background="@drawable/bar_journal"
 	        android:textSize="12dp"
 	        android:textColor="@android:color/black" />
 	    
-	    <LinearLayout
-		    android:id="@+id/linear_status"
-	        android:layout_width="match_parent"
-	        android:layout_height="80dp"
-	        android:layout_marginTop="20dp"
-	        android:layout_marginLeft="40dp"
-	        android:layout_marginRight="40dp"
-	        android:orientation="vertical"
-	        android:background="@drawable/cadre"
-	        android:textSize="12dp"
-	        android:textColor="@android:color/black" >
-		    
-	        
-		    <TextView
-		        android:id="@+id/txt_status_count"
-		        android:layout_width="match_parent"
-		        android:layout_height="wrap_content"
-		        android:layout_marginTop="5dp"
-		        android:paddingLeft="10dp"
-		        android:textSize="12dp"
-		        android:textColor="@android:color/black"
-		        android:text="@string/txt_status_count" />
-		    
-		    <TextView
-		        android:id="@+id/txt_status_msg"
-		        android:layout_width="match_parent"
-		        android:layout_height="wrap_content"
-		        android:layout_marginTop="5dp"
-		        android:paddingLeft="10dp"
-		        android:textSize="12dp"
-		        android:textColor="#33CC00"
-		        android:text="@string/txt_status_msg" />
-	
-	    </LinearLayout>
-	    
-	    <Button
-	        android:id="@+id/sendMessage"
-	        style="?android:attr/buttonStyleSmall"
-	        android:layout_width="170dp"
+	    <!-- Layout contenant les bouttons -->
+	    <TextView
+	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_gravity="center_horizontal"
-	        android:layout_marginBottom="10dp"
-	        android:layout_marginTop="10dp"
-	        android:textSize="13dp"
-	        android:text="@string/send" />
+	        android:layout_marginTop="5dp"
+	        android:gravity="center_vertical"
+	        android:textSize="9dp"
+	        android:textColor="@android:color/white"
+	        android:text="@string/txt_button_label" />
+	    
+	    <RelativeLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="80dp"
+	        android:layout_gravity="bottom"
+	        android:orientation="horizontal"
+	        android:textColor="@android:color/black" >
+		    
+	        <!-- Bouttons de démarrage et de pause-->
+	        <ViewFlipper
+			    android:id="@+id/btn_start_flipper"
+			    android:layout_width="159dp"
+			    android:layout_height="wrap_content"
+			    android:layout_alignParentLeft="true" >
+	        
+		        <ImageButton
+			        android:id="@+id/btn_startApp"
+			        android:src="@drawable/bottom_button_start"
+			        android:layout_height="wrap_content"
+			        android:layout_width="160dp"
+			        android:scaleType="fitXY"
+			        android:contentDescription="@string/btn_start" 
+			        android:background="@android:color/black"/>
+		        
+		        <ImageButton
+			        android:id="@+id/btn_traitement_pause"
+			        android:src="@drawable/bottom_button_start"
+			        android:layout_height="wrap_content"
+			        android:layout_width="160dp"
+			        android:scaleType="fitXY"
+			        android:contentDescription="@string/btn_pause" 
+			        android:background="@android:color/black"/>
+	        
+		    </ViewFlipper>    
+		        
+	        <View
+				android:layout_width="1dp"
+				android:layout_height="77dp"
+				android:layout_marginTop="3dp"
+				android:layout_gravity="bottom"
+				android:layout_toRightOf="@+id/btn_start_flipper"
+				android:background="@android:color/white" />
+	        
+	        <!-- Bouttons pour quitter l'application et arrêter le traitement -->
+		    <ViewFlipper
+			    android:id="@+id/btn_stop_flipper"
+			    android:layout_width="159dp"
+			    android:layout_height="wrap_content"
+			    android:layout_alignParentRight="true" >
+	        
+		        <ImageButton
+			        android:id="@+id/btn_quitApp"
+			        android:src="@drawable/bottom_button_quit"
+			        android:layout_width="160dp"
+			        android:layout_height="wrap_content"
+			        android:scaleType="fitXY"
+			        android:contentDescription="@string/btn_quit" 
+			        android:background="@android:color/black" />
+	        
+		        <ImageButton
+			        android:id="@+id/btn_traitement_stop"
+			        android:src="@drawable/bottom_button_stop"
+			        android:layout_width="160dp"
+			        android:layout_height="wrap_content"
+			        android:scaleType="fitXY"
+			        android:contentDescription="@string/btn_stop" 
+			        android:background="@android:color/black" />
+		        
+	        </ViewFlipper>
+		    
+		</RelativeLayout>
 	
 	</LinearLayout>
 </ScrollView>

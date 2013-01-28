@@ -17,9 +17,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewFlipper;
 
 /**
  * Activité de la page principal de l'application
@@ -33,7 +36,9 @@ public class MainActivity extends Activity {
 	private TextView listLogs = null;
 	private TextView statusCount = null;
 	private TextView statusMessage = null;
-	private Button sendButton = null;
+	private ImageButton sendButton = null;
+	private ImageButton quitButton = null;
+	private ViewFlipper statusFlipper = null;
 	
     /** Called when the activity is first created. */
     @Override
@@ -42,26 +47,26 @@ public class MainActivity extends Activity {
         setContentView(R.layout.main);
         
         //On déclare les textbox et on met un mouvement de scroll
-        this.statusCount = (TextView)this.findViewById(R.id.txt_status_count);
-        this.statusMessage = (TextView)this.findViewById(R.id.txt_status_msg);
+        //TODO: Remplacer par les nouveaux champs correspondants
+        //this.statusCount = (TextView)this.findViewById(R.id.txt_status_count);
+        //this.statusMessage = (TextView)this.findViewById(R.id.txt_status_msg);
         this.listLogs = (TextView)this.findViewById(R.id.txt_listEnvoi);
         this.listLogs.setMovementMethod(new ScrollingMovementMethod());
         
-        this.sendButton = (Button) findViewById(R.id.sendMessage);
+        //On déclare les bouttons et on leur associe leurs évènements
+        this.sendButton = (ImageButton) findViewById(R.id.btn_startApp);
 		this.sendButton.setOnClickListener(this.clickSendListener);
 		
-		//Toast.makeText(getApplicationContext(),	"oncreate",500).show();
+		this.quitButton = (ImageButton)this.findViewById(R.id.btn_quitApp);
+		this.quitButton.setOnClickListener(this.clickQuitListener);
+		
+		//On initialise le flipper qui permettra de changer le layout de statut
+		this.statusFlipper = (ViewFlipper)this.findViewById(R.id.layout_status_flipper);
+		this.statusFlipper.setInAnimation(this,R.anim.anim_fadein);
+		this.statusFlipper.setOutAnimation(this,R.anim.anim_fadeout);
+		//this.statusFlipper.setFlipInterval(5000);
+		//this.statusFlipper.startFlipping();
     }
-    
-    /*
-    @Override
-    public void onStop(){
-    	super.onStop();
-    	this.listLogstext = this.listLogs.getText().toString();
-    	this.statusMessageText = this.statusMessage.getText().toString();
-    	this.statusCountText = this.statusCount.getText().toString();
-    }
-    */
     
     @Override
     public void onStart(){
@@ -70,22 +75,13 @@ public class MainActivity extends Activity {
     	if(!CampagneThread.RUNNING)
     	{
 	    	this.listLogs.setText("");
-	    	MainActivity.this.statusMessage.setTextColor(Color.GREEN);
-	    	this.statusMessage.setText("Prêt");
-	    	this.totalDestinataire = 0;
-	    	this.updateStatusCount(0);
+	    	//TODO: Remettre en fonction
+	    	//MainActivity.this.statusMessage.setTextColor(Color.GREEN);
+	    	//MainActivity.this.statusMessage.setText("Prêt");
+	    	//MainActivity.this.totalDestinataire = 0;
+	    	//MainActivity.this.updateStatusCount(0);
     	}
     }
-    
-    /*
-    @Override
-    public void onRestart(){
-    	super.onRestart();
-    	this.addMessage(this.listLogstext);
-    	this.statusCount.setText(this.statusCountText);
-    	this.statusMessage.setText(this.statusMessageText);
-    }
-    */
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -107,8 +103,14 @@ public class MainActivity extends Activity {
         }
     }
 	
+    /**
+     * Evenement du boutton pour lancer la campagne
+     */
 	private OnClickListener clickSendListener = new OnClickListener() {
-		public void onClick(View view) {			
+		public void onClick(View view) {
+			//ON lance l'animation alpha du boutton
+			Animation animAlpha = AnimationUtils.loadAnimation(MainActivity.this, R.anim.anim_alpha);
+			view.startAnimation(animAlpha);
 			
 			//On désactive le button d'envoi
 			MainActivity.this.setButtonEnable(false);
@@ -143,6 +145,19 @@ public class MainActivity extends Activity {
 			
 			//On réactive le button d'envoi
 			//MainActivity.this.setButtonEnable(true);
+		}
+	};
+	
+	/**
+	 * Evenement du boutton pour quitter l'application
+	 */
+	private OnClickListener clickQuitListener = new OnClickListener() {
+		public void onClick(View view) {
+			//On lance l'animation alpha du boutton
+			Animation animAlpha = AnimationUtils.loadAnimation(MainActivity.this, R.anim.anim_alpha);
+			view.startAnimation(animAlpha);
+			//On arrête l'application
+			MainActivity.this.finish();
 		}
 	};
 	
@@ -191,7 +206,7 @@ public class MainActivity extends Activity {
 		final boolean makeToast = toast;
 		runOnUiThread(new Runnable() {
 			public void run() {
-				if(makeToast) Toast.makeText(MainActivity.this, msg, 500).show();
+				if(makeToast) Toast.makeText(MainActivity.this, msg, Toast.LENGTH_LONG).show();
 				MainActivity.this.statusMessage.setTextColor(color);
 				MainActivity.this.statusMessage.setText(msg);
 			}
