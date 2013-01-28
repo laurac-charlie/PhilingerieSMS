@@ -14,8 +14,11 @@
     <string name="txt_dowloadCsv">Télcharger fichier csv</string>
     
     <!-- Button -->
-    <string name="btn_send">Démarrer la campagne</string>
+    <string name="btn_start">Démarrer la campagne</string>
     <string name="btn_quit">Quitter l\'application</string>
+    <string name="btn_restart">Redémarrer la campagne</string>
+    <string name="btn_stop">Stopper le traitement</string>
+    <string name="btn_pause">Interrompre le traitement</string>
     
     <!-- Statut -->
     <!-- Prérequis -->

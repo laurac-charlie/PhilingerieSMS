@@ -22,6 +22,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewFlipper;
 
 /**
  * Activité de la page principal de l'application
@@ -40,6 +41,7 @@ public class MainActivity extends Activity {
 	//private String statusMessageText = "";
 	private ImageButton sendButton = null;
 	private ImageButton quitButton = null;
+	private ViewFlipper statusFlipper = null;
 	
     /** Called when the activity is first created. */
     @Override
@@ -61,6 +63,12 @@ public class MainActivity extends Activity {
 		this.quitButton = (ImageButton)this.findViewById(R.id.btn_quitApp);
 		this.quitButton.setOnClickListener(this.clickQuitListener);
 		
+		//On initialise le flipper qui permettra de changer le layout de statut
+		this.statusFlipper = (ViewFlipper)this.findViewById(R.id.layout_status_flipper);
+		this.statusFlipper.setInAnimation(this,R.anim.anim_fadein);
+		this.statusFlipper.setOutAnimation(this,R.anim.anim_fadeout);
+		//this.statusFlipper.setFlipInterval(5000);
+		//this.statusFlipper.startFlipping();
     }
     
     @Override

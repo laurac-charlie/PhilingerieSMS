@@ -9,7 +9,7 @@
 	<LinearLayout 
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
-	    android:orientation="vertical" 
+	    android:orientation="vertical"
 	    android:isScrollContainer="true" >
 
 	    <!-- Logo de l'application -->
@@ -60,14 +60,21 @@
 	        android:textColor="@android:color/white"
 	        android:text="@string/txt_info_label" />
 	    
-	    <!-- On ajoute dynamique le layout de statut -->
-	    <!-- <include 
-	        android:id="@+id/layout_status_prerequisites" 
-	        layout="@layout/layout_status_prerequisites"/> -->
+	    <ViewFlipper
+		    android:id="@+id/layout_status_flipper"
+		    android:layout_width="fill_parent"
+		    android:layout_height="fill_parent" >
+		    
+	    	<!-- Layout statut prérequis -->
+		    <include 
+		        android:id="@+id/layout_status_prerequisites" 
+		        layout="@layout/layout_status_prerequisites"/>
+		    <!-- Layout statut count -->
+		    <include 
+		        android:id="@+id/layout_status_count"
+		        layout="@layout/layout_status_count"/>
 	    
-	    <include 
-	        android:id="@+id/layout_status_count"
-	        layout="@layout/layout_status_count"/>
+	    </ViewFlipper>
 	    
 	    <!-- Cadre contenant les informations d'envoi des messages -->
 	    <TextView
@@ -107,32 +114,67 @@
 	        android:orientation="horizontal"
 	        android:textColor="@android:color/black" >
 		    
-	        <ImageButton
-		        android:id="@+id/btn_quitApp"
-		        android:src="@drawable/bottom_button_quit"
-		        android:layout_width="160dp"
-		        android:layout_height="wrap_content"
-		        android:scaleType="fitXY"
-		        android:layout_alignParentRight="true"
-		        android:contentDescription="@string/btn_quit" 
-		        android:background="@android:color/black" />
+	        <!-- Bouttons de démarrage et de pause-->
+	        <ViewFlipper
+			    android:id="@+id/btn_start_flipper"
+			    android:layout_width="159dp"
+			    android:layout_height="wrap_content"
+			    android:layout_alignParentLeft="true" >
 	        
+		        <ImageButton
+			        android:id="@+id/btn_startApp"
+			        android:src="@drawable/bottom_button_start"
+			        android:layout_height="wrap_content"
+			        android:layout_width="160dp"
+			        android:scaleType="fitXY"
+			        android:contentDescription="@string/btn_start" 
+			        android:background="@android:color/black"/>
+		        
+		        <ImageButton
+			        android:id="@+id/btn_traitement_pause"
+			        android:src="@drawable/bottom_button_start"
+			        android:layout_height="wrap_content"
+			        android:layout_width="160dp"
+			        android:scaleType="fitXY"
+			        android:contentDescription="@string/btn_pause" 
+			        android:background="@android:color/black"/>
+	        
+		    </ViewFlipper>    
+		        
 	        <View
 				android:layout_width="1dp"
 				android:layout_height="77dp"
 				android:layout_marginTop="3dp"
 				android:layout_gravity="bottom"
-				android:layout_toRightOf="@+id/btn_startApp"
+				android:layout_toRightOf="@+id/btn_start_flipper"
 				android:background="@android:color/white" />
 	        
-		    <ImageButton
-		        android:id="@+id/btn_startApp"
-		        android:src="@drawable/bottom_button_start"
-		        android:layout_width="160dp"
-		        android:layout_height="wrap_content"
-		        android:scaleType="fitXY"
-		        android:contentDescription="@string/btn_send" 
-		        android:background="@android:color/black"/>
+	        <!-- Bouttons pour quitter l'application et arrêter le traitement -->
+		    <ViewFlipper
+			    android:id="@+id/btn_stop_flipper"
+			    android:layout_width="159dp"
+			    android:layout_height="wrap_content"
+			    android:layout_alignParentRight="true" >
+	        
+		        <ImageButton
+			        android:id="@+id/btn_quitApp"
+			        android:src="@drawable/bottom_button_quit"
+			        android:layout_width="160dp"
+			        android:layout_height="wrap_content"
+			        android:scaleType="fitXY"
+			        android:contentDescription="@string/btn_quit" 
+			        android:background="@android:color/black" />
+	        
+		        <ImageButton
+			        android:id="@+id/btn_traitement_stop"
+			        android:src="@drawable/bottom_button_stop"
+			        android:layout_width="160dp"
+			        android:layout_height="wrap_content"
+			        android:scaleType="fitXY"
+			        android:contentDescription="@string/btn_stop" 
+			        android:background="@android:color/black" />
+		        
+	        </ViewFlipper>
 		    
 		</RelativeLayout>
 	
