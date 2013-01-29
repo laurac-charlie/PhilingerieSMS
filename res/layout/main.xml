@@ -76,7 +76,7 @@
 	    
 	    </ViewFlipper>
 	    
-	    <!-- Cadre contenant les informations d'envoi des messages -->
+	    <!-- Cadre contenant les informations d'envoi des messages et d'erreurs -->
 	    <TextView
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
@@ -87,9 +87,10 @@
 	        android:text="@string/txt_journal_label" />
 	    
 	    <TextView
-	        android:id="@+id/txt_listEnvoi"
+	        android:id="@+id/txt_journal"
 	        android:layout_width="match_parent"
 	        android:layout_height="180dp"
+	        android:paddingTop="5dp"
 	        android:paddingLeft="10dp"
 	        android:orientation="vertical"
 	        android:background="@drawable/bar_journal"

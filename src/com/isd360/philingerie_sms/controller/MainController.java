@@ -12,6 +12,7 @@ import android.preference.PreferenceManager;
 import com.isd360.philingerie_sms.model.Destinataire;
 import com.isd360.philingerie_sms.util.FTPManager;
 import com.isd360.philingerie_sms.util.ParserCSV;
+import com.isd360.philingerie_sms.util.PhoneState;
 import com.isd360.philingerie_sms.util.SmsSender;
 import com.isd360.philingerie_sms.util.StringFormater;
 import com.isd360.philingerie_sms.view.MainActivity;
@@ -44,6 +45,45 @@ public class MainController {
 	 */
 	public MainController(Activity main){
 		this.main = (main instanceof MainActivity) ? (MainActivity)main : null;
+	}
+	
+	/**
+	 * Charge les différents statuts dans l'interface graphique
+	 */
+	public void loadPrerequisites(){
+		//Accés réseau
+		String network = PhoneState.getConnectivityState(this.main);
+		this.main.setNetworkState(!network.equals(""), network);
+		
+		//Présence carte SD
+		this.main.setSDcardState(PhoneState.getSDcardState());
+		
+		//Etat connection ftp
+		String errorFtp = "";
+		boolean ftpOK = false;
+		//On initialise les paramètres à partir des préférences préconfigurées
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.main);
+		FTPManager ftpManager = new FTPManager(prefs.getString("param_serveur_ip", ""),
+				prefs.getString("param_serveur_login", ""),
+				prefs.getString("param_serveur_pass", ""));
+	
+		if(prefs.getString("param_serveur_ip", "").equals("") || prefs.getString("param_serveur_login", "").equals("") || prefs.getString("param_serveur_pass", "").equals(""))
+			errorFtp = "Paramètres ftp manquant(s)";
+		else
+		{
+			//Si un type de réseau existe
+			if(!network.equals(""))
+			{
+				ftpOK = ftpManager.tryFtpConnection();
+				if(!ftpOK) errorFtp = "Echec de connexion";
+			}
+			else
+			{
+				errorFtp = "Pas de réseau";
+			}
+		}
+		
+		this.main.setFtpState(ftpOK, errorFtp);
 	}
 	
 	/**

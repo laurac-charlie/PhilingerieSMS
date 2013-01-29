@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
         
-        <TextView
+        <!-- <TextView
 	        android:id="@+id/txt_status_count"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
@@ -31,7 +31,7 @@
 	        android:textColor="#33CC00"
 	        android:text="@string/stat_status_msg" 
 	        android:visibility="gone" />
-        
+        -->
         <TextView
             android:id="@+id/stat_reseau_label"
 	        android:layout_width="120dp"
@@ -48,7 +48,7 @@
 	        android:layout_height="wrap_content"
 	        android:layout_marginTop="5dp"
 	        android:layout_toRightOf="@+id/stat_reseau_label"
-	        android:paddingRight="30dp"
+	        android:paddingRight="20dp"
         	android:textSize="11dp"
         	android:textColor="#E30000" 
 	        android:text="@string/statut_KO" />
@@ -63,7 +63,7 @@
         	android:textColor="@android:color/black" 
         	android:text="@string/txt_none"/>
         
-		    </RelativeLayout>
+	</RelativeLayout>
     
     <!-- Statut CarteSD -->
     <RelativeLayout 
@@ -86,20 +86,10 @@
 	        android:layout_height="wrap_content"
 	        android:layout_marginTop="2dp"
 	        android:layout_toRightOf="@+id/stat_sdcard_label"
-	        android:paddingRight="30dp"
+	        android:paddingRight="20dp"
         	android:textSize="11dp"
         	android:textColor="#E30000" 
 	        android:text="@string/statut_KO" />
-        
-        <TextView
-            android:id="@+id/stat_sdcard_type"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_marginTop="2dp"
-	        android:layout_toRightOf="@+id/stat_sdcard"
-        	android:textSize="11dp"
-        	android:textColor="@android:color/black" 
-        	android:text="@string/txt_none"/>
         
     </RelativeLayout>
     
@@ -124,7 +114,7 @@
 	        android:layout_height="wrap_content"
 	        android:layout_marginTop="2dp"
 	        android:layout_toRightOf="@+id/stat_ftpserv_label"
-	        android:paddingRight="30dp"
+	        android:paddingRight="20dp"
         	android:textSize="11dp"
         	android:textColor="#E30000" 
 	        android:text="@string/statut_KO" />
@@ -136,7 +126,7 @@
 	        android:layout_marginTop="2dp"
 	        android:layout_toRightOf="@+id/stat_ftpserv"
         	android:textSize="11dp"
-        	android:textColor="@android:color/black" 
+        	android:textColor="#E30000"
         	android:text="@string/txt_none"/>
         
     </RelativeLayout>
@@ -162,7 +152,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
             android:layout_toRightOf="@+id/stat_lastsent_label"
-            android:paddingRight="30dp"
+            android:paddingRight="20dp"
             android:textSize="11dp"
             android:textColor="#E30000" 
             android:text="@string/statut_KO" />

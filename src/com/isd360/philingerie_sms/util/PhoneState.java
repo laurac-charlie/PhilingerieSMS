@@ -20,8 +20,7 @@ public class PhoneState {
 	 * @return Vrai si la carte SD est disponible, faux sinon
 	 */
 	public static boolean getSDcardState() {
-		return Environment.getExternalStorageState().equals(
-				Environment.MEDIA_MOUNTED);
+		return Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
 	}
 
 	/**
@@ -38,7 +37,7 @@ public class PhoneState {
 		if (wifi.isAvailable())
 			type ="Wifi";
 		else if (mobile3g.isAvailable())
-			type = "Mobile 3G ";
+			type = "3G";
 		
 		return type;
 	}
