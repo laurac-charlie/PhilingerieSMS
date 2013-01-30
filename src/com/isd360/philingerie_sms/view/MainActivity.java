@@ -17,6 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
@@ -41,7 +42,6 @@ public class MainActivity extends Activity {
 	
 	private TextView txt_journal = null;
 	private TextView statusCount = null;
-	//private TextView statusMessage = null;
 	private ImageButton sendButton = null;
 	private ImageButton quitButton = null;
 	private ViewFlipper statusFlipper = null;
@@ -52,10 +52,17 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         
-        //On déclare les textbox et on met un mouvement de scroll
+        //On charge les données de l'interface
+        this.loadInterface();
+    }
+
+    /**
+     * Charge les différents champs pour les manipuler ensuite
+     */
+	private void loadInterface() {
+		//On déclare les textbox et on met un mouvement de scroll
         //TODO: Remplacer par les nouveaux champs correspondants
         //this.statusCount = (TextView)this.findViewById(R.id.txt_status_count);
-        //this.statusMessage = (TextView)this.findViewById(R.id.txt_status_msg);
         this.txt_journal = (TextView)this.findViewById(R.id.txt_journal);
         this.txt_journal.setMovementMethod(new ScrollingMovementMethod());
         
@@ -68,19 +75,21 @@ public class MainActivity extends Activity {
 		
 		//On initialise le flipper qui permettra de changer le layout de statut et on ajoute ses animations
 		this.statusFlipper = (ViewFlipper)this.findViewById(R.id.layout_status_flipper);
-		//this.statusFlipper.setInAnimation(this,R.anim.anim_fadein);
-		//this.statusFlipper.setOutAnimation(this,R.anim.anim_fadeout);
 		this.statusFlipper.setInAnimation(this,R.anim.anim_slideout);
 		this.statusFlipper.setOutAnimation(this,R.anim.anim_slidein);
 		
 		//On initialise le controlleur pour lancer les traitements relatif à la campagne
 		this.mainController = new MainController(this);
 		this.mainController.loadPrerequisites();
-    }
+	}
     
     @Override
     public void onStart(){
     	super.onStart();
+    	
+    	//On empêche la mise en veille de l'application
+        this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+    	
     	//On réinitialise les champs au démarrage de l'application seulement si Campagne Thread ne tourne plus.
     	if(!CampagneThread.RUNNING)
     	{
@@ -95,6 +104,13 @@ public class MainActivity extends Activity {
 	    	//MainActivity.this.totalDestinataire = 0;
 	    	//MainActivity.this.updateStatusCount(0);
     	}
+    }
+    
+    @Override
+    public void onStop(){
+    	super.onStop();
+    	//On réactive la mise en veille
+    	this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
     
     @Override
