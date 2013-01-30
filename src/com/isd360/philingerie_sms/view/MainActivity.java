@@ -66,11 +66,12 @@ public class MainActivity extends Activity {
 		this.quitButton = (ImageButton)this.findViewById(R.id.btn_quitApp);
 		this.quitButton.setOnClickListener(this.clickQuitListener);
 		
-		//On initialise le flipper qui permettra de changer le layout de statut
+		//On initialise le flipper qui permettra de changer le layout de statut et on ajoute ses animations
 		this.statusFlipper = (ViewFlipper)this.findViewById(R.id.layout_status_flipper);
-		this.statusFlipper.setInAnimation(this,R.anim.anim_fadein);
-		this.statusFlipper.setOutAnimation(this,R.anim.anim_fadeout);
-		//this.statusFlipper.showNext();
+		//this.statusFlipper.setInAnimation(this,R.anim.anim_fadein);
+		//this.statusFlipper.setOutAnimation(this,R.anim.anim_fadeout);
+		this.statusFlipper.setInAnimation(this,R.anim.anim_slideout);
+		this.statusFlipper.setOutAnimation(this,R.anim.anim_slidein);
 		
 		//On initialise le controlleur pour lancer les traitements relatif à la campagne
 		this.mainController = new MainController(this);
@@ -83,7 +84,9 @@ public class MainActivity extends Activity {
     	//On réinitialise les champs au démarrage de l'application seulement si Campagne Thread ne tourne plus.
     	if(!CampagneThread.RUNNING)
     	{
-	    	this.statusFlipper.setDisplayedChild(0);
+	    	//On replace la bonne fênetre de statut si besoin
+    		if(!(this.statusFlipper.getDisplayedChild() == 0)) this.statusFlipper.setDisplayedChild(0);
+    		//On recharge les prérequis
     		this.mainController.loadPrerequisites();
     		this.txt_journal.setText("");
 	    	//TODO: Remettre en fonction
@@ -137,7 +140,7 @@ public class MainActivity extends Activity {
 				helpBuilder.setPositiveButton("Confirmer", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
 						//On change de cadre statut
-						MainActivity.this.statusFlipper.setDisplayedChild(1);
+						if(!(MainActivity.this.statusFlipper.getDisplayedChild() == 1)) MainActivity.this.statusFlipper.setDisplayedChild(1);
 						//Une fois que le texte du message a été confirmer on lance la campagne
 						MainActivity.this.mainController.launchCampaign();					
 					}

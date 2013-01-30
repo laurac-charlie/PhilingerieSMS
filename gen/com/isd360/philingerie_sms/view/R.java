@@ -12,6 +12,8 @@ public final class R {
         public static final int anim_alpha=0x7f040000;
         public static final int anim_fadein=0x7f040001;
         public static final int anim_fadeout=0x7f040002;
+        public static final int anim_slidein=0x7f040003;
+        public static final int anim_slideout=0x7f040004;
     }
     public static final class attr {
     }
