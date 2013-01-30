@@ -86,14 +86,14 @@ public final class R {
          */
         public static final int btn_start=0x7f060009;
         public static final int btn_stop=0x7f06000c;
-        public static final int pref_conf_ftp_login=0x7f06001d;
-        public static final int pref_conf_ftp_pass=0x7f06001e;
+        public static final int pref_conf_ftp_login=0x7f06001f;
+        public static final int pref_conf_ftp_pass=0x7f060020;
         /**  Configuration files names
          */
-        public static final int pref_conf_ftp_srv=0x7f06001c;
-        public static final int stat_count_sms_fail_label=0x7f060015;
-        public static final int stat_count_sms_global_label=0x7f060017;
-        public static final int stat_count_sms_sent_label=0x7f060016;
+        public static final int pref_conf_ftp_srv=0x7f06001e;
+        public static final int stat_count_sms_fail_label=0x7f060017;
+        public static final int stat_count_sms_global_label=0x7f060019;
+        public static final int stat_count_sms_sent_label=0x7f060018;
         public static final int stat_ftpserv_label=0x7f060010;
         public static final int stat_lastsent_label=0x7f060011;
         /**  Statut 
@@ -104,11 +104,13 @@ public final class R {
         /**  Statut 
  Count 
          */
-        public static final int stat_status_count=0x7f060012;
-        public static final int stat_status_msg=0x7f060013;
-        public static final int stat_traitement_sms_label=0x7f060014;
-        public static final int statut_KO=0x7f060019;
-        public static final int statut_OK=0x7f060018;
+        public static final int stat_status_count=0x7f060014;
+        public static final int stat_status_msg=0x7f060015;
+        public static final int stat_traitement_sms_label=0x7f060016;
+        public static final int statut_KO=0x7f060013;
+        public static final int statut_OK=0x7f060012;
+        public static final int statut_count_zero=0x7f06001c;
+        public static final int statut_count_zero_slash=0x7f06001d;
         public static final int statut_en_cours=0x7f06001a;
         public static final int statut_en_pause=0x7f06001b;
         public static final int txt_button_label=0x7f060006;

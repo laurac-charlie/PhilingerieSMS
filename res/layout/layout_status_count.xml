@@ -42,24 +42,25 @@
         
         <TextView
             android:id="@+id/stat_count_sms_fail_label"
-	        android:layout_width="120dp"
+	        android:layout_width="60dp"
 	        android:layout_height="wrap_content"
-	        android:layout_marginTop="2dp"
-	        android:paddingLeft="20dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginRight="20dp"
+            android:gravity="right"
         	android:textSize="11dp"
         	android:textColor="@android:color/black" 
 	        android:text="@string/stat_count_sms_fail_label" />
         
         <TextView
             android:id="@+id/stat_count_sms_fail"
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
             android:layout_toRightOf="@+id/stat_count_sms_fail_label"
-            android:paddingRight="30dp"
+            android:gravity="center_horizontal"
             android:textSize="11dp"
             android:textColor="#E30000" 
-            android:text="@string/statut_KO" />
+            android:text="@string/statut_count_zero" />
         
     </RelativeLayout>
     
@@ -71,24 +72,25 @@
         
         <TextView
             android:id="@+id/stat_count_sms_sent_label"
-	        android:layout_width="120dp"
+	        android:layout_width="60dp"
 	        android:layout_height="wrap_content"
-	        android:layout_marginTop="2dp"
-	        android:paddingLeft="20dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginRight="20dp"
+            android:gravity="right"
         	android:textSize="11dp"
-        	android:textColor="@android:color/black" 
+        	android:textColor="#4C43FE"
 	        android:text="@string/stat_count_sms_sent_label" />
         
         <TextView
             android:id="@+id/stat_count_sms_sent"
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
             android:layout_toRightOf="@+id/stat_count_sms_sent_label"
-            android:paddingRight="30dp"
+            android:gravity="center_horizontal"
             android:textSize="11dp"
-            android:textColor="#E30000" 
-            android:text="@string/statut_KO" />
+            android:textColor="#4C43FE"
+            android:text="@string/statut_count_zero" />
                 
     </RelativeLayout>
     
@@ -100,24 +102,26 @@
         
         <TextView
             android:id="@+id/stat_count_sms_global_label"
-            android:layout_width="120dp"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
-            android:paddingLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:gravity="right"
             android:textSize="11dp"
             android:textColor="@android:color/black" 
             android:text="@string/stat_count_sms_global_label" />
         
         <TextView
             android:id="@+id/stat_count_sms_global"
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
             android:layout_toRightOf="@+id/stat_count_sms_global_label"
-            android:paddingRight="30dp"
+            android:paddingLeft="10dp"
+            android:gravity="center_horizontal"
             android:textSize="11dp"
-            android:textColor="#E30000" 
-            android:text="@string/statut_KO" />
+            android:textColor="@android:color/black" 
+            android:text="@string/statut_count_zero_slash" />
         
     </RelativeLayout>
 

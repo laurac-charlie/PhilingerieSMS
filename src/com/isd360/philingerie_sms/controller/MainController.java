@@ -78,12 +78,13 @@ public class MainController {
 				if(!ftpOK) errorFtp = "Echec de connexion";
 			}
 			else
-			{
 				errorFtp = "Pas de réseau";
-			}
 		}
 		
 		this.main.setFtpState(ftpOK, errorFtp);
+		
+		//Gérer le dernier envoi qui sera stocké dans les préféences et devra être is à jour
+		
 	}
 	
 	/**
@@ -196,7 +197,6 @@ public class MainController {
 		{
 			try 
 			{
-				//TODO: Demander à l'utilisateur une validation du template
 				this.main.updateStatusMsg("Chargement du fichier CSV",Color.BLUE,false);
 					
 				//On récupère la liste des destinataires à partir du fichier CSV

@@ -27,6 +27,9 @@
     <string name="stat_ftpserv_label">Serveur FTP</string>
     <string name="stat_lastsent_label">Dernier envoi</string>
     
+    <string name="statut_OK">[OK]</string>
+    <string name="statut_KO">[KO]</string>
+    
     <!-- Statut -->
     <!-- Count -->
     <string name="stat_status_count">0/0</string>
@@ -36,10 +39,10 @@
     <string name="stat_count_sms_sent_label">Envoyé : </string>
     <string name="stat_count_sms_global_label">Global : </string>
     
-    <string name="statut_OK">[OK]</string>
-    <string name="statut_KO">[KO]</string>
     <string name="statut_en_cours">[EN COURS]</string>
     <string name="statut_en_pause">[EN PAUSE]</string>
+    <string name="statut_count_zero">0</string>
+    <string name="statut_count_zero_slash">0/0</string>
     
     <!-- Configuration files names-->
     <string name="pref_conf_ftp_srv"></string>

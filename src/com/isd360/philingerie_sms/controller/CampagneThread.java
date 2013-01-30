@@ -17,7 +17,6 @@ public class CampagneThread extends Thread{
 	
 	private MainActivity main = null;
 	private ArrayList<Destinataire> listDest = null;
-	private String logMsg = "";
 	private String smsText = "";
 	
 	/**
@@ -50,7 +49,10 @@ public class CampagneThread extends Thread{
 		
 		//On met à jour le nombre de destinataires à traiter
 		this.main.setTotalDestinataire(this.listDest.size());
-		int count = 0;
+		String logMsg = "";
+		int countAll = 0;
+		int countOk = 0;
+		int countKo = 0;
 		
 		this.main.updateStatusMsg("Traitement envoi SMS...",Color.BLUE,false);
 					
@@ -58,20 +60,24 @@ public class CampagneThread extends Thread{
 		{
 			if(SmsSender.SendMessage(d,this.smsText))
 			{
-				this.logMsg = "Envoi [OK] : " + d.getLastName() + " " + d.getFirstName();
-				count++;
+				logMsg = "Envoi [OK] : " + d.getLastName() + " " + d.getFirstName();
+				
+				countOk++;
 			}
 			else
-				this.logMsg = "Envoi [KO] : " + d.getLastName() + " " + d.getFirstName();
+			{
+				logMsg = "Envoi [KO] : " + d.getLastName() + " " + d.getFirstName();
+				countKo++;
+			}
+			countAll++;
 			
 			//On met à jour la liste de log et le statut
-			this.main.addMessage(this.logMsg);
-			this.main.updateStatusCount(count);
+			this.main.addMessage(logMsg);
+			this.main.updateStatusCount(countAll,countOk,countKo);
 			
 			//On met à jour le nombre de destinataires à traiter
 			this.main.setTotalDestinataire(listDest.size());
 			
-			//TODO:Vérifier la latence 5s
 			try 
 				{Thread.sleep(5000);} 
 			catch (InterruptedException e) 

@@ -42,8 +42,12 @@ public class MainActivity extends Activity {
 	
 	private TextView txt_journal = null;
 	private TextView statusCount = null;
+	private TextView statusCountSent = null;
+	private TextView statusCountFail = null;
+	
 	private ImageButton sendButton = null;
 	private ImageButton quitButton = null;
+	
 	private ViewFlipper statusFlipper = null;
 	
     /** Called when the activity is first created. */
@@ -60,12 +64,20 @@ public class MainActivity extends Activity {
      * Charge les différents champs pour les manipuler ensuite
      */
 	private void loadInterface() {
+		
+		/** CHAMPS STATUTS **/
+		//Les champs de count sont déclarés une seule fois en global puisqu'ils seront souvent mis à jour
+		this.statusCount = (TextView)this.findViewById(R.id.stat_count_sms_global);
+		this.statusCountSent = (TextView)this.findViewById(R.id.stat_count_sms_sent);
+		this.statusCountFail = (TextView)this.findViewById(R.id.stat_count_sms_fail);
+		
 		//On déclare les textbox et on met un mouvement de scroll
         //TODO: Remplacer par les nouveaux champs correspondants
         //this.statusCount = (TextView)this.findViewById(R.id.txt_status_count);
         this.txt_journal = (TextView)this.findViewById(R.id.txt_journal);
         this.txt_journal.setMovementMethod(new ScrollingMovementMethod());
         
+        /** BUTTONS **/
         //On déclare les bouttons et on leur associe leurs évènements
         this.sendButton = (ImageButton) findViewById(R.id.btn_startApp);
 		this.sendButton.setOnClickListener(this.clickSendListener);
@@ -73,11 +85,13 @@ public class MainActivity extends Activity {
 		this.quitButton = (ImageButton)this.findViewById(R.id.btn_quitApp);
 		this.quitButton.setOnClickListener(this.clickQuitListener);
 		
+		/** VIEW FLIPPER **/
 		//On initialise le flipper qui permettra de changer le layout de statut et on ajoute ses animations
 		this.statusFlipper = (ViewFlipper)this.findViewById(R.id.layout_status_flipper);
 		this.statusFlipper.setInAnimation(this,R.anim.anim_slideout);
 		this.statusFlipper.setOutAnimation(this,R.anim.anim_slidein);
 		
+		/** Controlleur **/
 		//On initialise le controlleur pour lancer les traitements relatif à la campagne
 		this.mainController = new MainController(this);
 		this.mainController.loadPrerequisites();
@@ -214,14 +228,20 @@ public class MainActivity extends Activity {
     }
 	
 	/**
-	 * Met à jout le nombre de destinataires à qui le msg a été envoyé
-	 * @param countDest nombre de destinataires actuels
+	 * Met à jour les nombres de messages envoyés, en réussite ou en échec
+	 * @param countTotal Nombre de tentative d'envoi
+	 * @param countSucess Nombre de message envoyé
+	 * @param countFail Nombre de message non envoyé
 	 */
-	public void updateStatusCount(int countDest){
-		final int count = countDest;
+	public void updateStatusCount(int countTotal, int countSucess, int countFail){
+		final int total = countTotal;
+		final int fail = countFail;
+		final int sucess = countSucess;
 		this.runOnUiThread(new Runnable() {
 			public void run() {
-				MainActivity.this.statusCount.setText(count + "/" + MainActivity.this.totalDestinataire);
+				MainActivity.this.statusCount.setText(total + "/" + MainActivity.this.totalDestinataire);
+				MainActivity.this.statusCountFail.setText(fail);
+				MainActivity.this.statusCountSent.setText(sucess);
 			}
 		});
 	}
@@ -274,7 +294,7 @@ public class MainActivity extends Activity {
 	 * @param network Indique quel réseau est accesible
 	 */
 	public void setNetworkState(boolean isOK, String network){
-		//On va mettre à jour le statut réseau de l'interface
+		//Les champs n'étant pas mis à jour en permanence, on les déclare à chaque utilisation
 		TextView networkOk = (TextView)this.findViewById(R.id.stat_reseau);
 		TextView networkType = (TextView)this.findViewById(R.id.stat_reseau_type);
 		
@@ -291,6 +311,7 @@ public class MainActivity extends Activity {
 	 * @param isOK Indique si la carte SD est utilisable
 	 */
 	public void setSDcardState(boolean isOK){
+		//Le champ n'étant pas mis à jour en permanence, on le déclare à chaque utilisation
 		TextView sdCardOk = (TextView)this.findViewById(R.id.stat_sdcard);
 		
 		//Puisque l'on utilise pas de thread pour mettre à jour ces valeurs, on a pas besoin d'utiliser runOnUiThread
@@ -305,6 +326,7 @@ public class MainActivity extends Activity {
 	 * @param error Message d'erreur décrivant l'erreur de connection (vide si aucune erreur)
 	 */
 	public void setFtpState(boolean isOK, String error){
+		//Les champs n'étant pas mis à jour en permanence, on les déclare à chaque utilisation
 		TextView ftpOk = (TextView)this.findViewById(R.id.stat_ftpserv);
 		TextView ftpError = (TextView)this.findViewById(R.id.stat_ftpserv_type);
 		
