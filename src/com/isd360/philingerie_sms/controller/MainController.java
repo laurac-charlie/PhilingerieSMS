@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 
@@ -83,7 +82,7 @@ public class MainController {
 		
 		this.main.setFtpState(ftpOK, errorFtp);
 		
-		//Gérer le dernier envoi qui sera stocké dans les préféences et devra être is à jour
+		//TODO:Gérer le dernier envoi qui sera stocké dans les préféences et devra être is à jour
 		
 	}
 	
@@ -94,8 +93,6 @@ public class MainController {
 	public boolean prepareCampaign(){
 		if(this.main != null && !CampagneThread.RUNNING)
 		{
-			//On désactive le button d'envoi
-			this.main.setButtonEnable(false);
 			//On initialise les paramètres à partir des préférences préconfigurées
 			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.main);
 			boolean connectionOk = true;
@@ -112,23 +109,23 @@ public class MainController {
 			FTPManager ftpManager = new FTPManager(ftp_host, ftp_login, ftp_pass);
 			
 			//On teste la validité des paramètres
-			this.main.updateStatusMsg("Vérification des paramètres de l'application...",Color.BLUE,false);
+			this.main.updateStatusMsg("Vérification des paramètres de l'application...", MainActivity.COLOR_BLUE,false);
 			if(!ftpManager.tryFtpConnection())
 			{
 				connectionOk = false;
-				this.main.updateStatusMsg("La connexion au serveur ftp a échoué, veuillez vérifier les paramètres de connection et la 3g.", Color.RED, true);
+				this.main.updateStatusMsg("La connexion au serveur ftp a échoué, veuillez vérifier les paramètres de connection et la 3g.", MainActivity.COLOR_RED, true);
 			}
 			
 			if(this.csvfile.equals(""))
 			{
 				csvOk = false;
-				this.main.updateStatusMsg("Le nom du fichier de contact csv n'a pas été configuré.", Color.RED, true);
+				this.main.updateStatusMsg("Le nom du fichier de contact csv n'a pas été configuré.", MainActivity.COLOR_RED, true);
 			}
 			
 			if(this.smsfile.equals(""))
 			{
 				smsOK = false;
-				this.main.updateStatusMsg("Le nom du fichier du texte sms n'a pas été configuré.", Color.RED, true);
+				this.main.updateStatusMsg("Le nom du fichier du texte sms n'a pas été configuré.", MainActivity.COLOR_RED, true);
 			}
 			
 			//Si les noms des fichiers csv et du texte sms sont renseignés et que les fichiers sont présent ou que la connection au ftp est disponible, on continue le traitement		
@@ -137,16 +134,16 @@ public class MainController {
 				//Si la connection fonctionne, on va tenté de télécharger le fichier csv
 				if(connectionOk)
 				{
-					this.main.updateStatusMsg("Téléchargement des fichiers : " + this.csvfile + " et " + this.smsfile,Color.BLUE,false);
+					this.main.updateStatusMsg("Téléchargement des fichiers : " + this.csvfile + " et " + this.smsfile,MainActivity.COLOR_BLUE,false);
 					try {
 						//Télchagement du fichier de contact
 						ftpManager.downloadCSVfile(this.csvfile);
 						//Télchagement du fichier du texte sms
 						ftpManager.downloadSMSfile(this.smsfile);
 					} catch (Exception e) {
-						this.main.updateStatusMsg(e.getMessage(),Color.RED,true);
-						//On réactive le button d'envoi
-						this.main.setButtonEnable(true);
+						this.main.updateStatusMsg(e.getMessage(),MainActivity.COLOR_RED,true);
+						//On bascule sur l'écran d'acceuil
+						this.main.flipLayout(0);
 					}
 				}
 				
@@ -160,28 +157,26 @@ public class MainController {
 				catch (Exception e) {
 					//En cas d'exception, on s'assure que la variable running soit à false
 					CampagneThread.RUNNING= false;
-					this.main.updateStatusMsg(e.getMessage(),Color.RED,true);
-					//On réactive le button d'envoi
-					this.main.setButtonEnable(true);
+					this.main.updateStatusMsg(e.getMessage(),MainActivity.COLOR_RED,true);
+					//On bascule sur l'écran d'acceuil
+					this.main.flipLayout(0);
 					return false;
 				}
 				
-				//this.launchCampaign();
 				return true;
 			}
 			else
 			{
-				//On réactive le button d'envoi
-				this.main.setButtonEnable(true);
+				//On bascule sur l'écran d'acceuil
+				this.main.flipLayout(0);
 				return false;
 			}
 		}
 		else
 		{
-			this.main.updateStatusMsg("Un problème à l'initialisation ne permet pas de continuer (activité null).", Color.RED, true);
+			this.main.updateStatusMsg("Un problème à l'initialisation ne permet pas de continuer (activité null).", MainActivity.COLOR_RED, true);
 			return false;
 		}
-			
 	}
 
 	/**
@@ -197,7 +192,7 @@ public class MainController {
 		{
 			try 
 			{
-				this.main.updateStatusMsg("Chargement du fichier CSV",Color.BLUE,false);
+				this.main.updateStatusMsg("Chargement du fichier CSV",MainActivity.COLOR_BLUE,false);
 					
 				//On récupère la liste des destinataires à partir du fichier CSV
 				psr = new ParserCSV(this.csvfile);
@@ -210,9 +205,11 @@ public class MainController {
 			catch (Exception e) {
 				//En cas d'exception, on s'assure que la variable running soit à false
 				CampagneThread.RUNNING= false;
-				this.main.updateStatusMsg(e.getMessage(),Color.RED,true);
+				this.main.updateStatusMsg(e.getMessage(),MainActivity.COLOR_RED,true);
+				this.main.setCampagneState("[ERREUR]", MainActivity.COLOR_RED);
 				//On réactive le button d'envoi
-				this.main.setButtonEnable(true);
+				//this.main.setButtonEnable(true);
+				this.main.flipLayout(0);
 			}
 		}
 	}

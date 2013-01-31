@@ -26,7 +26,7 @@
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_gravity="right"
-	        android:textSize="8dp"
+	        android:textSize="9dp"
 	        android:textColor="@android:color/white"
 	        android:text="@string/txt_version_label" />
 		
@@ -46,9 +46,9 @@
 	        android:layout_gravity="center_horizontal"
 	        android:gravity="center"
 	        android:background="@drawable/bar_step"
-	        android:textSize="12dp"
+	        android:textSize="13dp"
 	        android:textColor="@android:color/black"
-	        android:text="@string/txt_step" />
+	        android:text="@string/txt_step_init" />
 		
 	    <!-- Cadre contenant les différents status -->
 	    <TextView
@@ -104,7 +104,7 @@
 	        android:layout_gravity="center_horizontal"
 	        android:layout_marginTop="5dp"
 	        android:gravity="center_vertical"
-	        android:textSize="9dp"
+	        android:textSize="10dp"
 	        android:textColor="@android:color/white"
 	        android:text="@string/txt_button_label" />
 	    
@@ -133,7 +133,7 @@
 		        
 		        <ImageButton
 			        android:id="@+id/btn_traitement_pause"
-			        android:src="@drawable/bottom_button_start"
+			        android:src="@drawable/bottom_button_pause"
 			        android:layout_height="wrap_content"
 			        android:layout_width="160dp"
 			        android:scaleType="fitXY"

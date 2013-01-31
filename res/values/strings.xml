@@ -10,7 +10,8 @@
     <string name="txt_info_label">Informations</string>
     <string name="txt_journal_label">Journal</string>
     <string name="txt_button_label">Cliquez sur une icône pour démarrer une action</string>
-    <string name="txt_step">Initialisation des prérequis</string>
+    <string name="txt_step_init">Initialisation des prérequis</string>
+    <string name="txt_step_traitement">Envoi de la campagne SMS</string>
     <string name="txt_dowloadCsv">Télcharger fichier csv</string>
     
     <!-- Button -->
@@ -41,6 +42,8 @@
     
     <string name="statut_en_cours">[EN COURS]</string>
     <string name="statut_en_pause">[EN PAUSE]</string>
+    <string name="statut_erreur">[ERREUR]</string>
+    <string name="statut_termine">[TERMINE]</string>
     <string name="statut_count_zero">0</string>
     <string name="statut_count_zero_slash">0/0</string>
     

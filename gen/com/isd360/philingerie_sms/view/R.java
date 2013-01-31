@@ -79,49 +79,52 @@ public final class R {
     }
     public static final class string {
         public static final int app_name=0x7f060000;
-        public static final int btn_pause=0x7f06000d;
-        public static final int btn_quit=0x7f06000a;
-        public static final int btn_restart=0x7f06000b;
+        public static final int btn_pause=0x7f06000e;
+        public static final int btn_quit=0x7f06000b;
+        public static final int btn_restart=0x7f06000c;
         /**  Button 
          */
-        public static final int btn_start=0x7f060009;
-        public static final int btn_stop=0x7f06000c;
-        public static final int pref_conf_ftp_login=0x7f06001f;
-        public static final int pref_conf_ftp_pass=0x7f060020;
+        public static final int btn_start=0x7f06000a;
+        public static final int btn_stop=0x7f06000d;
+        public static final int pref_conf_ftp_login=0x7f060022;
+        public static final int pref_conf_ftp_pass=0x7f060023;
         /**  Configuration files names
          */
-        public static final int pref_conf_ftp_srv=0x7f06001e;
-        public static final int stat_count_sms_fail_label=0x7f060017;
-        public static final int stat_count_sms_global_label=0x7f060019;
-        public static final int stat_count_sms_sent_label=0x7f060018;
-        public static final int stat_ftpserv_label=0x7f060010;
-        public static final int stat_lastsent_label=0x7f060011;
+        public static final int pref_conf_ftp_srv=0x7f060021;
+        public static final int stat_count_sms_fail_label=0x7f060018;
+        public static final int stat_count_sms_global_label=0x7f06001a;
+        public static final int stat_count_sms_sent_label=0x7f060019;
+        public static final int stat_ftpserv_label=0x7f060011;
+        public static final int stat_lastsent_label=0x7f060012;
         /**  Statut 
  Prérequis 
          */
-        public static final int stat_reseau_label=0x7f06000e;
-        public static final int stat_sdcard_label=0x7f06000f;
+        public static final int stat_reseau_label=0x7f06000f;
+        public static final int stat_sdcard_label=0x7f060010;
         /**  Statut 
  Count 
          */
-        public static final int stat_status_count=0x7f060014;
-        public static final int stat_status_msg=0x7f060015;
-        public static final int stat_traitement_sms_label=0x7f060016;
-        public static final int statut_KO=0x7f060013;
-        public static final int statut_OK=0x7f060012;
-        public static final int statut_count_zero=0x7f06001c;
-        public static final int statut_count_zero_slash=0x7f06001d;
-        public static final int statut_en_cours=0x7f06001a;
-        public static final int statut_en_pause=0x7f06001b;
+        public static final int stat_status_count=0x7f060015;
+        public static final int stat_status_msg=0x7f060016;
+        public static final int stat_traitement_sms_label=0x7f060017;
+        public static final int statut_KO=0x7f060014;
+        public static final int statut_OK=0x7f060013;
+        public static final int statut_count_zero=0x7f06001f;
+        public static final int statut_count_zero_slash=0x7f060020;
+        public static final int statut_en_cours=0x7f06001b;
+        public static final int statut_en_pause=0x7f06001c;
+        public static final int statut_erreur=0x7f06001d;
+        public static final int statut_termine=0x7f06001e;
         public static final int txt_button_label=0x7f060006;
-        public static final int txt_dowloadCsv=0x7f060008;
+        public static final int txt_dowloadCsv=0x7f060009;
         public static final int txt_info_label=0x7f060004;
         public static final int txt_journal_label=0x7f060005;
         /**  Texte 
          */
         public static final int txt_none=0x7f060002;
-        public static final int txt_step=0x7f060007;
+        public static final int txt_step_init=0x7f060007;
         public static final int txt_step_label=0x7f060003;
+        public static final int txt_step_traitement=0x7f060008;
         public static final int txt_version_label=0x7f060001;
     }
     public static final class xml {

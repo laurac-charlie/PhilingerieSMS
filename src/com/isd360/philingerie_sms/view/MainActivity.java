@@ -22,7 +22,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 /**
@@ -32,13 +31,13 @@ import android.widget.ViewFlipper;
  */
 public class MainActivity extends Activity {
 	
+	public static final int COLOR_YELLOW = Color.parseColor("#FFFF00");
 	public static final int COLOR_BLUE = Color.parseColor("#4C43FE");
+	public static final int COLOR_GREEN = Color.parseColor("#1FA055");
 	public static final int COLOR_RED = Color.parseColor("#E30000");
 	public static final int COLOR_BLACK = Color.parseColor("#000000");
 	
 	private MainController mainController = null;
-	
-	private int totalDestinataire = 0;
 	
 	private TextView txt_journal = null;
 	private TextView statusCount = null;
@@ -46,9 +45,13 @@ public class MainActivity extends Activity {
 	private TextView statusCountFail = null;
 	
 	private ImageButton sendButton = null;
+	private ImageButton pauseButton = null;
+	private ImageButton stopButton = null;
 	private ImageButton quitButton = null;
 	
 	private ViewFlipper statusFlipper = null;
+	private ViewFlipper startFlipper = null;
+	private ViewFlipper stopFlipper = null;
 	
     /** Called when the activity is first created. */
     @Override
@@ -71,9 +74,7 @@ public class MainActivity extends Activity {
 		this.statusCountSent = (TextView)this.findViewById(R.id.stat_count_sms_sent);
 		this.statusCountFail = (TextView)this.findViewById(R.id.stat_count_sms_fail);
 		
-		//On déclare les textbox et on met un mouvement de scroll
-        //TODO: Remplacer par les nouveaux champs correspondants
-        //this.statusCount = (TextView)this.findViewById(R.id.txt_status_count);
+		//On déclare la textview journal et on met un mouvement de scroll
         this.txt_journal = (TextView)this.findViewById(R.id.txt_journal);
         this.txt_journal.setMovementMethod(new ScrollingMovementMethod());
         
@@ -82,14 +83,28 @@ public class MainActivity extends Activity {
         this.sendButton = (ImageButton) findViewById(R.id.btn_startApp);
 		this.sendButton.setOnClickListener(this.clickSendListener);
 		
+		this.pauseButton = (ImageButton) findViewById(R.id.btn_traitement_pause);
+		this.pauseButton.setOnClickListener(this.clickPauseListener);
+		
+		this.stopButton = (ImageButton) findViewById(R.id.btn_traitement_stop);
+		this.stopButton.setOnClickListener(this.clickStopListener);
+		
 		this.quitButton = (ImageButton)this.findViewById(R.id.btn_quitApp);
 		this.quitButton.setOnClickListener(this.clickQuitListener);
 		
 		/** VIEW FLIPPER **/
-		//On initialise le flipper qui permettra de changer le layout de statut et on ajoute ses animations
+		//On initialise les flipper qui permettront de changer le layout de statut et les bouttons avec leurs animations
 		this.statusFlipper = (ViewFlipper)this.findViewById(R.id.layout_status_flipper);
 		this.statusFlipper.setInAnimation(this,R.anim.anim_slideout);
 		this.statusFlipper.setOutAnimation(this,R.anim.anim_slidein);
+		
+		this.stopFlipper = (ViewFlipper)this.findViewById(R.id.btn_stop_flipper);
+		this.stopFlipper.setInAnimation(this,R.anim.anim_slideout);
+		this.stopFlipper.setOutAnimation(this,R.anim.anim_slidein);
+		
+		this.startFlipper = (ViewFlipper)this.findViewById(R.id.btn_start_flipper);
+		this.startFlipper.setInAnimation(this,R.anim.anim_slideout);
+		this.startFlipper.setOutAnimation(this,R.anim.anim_slidein);
 		
 		/** Controlleur **/
 		//On initialise le controlleur pour lancer les traitements relatif à la campagne
@@ -108,15 +123,12 @@ public class MainActivity extends Activity {
     	if(!CampagneThread.RUNNING)
     	{
 	    	//On replace la bonne fênetre de statut si besoin
-    		if(!(this.statusFlipper.getDisplayedChild() == 0)) this.statusFlipper.setDisplayedChild(0);
+    		this.flipLayout(0);
     		//On recharge les prérequis
     		this.mainController.loadPrerequisites();
-    		this.txt_journal.setText("");
-	    	//TODO: Remettre en fonction
-	    	//MainActivity.this.statusMessage.setTextColor(Color.GREEN);
-	    	//MainActivity.this.statusMessage.setText("Prêt");
-	    	//MainActivity.this.totalDestinataire = 0;
-	    	//MainActivity.this.updateStatusCount(0);
+    		this.setStepMessage(R.string.txt_step_init);
+    		this.emptyLogs();
+	    	this.updateStatusCount(0, 0, 0, 0);
     	}
     }
     
@@ -156,21 +168,18 @@ public class MainActivity extends Activity {
 			Animation animAlpha = AnimationUtils.loadAnimation(MainActivity.this, R.anim.anim_alpha);
 			view.startAnimation(animAlpha);
 			
-			//On désactive le button d'envoi
-			MainActivity.this.setButtonEnable(false);
-			
 			//On va tester la preparation de la campagne pour savoir si on continue
 			if(MainActivity.this.mainController.prepareCampaign())
 			{
 				//On crée l'alertDialog qui est en faire
 				Builder helpBuilder = new Builder(MainActivity.this);
 				helpBuilder.setTitle("Prévisualation message").setMessage(MainActivity.this.mainController.getSmsText());
-				//helpBuilder.setMessage("texte du sms");
 				
 				helpBuilder.setPositiveButton("Confirmer", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
-						//On change de cadre statut
-						if(!(MainActivity.this.statusFlipper.getDisplayedChild() == 1)) MainActivity.this.statusFlipper.setDisplayedChild(1);
+						//On change de cadre statut et les bouttons
+						MainActivity.this.flipLayout(1);
+						MainActivity.this.setStepMessage(R.string.txt_step_traitement);
 						//Une fois que le texte du message a été confirmer on lance la campagne
 						MainActivity.this.mainController.launchCampaign();					
 					}
@@ -186,9 +195,32 @@ public class MainActivity extends Activity {
 				AlertDialog helpDialog = helpBuilder.create();
 				helpDialog.show();
 			}
-			
-			//On réactive le button d'envoi
-			//MainActivity.this.setButtonEnable(true);
+		}
+	};
+	
+	/**
+	 * Evenement du boutton pour mettre l'application en pause
+	 */
+	private OnClickListener clickPauseListener = new OnClickListener() {
+		public void onClick(View view) {
+			//On lance l'animation alpha du boutton
+			Animation animAlpha = AnimationUtils.loadAnimation(MainActivity.this, R.anim.anim_alpha);
+			view.startAnimation(animAlpha);
+			//On arrête l'application
+			//TODO: mettre le traitement en pause
+		}
+	};
+	
+	/**
+	 * Evenement du boutton pour mettre l'application en pause
+	 */
+	private OnClickListener clickStopListener = new OnClickListener() {
+		public void onClick(View view) {
+			//On lance l'animation alpha du boutton
+			Animation animAlpha = AnimationUtils.loadAnimation(MainActivity.this, R.anim.anim_alpha);
+			view.startAnimation(animAlpha);
+			//On arrête l'application
+			//TODO: arrêter le traitement
 		}
 	};
 	
@@ -204,6 +236,44 @@ public class MainActivity extends Activity {
 			MainActivity.this.finish();
 		}
 	};
+	
+	/**
+	 * Change la fênetre pour correspondre à l'écran principal ou la fenêtre de traitement
+	 * @param pos 0 : Layout Acceuil / 1 : Layout Traitement
+	 */
+	public void flipLayout(int pos){
+		if(pos != 0 && pos != 1) pos = 0;
+		
+		if(!(this.statusFlipper.getDisplayedChild() == pos)) this.statusFlipper.setDisplayedChild(pos);
+		if(!(this.startFlipper.getDisplayedChild() == pos)) this.startFlipper.setDisplayedChild(pos);
+		if(!(this.stopFlipper.getDisplayedChild() == pos)) this.stopFlipper.setDisplayedChild(pos);
+	}
+	
+	/**
+	 * Change les bouttons pour correspondre au bouttons de départ
+	 * @param pos 0 : boutton Acceuil / 1 : boutton Traitement
+	 */
+	public void flipButton(int pos){
+		//TODO: On laisse ça ou on met le boutton d'acceuil
+		if(pos != 0 && pos != 1) pos = 0;
+		final int p = pos;
+		
+		this.runOnUiThread(new Runnable() {
+			public void run() {
+				if(!(MainActivity.this.startFlipper.getDisplayedChild() == p)) MainActivity.this.startFlipper.setDisplayedChild(p);
+				if(!(MainActivity.this.stopFlipper.getDisplayedChild() == p)) MainActivity.this.stopFlipper.setDisplayedChild(p);
+			}
+		});
+	}
+	
+	/**
+	 * Met à jour le message de l'étape en cours
+	 * @param stepMessage Texte du message d'étape (référence R.strings)
+	 */
+	public void setStepMessage(int stepMessage){
+		TextView etape = (TextView) this.findViewById(R.id.txt_step);
+		etape.setText(stepMessage);
+	}
 	
 	/**
 	 * Ajout d'un message à la ligne dans la testBox des logs
@@ -229,17 +299,20 @@ public class MainActivity extends Activity {
 	
 	/**
 	 * Met à jour les nombres de messages envoyés, en réussite ou en échec
-	 * @param countTotal Nombre de tentative d'envoi
+	 * @param totalDest Nombre total de destinataire
+	 * @param currentTotal Nombre de tentative d'envoi
 	 * @param countSucess Nombre de message envoyé
 	 * @param countFail Nombre de message non envoyé
 	 */
-	public void updateStatusCount(int countTotal, int countSucess, int countFail){
-		final int total = countTotal;
-		final int fail = countFail;
-		final int sucess = countSucess;
+	public void updateStatusCount(int totalDest ,int currentTotal, int countSucess, int countFail){
+		final String total = String.valueOf(totalDest);
+		final String current = String.valueOf(currentTotal);
+		final String fail = String.valueOf(countFail);
+		final String sucess = String.valueOf(countSucess);
+		//La méthode est appelé depuis une autre thread
 		this.runOnUiThread(new Runnable() {
 			public void run() {
-				MainActivity.this.statusCount.setText(total + "/" + MainActivity.this.totalDestinataire);
+				MainActivity.this.statusCount.setText(current+ "/" + total);
 				MainActivity.this.statusCountFail.setText(fail);
 				MainActivity.this.statusCountSent.setText(sucess);
 			}
@@ -255,18 +328,20 @@ public class MainActivity extends Activity {
 	public void updateStatusMsg(String statusMsg,int colorMsg,boolean toast){
 		final String msg = statusMsg;
 		final int color = colorMsg;
-		final boolean makeToast = toast;
+		//final boolean makeToast = toast;
 		this.runOnUiThread(new Runnable() {
 			public void run() {
-				if(makeToast) Toast.makeText(MainActivity.this, msg, Toast.LENGTH_LONG).show();
-				//MainActivity.this.statusMessage.setTextColor(color);
-				//MainActivity.this.statusMessage.setText(msg);
+				//if(makeToast) Toast.makeText(MainActivity.this, msg, Toast.LENGTH_LONG).show();
 				MainActivity.this.txt_journal.setTextColor(color);
 				MainActivity.this.txt_journal.setText(msg);
 			}
 		});
 	}
 	
+	/**
+	 * Permet d'activer ou désactiver le boutton
+	 * @param enable
+	 *
 	public void setButtonEnable(boolean enable){
 		final boolean ena = enable;
 		this.runOnUiThread(new Runnable() {
@@ -275,7 +350,7 @@ public class MainActivity extends Activity {
 			}
 		});
 	}
-	
+	/
 	/**
 	 * Vide la liste des log d'envoi de message
 	 */
@@ -338,11 +413,23 @@ public class MainActivity extends Activity {
 		
 	}
 	
-	public int getTotalDestinataire() {
-		return totalDestinataire;
-	}
-
-	public void setTotalDestinataire(int totalDestinataire) {
-		this.totalDestinataire = totalDestinataire;
+	/**
+	 * Met à jour l'état du traitement
+	 * @param state Chaîne de caractères représentant l'état
+	 * @param color Couleur du texte
+	 */
+	public void setCampagneState(String state, int color){
+		final String stat = state;
+		final int colo = color;
+		//La méthode est appelé depuis une autre thread
+		this.runOnUiThread(new Runnable() {
+			public void run() {
+				//Le champ n'étant pas mis à jour en permanence, on le déclare à chaque utilisation
+				TextView traitement_sms = (TextView)MainActivity.this.findViewById(R.id.stat_traitement_sms);
+				
+				traitement_sms.setTextColor(colo);
+				traitement_sms.setText(stat);
+			}
+		});
 	}
 }

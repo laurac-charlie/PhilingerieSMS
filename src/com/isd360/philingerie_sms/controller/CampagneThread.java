@@ -2,8 +2,6 @@ package com.isd360.philingerie_sms.controller;
 
 import java.util.ArrayList;
 
-import android.graphics.Color;
-
 import com.isd360.philingerie_sms.model.Destinataire;
 import com.isd360.philingerie_sms.util.SmsSender;
 import com.isd360.philingerie_sms.view.MainActivity;
@@ -44,24 +42,33 @@ public class CampagneThread extends Thread{
 		//On met la variale running à vrai pour dire que le thread est actif
 		CampagneThread.RUNNING = true;
 		
-		//On vide la liste de logs
-		this.main.emptyLogs();
-		
-		//On met à jour le nombre de destinataires à traiter
-		this.main.setTotalDestinataire(this.listDest.size());
+		//On initialise les variables qui seront en permanence mise à jour
 		String logMsg = "";
 		int countAll = 0;
 		int countOk = 0;
 		int countKo = 0;
 		
-		this.main.updateStatusMsg("Traitement envoi SMS...",Color.BLUE,false);
-					
+		//On temporise (pour l'effet)
+		try 
+			{Thread.sleep(2000);} 
+		catch (InterruptedException e) 
+			{this.main.updateStatusMsg(e.getMessage(),MainActivity.COLOR_RED,true);}
+		
+		this.main.updateStatusMsg("Traitement envoi SMS...",MainActivity.COLOR_BLUE,false);
+		
+		//On temporise (pour l'effet)
+		try 
+			{Thread.sleep(2000);} 
+		catch (InterruptedException e) 
+			{this.main.updateStatusMsg(e.getMessage(),MainActivity.COLOR_RED,true);}
+		
+		this.main.emptyLogs();
+		
 		for (Destinataire d : this.listDest)
 		{
 			if(SmsSender.SendMessage(d,this.smsText))
 			{
 				logMsg = "Envoi [OK] : " + d.getLastName() + " " + d.getFirstName();
-				
 				countOk++;
 			}
 			else
@@ -73,22 +80,19 @@ public class CampagneThread extends Thread{
 			
 			//On met à jour la liste de log et le statut
 			this.main.addMessage(logMsg);
-			this.main.updateStatusCount(countAll,countOk,countKo);
-			
-			//On met à jour le nombre de destinataires à traiter
-			this.main.setTotalDestinataire(listDest.size());
+			this.main.updateStatusCount(listDest.size(),countAll,countOk,countKo);
 			
 			try 
 				{Thread.sleep(5000);} 
 			catch (InterruptedException e) 
-				{this.main.updateStatusMsg(e.getMessage(),Color.RED,true);}
+				{this.main.updateStatusMsg(e.getMessage(),MainActivity.COLOR_RED,true);}
 		}
 		//On remet la varibale à faut à la fin du traitement
 		CampagneThread.RUNNING = false;
-		//On réactive le button d'envoi
-		this.main.setButtonEnable(true);
-		this.main.updateStatusMsg("Traitement terminé",Color.GREEN,false);
-		this.main.addMessage("Fin de la campagne");
+		//On repasse sur les bouttons d'acceuil
+		this.main.flipButton(0);
+		this.main.updateStatusMsg("Traitement terminé",MainActivity.COLOR_BLUE,false);
+		this.main.setCampagneState("[TERMINE]", MainActivity.COLOR_GREEN);
 		
 	}
 }
