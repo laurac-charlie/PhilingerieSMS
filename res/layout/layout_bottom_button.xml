@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/btn_acceuil_flipper"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:orientation="horizontal"
+        android:textColor="@android:color/black" >
+
+        <!-- Bouttons de démarrage et de pause -->
+
+        <ViewFlipper
+            android:id="@+id/btn_start_flipper"
+            android:layout_width="159dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true" >
+
+            <ImageButton
+                android:id="@+id/btn_startApp"
+                android:layout_width="160dp"
+                android:layout_height="wrap_content"
+                android:background="@android:color/black"
+                android:contentDescription="@string/btn_start"
+                android:scaleType="fitXY"
+                android:src="@drawable/bottom_button_start" />
+
+            <ImageButton
+                android:id="@+id/btn_traitement_pause"
+                android:layout_width="160dp"
+                android:layout_height="wrap_content"
+                android:background="@android:color/black"
+                android:contentDescription="@string/btn_pause"
+                android:scaleType="fitXY"
+                android:src="@drawable/bottom_button_pause" />
+        </ViewFlipper>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="77dp"
+            android:layout_gravity="bottom"
+            android:layout_marginTop="3dp"
+            android:layout_toRightOf="@+id/btn_start_flipper"
+            android:background="@android:color/white" />
+
+        <!-- Bouttons pour quitter l'application et arrêter le traitement -->
+
+        <ViewFlipper
+            android:id="@+id/btn_stop_flipper"
+            android:layout_width="159dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true" >
+
+            <ImageButton
+                android:id="@+id/btn_quitApp"
+                android:layout_width="160dp"
+                android:layout_height="wrap_content"
+                android:background="@android:color/black"
+                android:contentDescription="@string/btn_quit"
+                android:scaleType="fitXY"
+                android:src="@drawable/bottom_button_quit" />
+
+            <ImageButton
+                android:id="@+id/btn_traitement_stop"
+                android:layout_width="160dp"
+                android:layout_height="wrap_content"
+                android:background="@android:color/black"
+                android:contentDescription="@string/btn_stop"
+                android:scaleType="fitXY"
+                android:src="@drawable/bottom_button_stop" />
+        </ViewFlipper>
+    </RelativeLayout>
+    
+    <ImageButton
+	    android:id="@+id/btn_acceuil"
+	    android:layout_width="320dp"
+	    android:layout_height="80dp"
+	    android:background="@android:color/black"
+	    android:contentDescription="@string/btn_accueil"
+	    android:scaleType="fitXY"
+	    android:src="@drawable/bottom_button_home" />
+
+</ViewFlipper>

@@ -47,11 +47,13 @@ public class MainActivity extends Activity {
 	private ImageButton sendButton = null;
 	private ImageButton pauseButton = null;
 	private ImageButton stopButton = null;
+	private ImageButton acceuilButton = null;
 	private ImageButton quitButton = null;
 	
 	private ViewFlipper statusFlipper = null;
 	private ViewFlipper startFlipper = null;
 	private ViewFlipper stopFlipper = null;
+	private ViewFlipper acceuilFlipper = null;
 	
     /** Called when the activity is first created. */
     @Override
@@ -89,6 +91,9 @@ public class MainActivity extends Activity {
 		this.stopButton = (ImageButton) findViewById(R.id.btn_traitement_stop);
 		this.stopButton.setOnClickListener(this.clickStopListener);
 		
+		this.acceuilButton = (ImageButton) findViewById(R.id.btn_acceuil);
+		this.acceuilButton.setOnClickListener(this.clickAcceuilListener);
+		
 		this.quitButton = (ImageButton)this.findViewById(R.id.btn_quitApp);
 		this.quitButton.setOnClickListener(this.clickQuitListener);
 		
@@ -105,6 +110,10 @@ public class MainActivity extends Activity {
 		this.startFlipper = (ViewFlipper)this.findViewById(R.id.btn_start_flipper);
 		this.startFlipper.setInAnimation(this,R.anim.anim_slideout);
 		this.startFlipper.setOutAnimation(this,R.anim.anim_slidein);
+		
+		this.acceuilFlipper = (ViewFlipper)this.findViewById(R.id.btn_acceuil_flipper);
+		this.acceuilFlipper.setInAnimation(this,R.anim.anim_slideout);
+		this.acceuilFlipper.setOutAnimation(this,R.anim.anim_slidein);
 		
 		/** Controlleur **/
 		//On initialise le controlleur pour lancer les traitements relatif à la campagne
@@ -207,7 +216,7 @@ public class MainActivity extends Activity {
 			Animation animAlpha = AnimationUtils.loadAnimation(MainActivity.this, R.anim.anim_alpha);
 			view.startAnimation(animAlpha);
 			//On arrête l'application
-			//TODO: mettre le traitement en pause
+			CampagneThread.PAUSED = true;
 		}
 	};
 	
@@ -220,7 +229,22 @@ public class MainActivity extends Activity {
 			Animation animAlpha = AnimationUtils.loadAnimation(MainActivity.this, R.anim.anim_alpha);
 			view.startAnimation(animAlpha);
 			//On arrête l'application
-			//TODO: arrêter le traitement
+			CampagneThread.STOPPED = true;
+			MainActivity.this.flipButtonAcceuil();
+		}
+	};
+	
+	/**
+	 * Evenement du boutton pour retourner à la page d'acceuil
+	 */
+	private OnClickListener clickAcceuilListener = new OnClickListener() {
+		public void onClick(View view) {
+			//On lance l'animation alpha du boutton
+			Animation animAlpha = AnimationUtils.loadAnimation(MainActivity.this, R.anim.anim_alpha);
+			view.startAnimation(animAlpha);
+			MainActivity.this.setStepMessage(R.string.txt_step_init);
+			MainActivity.this.acceuilFlipper.setDisplayedChild(0);
+			MainActivity.this.flipLayout(0);
 		}
 	};
 	
@@ -244,24 +268,20 @@ public class MainActivity extends Activity {
 	public void flipLayout(int pos){
 		if(pos != 0 && pos != 1) pos = 0;
 		
-		if(!(this.statusFlipper.getDisplayedChild() == pos)) this.statusFlipper.setDisplayedChild(pos);
-		if(!(this.startFlipper.getDisplayedChild() == pos)) this.startFlipper.setDisplayedChild(pos);
-		if(!(this.stopFlipper.getDisplayedChild() == pos)) this.stopFlipper.setDisplayedChild(pos);
+		if(this.statusFlipper.getDisplayedChild() != pos) this.statusFlipper.setDisplayedChild(pos);
+		if(this.startFlipper.getDisplayedChild() != pos) this.startFlipper.setDisplayedChild(pos);
+		if(this.stopFlipper.getDisplayedChild() != pos) this.stopFlipper.setDisplayedChild(pos);
+		//Pour le flip acceuil on doit juste s'assurer de le retirer mais pas l'ajouter ici
+		if(this.acceuilFlipper.getDisplayedChild() == 1) this.acceuilFlipper.setDisplayedChild(0);
 	}
 	
 	/**
-	 * Change les bouttons pour correspondre au bouttons de départ
-	 * @param pos 0 : boutton Acceuil / 1 : boutton Traitement
+	 * Passe des bouttons de traitement au boutton d'acceuil
 	 */
-	public void flipButton(int pos){
-		//TODO: On laisse ça ou on met le boutton d'acceuil
-		if(pos != 0 && pos != 1) pos = 0;
-		final int p = pos;
-		
+	public void flipButtonAcceuil(){
 		this.runOnUiThread(new Runnable() {
 			public void run() {
-				if(!(MainActivity.this.startFlipper.getDisplayedChild() == p)) MainActivity.this.startFlipper.setDisplayedChild(p);
-				if(!(MainActivity.this.stopFlipper.getDisplayedChild() == p)) MainActivity.this.stopFlipper.setDisplayedChild(p);
+				if(!(MainActivity.this.acceuilFlipper.getDisplayedChild() == 0)) MainActivity.this.acceuilFlipper.setDisplayedChild(1);
 			}
 		});
 	}

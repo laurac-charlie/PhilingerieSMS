@@ -24,6 +24,9 @@ public class CampagneThread extends Thread{
 	 */
 	public static boolean RUNNING = false;
 	
+	public static boolean PAUSED = false;
+	public static boolean STOPPED = false;
+	
 	/**
 	 * Initialise le thread d'envoi des SMS 
 	 * @param main Activité de la page priincipal à mettre à jour
@@ -41,9 +44,12 @@ public class CampagneThread extends Thread{
 	public void run(){
 		//On met la variale running à vrai pour dire que le thread est actif
 		CampagneThread.RUNNING = true;
+		CampagneThread.PAUSED = false;
+		CampagneThread.STOPPED = false;
 		
 		//On initialise les variables qui seront en permanence mise à jour
 		String logMsg = "";
+		String message_traitement = "Traitement terminé";
 		int countAll = 0;
 		int countOk = 0;
 		int countKo = 0;
@@ -64,7 +70,7 @@ public class CampagneThread extends Thread{
 		
 		this.main.emptyLogs();
 		
-		for (Destinataire d : this.listDest)
+		LOOP: for (Destinataire d : this.listDest)
 		{
 			if(SmsSender.SendMessage(d,this.smsText))
 			{
@@ -82,6 +88,22 @@ public class CampagneThread extends Thread{
 			this.main.addMessage(logMsg);
 			this.main.updateStatusCount(listDest.size(),countAll,countOk,countKo);
 			
+			//On arrête le thread si la variable a été mise à jour autre part
+			if(CampagneThread.STOPPED) {
+				message_traitement = "Traitement arrêter";
+				break;
+			}
+			
+			//Si on met l'application en pause on tourne dans la boucle 
+			//TODO: La boucle ne devrait pas tourner à l'infini
+			while(CampagneThread.PAUSED){
+				if(CampagneThread.STOPPED) {
+					message_traitement = "Traitement arrêter";
+					//On arrête la boucle mère
+					break LOOP;
+				}
+			}
+			
 			try 
 				{Thread.sleep(5000);} 
 			catch (InterruptedException e) 
@@ -90,8 +112,9 @@ public class CampagneThread extends Thread{
 		//On remet la varibale à faut à la fin du traitement
 		CampagneThread.RUNNING = false;
 		//On repasse sur les bouttons d'acceuil
-		this.main.flipButton(0);
-		this.main.updateStatusMsg("Traitement terminé",MainActivity.COLOR_BLUE,false);
+		//this.main.flipButton(0);
+		this.main.flipButtonAcceuil();
+		this.main.updateStatusMsg(message_traitement,MainActivity.COLOR_BLUE,false);
 		this.main.setCampagneState("[TERMINE]", MainActivity.COLOR_GREEN);
 		
 	}

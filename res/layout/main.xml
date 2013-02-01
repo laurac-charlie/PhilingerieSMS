@@ -108,76 +108,9 @@
 	        android:textColor="@android:color/white"
 	        android:text="@string/txt_button_label" />
 	    
-	    <RelativeLayout
-	        android:layout_width="match_parent"
-	        android:layout_height="80dp"
-	        android:layout_gravity="bottom"
-	        android:orientation="horizontal"
-	        android:textColor="@android:color/black" >
-		    
-	        <!-- Bouttons de démarrage et de pause-->
-	        <ViewFlipper
-			    android:id="@+id/btn_start_flipper"
-			    android:layout_width="159dp"
-			    android:layout_height="wrap_content"
-			    android:layout_alignParentLeft="true" >
-	        
-		        <ImageButton
-			        android:id="@+id/btn_startApp"
-			        android:src="@drawable/bottom_button_start"
-			        android:layout_height="wrap_content"
-			        android:layout_width="160dp"
-			        android:scaleType="fitXY"
-			        android:contentDescription="@string/btn_start" 
-			        android:background="@android:color/black"/>
-		        
-		        <ImageButton
-			        android:id="@+id/btn_traitement_pause"
-			        android:src="@drawable/bottom_button_pause"
-			        android:layout_height="wrap_content"
-			        android:layout_width="160dp"
-			        android:scaleType="fitXY"
-			        android:contentDescription="@string/btn_pause" 
-			        android:background="@android:color/black"/>
-	        
-		    </ViewFlipper>    
-		        
-	        <View
-				android:layout_width="1dp"
-				android:layout_height="77dp"
-				android:layout_marginTop="3dp"
-				android:layout_gravity="bottom"
-				android:layout_toRightOf="@+id/btn_start_flipper"
-				android:background="@android:color/white" />
-	        
-	        <!-- Bouttons pour quitter l'application et arrêter le traitement -->
-		    <ViewFlipper
-			    android:id="@+id/btn_stop_flipper"
-			    android:layout_width="159dp"
-			    android:layout_height="wrap_content"
-			    android:layout_alignParentRight="true" >
-	        
-		        <ImageButton
-			        android:id="@+id/btn_quitApp"
-			        android:src="@drawable/bottom_button_quit"
-			        android:layout_width="160dp"
-			        android:layout_height="wrap_content"
-			        android:scaleType="fitXY"
-			        android:contentDescription="@string/btn_quit" 
-			        android:background="@android:color/black" />
-	        
-		        <ImageButton
-			        android:id="@+id/btn_traitement_stop"
-			        android:src="@drawable/bottom_button_stop"
-			        android:layout_width="160dp"
-			        android:layout_height="wrap_content"
-			        android:scaleType="fitXY"
-			        android:contentDescription="@string/btn_stop" 
-			        android:background="@android:color/black" />
-		        
-	        </ViewFlipper>
-		    
-		</RelativeLayout>
+	    <include 
+	        android:id="@+id/layout_bottom_button"
+	        layout="@layout/layout_bottom_button"/>
 	
 	</LinearLayout>
 </ScrollView>
