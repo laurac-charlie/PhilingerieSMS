@@ -16,7 +16,6 @@ public class PhoneState {
 
 	/**
 	 * Donne l'état de la carte SD
-	 * 
 	 * @return Vrai si la carte SD est disponible, faux sinon
 	 */
 	public static boolean getSDcardState() {

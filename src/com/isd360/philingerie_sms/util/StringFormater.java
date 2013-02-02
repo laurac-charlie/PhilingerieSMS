@@ -18,8 +18,8 @@ public class StringFormater {
 	public static String formatPhoneNumber(String phone, char mag){
 		//On retire les points et les espaces
 		phone = phone.replaceAll("\\.", "");
-		//phone = phone.replaceAll("\\s", "");
 		phone = phone.replaceAll("\\p{Zs}", "");
+		//phone = phone.replaceAll("\\-", "");
 		
 		//On vérifie qu'il n'y a plus que des chiffres, sinon on arrête le traitement en renvoyant rien
 		try{

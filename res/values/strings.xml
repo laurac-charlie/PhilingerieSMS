@@ -20,6 +20,7 @@
     <string name="btn_restart">Redémarrer la campagne</string>
     <string name="btn_stop">Stopper le traitement</string>
     <string name="btn_pause">Interrompre le traitement</string>
+    <string name="btn_resume">Relancer le traitement</string>
     <string name="btn_accueil">Retourner à l\'acceuil</string>
     
     <!-- Statut -->

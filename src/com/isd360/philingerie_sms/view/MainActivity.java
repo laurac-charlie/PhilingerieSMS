@@ -48,11 +48,13 @@ public class MainActivity extends Activity {
 	private ImageButton pauseButton = null;
 	private ImageButton stopButton = null;
 	private ImageButton acceuilButton = null;
+	private ImageButton resumeButton = null;
 	private ImageButton quitButton = null;
 	
 	private ViewFlipper statusFlipper = null;
 	private ViewFlipper startFlipper = null;
 	private ViewFlipper stopFlipper = null;
+	private ViewFlipper resumeFlipper = null;
 	private ViewFlipper acceuilFlipper = null;
 	
     /** Called when the activity is first created. */
@@ -91,6 +93,9 @@ public class MainActivity extends Activity {
 		this.stopButton = (ImageButton) findViewById(R.id.btn_traitement_stop);
 		this.stopButton.setOnClickListener(this.clickStopListener);
 		
+		this.resumeButton = (ImageButton) findViewById(R.id.btn_traitement_resume);
+		this.resumeButton.setOnClickListener(this.clickResumeListener);
+		
 		this.acceuilButton = (ImageButton) findViewById(R.id.btn_acceuil);
 		this.acceuilButton.setOnClickListener(this.clickAcceuilListener);
 		
@@ -110,6 +115,10 @@ public class MainActivity extends Activity {
 		this.startFlipper = (ViewFlipper)this.findViewById(R.id.btn_start_flipper);
 		this.startFlipper.setInAnimation(this,R.anim.anim_slideout);
 		this.startFlipper.setOutAnimation(this,R.anim.anim_slidein);
+		
+		this.resumeFlipper = (ViewFlipper)this.findViewById(R.id.btn_resume_flipper);
+		this.resumeFlipper.setInAnimation(this,R.anim.anim_slideout);
+		this.resumeFlipper.setOutAnimation(this,R.anim.anim_slidein);
 		
 		this.acceuilFlipper = (ViewFlipper)this.findViewById(R.id.btn_acceuil_flipper);
 		this.acceuilFlipper.setInAnimation(this,R.anim.anim_slideout);
@@ -216,14 +225,26 @@ public class MainActivity extends Activity {
 			Animation animAlpha = AnimationUtils.loadAnimation(MainActivity.this, R.anim.anim_alpha);
 			view.startAnimation(animAlpha);
 			
-			//On arrête l'application où on la redémarre
-			CampagneThread.PAUSED = !CampagneThread.PAUSED;
-			if(CampagneThread.PAUSED){
-				MainActivity.this.setCampagneState("[EN PAUSE]", MainActivity.COLOR_YELLOW);
-			}
-			else{
-				MainActivity.this.setCampagneState(MainActivity.this.getString(R.string.statut_en_cours),MainActivity.COLOR_BLUE);
-			}
+			//On arrête l'application 
+			CampagneThread.PAUSED = true;
+			MainActivity.this.setCampagneState("[EN PAUSE]", MainActivity.COLOR_YELLOW);
+			MainActivity.this.flipButtonResume(true);
+		}
+	};
+	
+	/**
+	 * Evenement du boutton pour relancer l'application
+	 */
+	private OnClickListener clickResumeListener = new OnClickListener() {
+		public void onClick(View view) {
+			//On lance l'animation alpha du boutton
+			Animation animAlpha = AnimationUtils.loadAnimation(MainActivity.this, R.anim.anim_alpha);
+			view.startAnimation(animAlpha);
+			
+			//On redémarre l'application
+			CampagneThread.PAUSED = false;
+			MainActivity.this.setCampagneState(MainActivity.this.getString(R.string.statut_en_cours),MainActivity.COLOR_BLUE);
+			MainActivity.this.flipButtonResume(false);
 		}
 	};
 	
@@ -251,8 +272,12 @@ public class MainActivity extends Activity {
 			view.startAnimation(animAlpha);
 			MainActivity.this.setStepMessage(R.string.txt_step_init);
 			MainActivity.this.emptyLogs();
-			MainActivity.this.acceuilFlipper.setDisplayedChild(0);
+			//MainActivity.this.acceuilFlipper.setDisplayedChild(0);
 			MainActivity.this.flipLayout(0);
+
+			MainActivity.this.setCampagneState(MainActivity.this.getString(R.string.statut_en_cours), MainActivity.COLOR_BLUE);
+			MainActivity.this.updateStatusCount(0, 0, 0, 0);
+			
 		}
 	};
 	
@@ -281,6 +306,8 @@ public class MainActivity extends Activity {
 		if(this.stopFlipper.getDisplayedChild() != pos) this.stopFlipper.setDisplayedChild(pos);
 		//Pour le flip acceuil on doit juste s'assurer de le retirer mais pas l'ajouter ici
 		if(this.acceuilFlipper.getDisplayedChild() != 0) this.acceuilFlipper.setDisplayedChild(0);
+		//POur le flip resume on doit juste s'assurer de le retirer
+		if(this.resumeFlipper.getDisplayedChild() != 0) this.resumeFlipper.setDisplayedChild(0);
 	}
 	
 	/**
@@ -290,6 +317,19 @@ public class MainActivity extends Activity {
 		this.runOnUiThread(new Runnable() {
 			public void run() {
 				if(MainActivity.this.acceuilFlipper.getDisplayedChild() == 0) MainActivity.this.acceuilFlipper.setDisplayedChild(1);
+			}
+		});
+	}
+	
+	/**
+	 * Passe le boutton pause à relancer ou l'inverse
+	 */
+	public void flipButtonResume(boolean pause){
+		final boolean p = pause;
+		this.runOnUiThread(new Runnable() {
+			public void run() {
+				if(p && MainActivity.this.resumeFlipper.getDisplayedChild() == 0) MainActivity.this.resumeFlipper.setDisplayedChild(1);
+				if(!p && MainActivity.this.resumeFlipper.getDisplayedChild() == 1) MainActivity.this.resumeFlipper.setDisplayedChild(0);
 			}
 		});
 	}

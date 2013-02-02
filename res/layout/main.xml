@@ -18,7 +18,7 @@
             android:id="@+id/img_logo"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="-20dp"
+            android:layout_marginBottom="-20dp"
             android:contentDescription="@string/app_name"
             android:scaleType="fitStart"
             android:src="@drawable/top_logo" />
@@ -146,15 +146,29 @@
                         android:scaleType="fitXY"
                         android:src="@drawable/bottom_button_start" />
 
-                    <ImageButton
-                        android:id="@+id/btn_traitement_pause"
-                        android:layout_width="160dp"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/black"
-                        android:contentDescription="@string/btn_pause"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/bottom_button_pause" />
-                    
+                    <ViewFlipper
+                        android:id="@+id/btn_resume_flipper"
+                        android:layout_width="159dp"
+                        android:layout_height="wrap_content" >
+
+                        <ImageButton
+                            android:id="@+id/btn_traitement_pause"
+                            android:layout_width="160dp"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/black"
+                            android:contentDescription="@string/btn_pause"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/bottom_button_pause" />
+
+                        <ImageButton
+                            android:id="@+id/btn_traitement_resume"
+                            android:layout_width="160dp"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/black"
+                            android:contentDescription="@string/btn_resume"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/bottom_button_resume" />
+                    </ViewFlipper>
                 </ViewFlipper>
 
                 <View
