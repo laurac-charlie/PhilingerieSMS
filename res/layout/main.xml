@@ -5,112 +5,201 @@
     android:background="@android:color/black"
     android:orientation="vertical"
     android:scrollbars="none" >
-    
-	<LinearLayout 
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:orientation="vertical"
-	    android:isScrollContainer="true" >
 
-	    <!-- Logo de l'application -->
-		<ImageView
-		    android:id="@+id/img_logo"
-		    android:layout_width="fill_parent"
-		    android:layout_height="48dp"
-		    android:scaleType="fitStart"
-		    android:contentDescription="@string/app_name"
-		    android:src="@drawable/top_logo" />
-	    
-		<!-- Version et éditeur de l'application -->
-		<TextView
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_gravity="right"
-	        android:textSize="9dp"
-	        android:textColor="@android:color/white"
-	        android:text="@string/txt_version_label" />
-		
-		<!-- Cadre pour afficher l'étape en cours -->
-		<TextView
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:paddingLeft="10dp"
-	        android:textSize="12dp"
-	        android:textColor="@android:color/white"
-	        android:text="@string/txt_step_label" />
-		
-	    <TextView
-	        android:id="@+id/txt_step"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_gravity="center_horizontal"
-	        android:gravity="center"
-	        android:background="@drawable/bar_step"
-	        android:textSize="13dp"
-	        android:textColor="@android:color/black"
-	        android:text="@string/txt_step_init" />
-		
-	    <!-- Cadre contenant les différents status -->
-	    <TextView
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_marginTop="10dp"
-	        android:paddingLeft="10dp"
-	        android:textSize="12dp"
-	        android:textColor="@android:color/white"
-	        android:text="@string/txt_info_label" />
-	    
-	    <ViewFlipper
-		    android:id="@+id/layout_status_flipper"
-		    android:layout_width="fill_parent"
-		    android:layout_height="fill_parent" >
-		    
-	    	<!-- Layout statut prérequis -->
-		    <include 
-		        android:id="@+id/layout_status_prerequisites" 
-		        layout="@layout/layout_status_prerequisites"/>
-		    <!-- Layout statut count -->
-		    <include 
-		        android:id="@+id/layout_status_count"
-		        layout="@layout/layout_status_count"/>
-	    
-	    </ViewFlipper>
-	    
-	    <!-- Cadre contenant les informations d'envoi des messages et d'erreurs -->
-	    <TextView
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_marginTop="5dp"
-	        android:paddingLeft="10dp"
-	        android:textSize="12dp"
-	        android:textColor="@android:color/white"
-	        android:text="@string/txt_journal_label" />
-	    
-	    <TextView
-	        android:id="@+id/txt_journal"
-	        android:layout_width="match_parent"
-	        android:layout_height="180dp"
-	        android:paddingTop="5dp"
-	        android:paddingLeft="10dp"
-	        android:orientation="vertical"
-	        android:background="@drawable/bar_journal"
-	        android:textSize="12dp"
-	        android:textColor="@android:color/black" />
-	    
-	    <!-- Layout contenant les bouttons -->
-	    <TextView
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_gravity="center_horizontal"
-	        android:layout_marginTop="5dp"
-	        android:gravity="center_vertical"
-	        android:textSize="10dp"
-	        android:textColor="@android:color/white"
-	        android:text="@string/txt_button_label" />
-	    
-	    <include 
-	        android:id="@+id/layout_bottom_button"
-	        layout="@layout/layout_bottom_button"/>
-	
-	</LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:isScrollContainer="true"
+        android:orientation="vertical" >
+
+        <!-- Logo de l'application -->
+
+        <ImageView
+            android:id="@+id/img_logo"
+            android:layout_width="fill_parent"
+            android:layout_height="48dp"
+            android:contentDescription="@string/app_name"
+            android:scaleType="fitStart"
+            android:src="@drawable/top_logo" />
+
+        <!-- Version et éditeur de l'application -->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:text="@string/txt_version_label"
+            android:textColor="@android:color/white"
+            android:textSize="9dp" />
+
+        <!-- Cadre pour afficher l'étape en cours -->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:text="@string/txt_step_label"
+            android:textColor="@android:color/white"
+            android:textSize="12dp" />
+
+        <TextView
+            android:id="@+id/txt_step"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/bar_step"
+            android:gravity="center"
+            android:text="@string/txt_step_init"
+            android:textColor="@android:color/black"
+            android:textSize="13dp" />
+
+        <!-- Cadre contenant les différents status -->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:paddingLeft="10dp"
+            android:text="@string/txt_info_label"
+            android:textColor="@android:color/white"
+            android:textSize="12dp" />
+
+        <ViewFlipper
+            android:id="@+id/layout_status_flipper"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" >
+
+            <!-- Layout statut prérequis -->
+
+            <include
+                android:id="@+id/layout_status_prerequisites"
+                layout="@layout/layout_status_prerequisites" />
+            <!-- Layout statut count -->
+
+            <include
+                android:id="@+id/layout_status_count"
+                layout="@layout/layout_status_count" />
+        </ViewFlipper>
+
+        <!-- Cadre contenant les informations d'envoi des messages et d'erreurs -->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:paddingLeft="10dp"
+            android:text="@string/txt_journal_label"
+            android:textColor="@android:color/white"
+            android:textSize="12dp" />
+
+        <TextView
+            android:id="@+id/txt_journal"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:background="@drawable/bar_journal"
+            android:orientation="vertical"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:textColor="@android:color/black"
+            android:textSize="12dp" />
+
+        <!-- Layout contenant les bouttons -->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="5dp"
+            android:gravity="center_vertical"
+            android:text="@string/txt_button_label"
+            android:textColor="@android:color/white"
+            android:textSize="10dp" />
+
+        <ViewFlipper
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/btn_acceuil_flipper"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom" >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:orientation="horizontal"
+                android:textColor="@android:color/black" >
+
+                <!-- Bouttons de démarrage et de pause -->
+
+                <ViewFlipper
+                    android:id="@+id/btn_start_flipper"
+                    android:layout_width="159dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true" >
+
+                    <ImageButton
+                        android:id="@+id/btn_startApp"
+                        android:layout_width="160dp"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/black"
+                        android:contentDescription="@string/btn_start"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/bottom_button_start" />
+
+                    <ImageButton
+                        android:id="@+id/btn_traitement_pause"
+                        android:layout_width="160dp"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/black"
+                        android:contentDescription="@string/btn_pause"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/bottom_button_pause" />
+                </ViewFlipper>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="77dp"
+                    android:layout_gravity="bottom"
+                    android:layout_marginTop="3dp"
+                    android:layout_toRightOf="@+id/btn_start_flipper"
+                    android:background="@android:color/white" />
+
+                <!-- Bouttons pour quitter l'application et arrêter le traitement -->
+
+                <ViewFlipper
+                    android:id="@+id/btn_stop_flipper"
+                    android:layout_width="159dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true" >
+
+                    <ImageButton
+                        android:id="@+id/btn_quitApp"
+                        android:layout_width="160dp"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/black"
+                        android:contentDescription="@string/btn_quit"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/bottom_button_quit" />
+
+                    <ImageButton
+                        android:id="@+id/btn_traitement_stop"
+                        android:layout_width="160dp"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/black"
+                        android:contentDescription="@string/btn_stop"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/bottom_button_stop" />
+                </ViewFlipper>
+            </RelativeLayout>
+
+            <ImageButton
+                android:id="@+id/btn_acceuil"
+                android:layout_width="320dp"
+                android:layout_height="80dp"
+                android:background="@android:color/black"
+                android:contentDescription="@string/btn_accueil"
+                android:scaleType="fitXY"
+                android:src="@drawable/bottom_button_home" />
+        </ViewFlipper>
+    </LinearLayout>
+
 </ScrollView>
