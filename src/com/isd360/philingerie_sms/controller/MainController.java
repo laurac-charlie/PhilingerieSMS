@@ -84,7 +84,6 @@ public class MainController {
 		
 		//Date et heure du dernier envoi
 		this.main.setDateEnvoi(prefs.getString("date_envoi", ""));
-		
 	}
 	
 	/**

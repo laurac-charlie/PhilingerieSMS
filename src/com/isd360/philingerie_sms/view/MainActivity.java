@@ -31,7 +31,7 @@ import android.widget.ViewFlipper;
  */
 public class MainActivity extends Activity {
 	
-	public static final int COLOR_YELLOW = Color.parseColor("#FFFF00");
+	public static final int COLOR_YELLOW = Color.parseColor("#FFB400");
 	public static final int COLOR_BLUE = Color.parseColor("#4C43FE");
 	public static final int COLOR_GREEN = Color.parseColor("#1FA055");
 	public static final int COLOR_RED = Color.parseColor("#E30000");
@@ -215,8 +215,15 @@ public class MainActivity extends Activity {
 			//On lance l'animation alpha du boutton
 			Animation animAlpha = AnimationUtils.loadAnimation(MainActivity.this, R.anim.anim_alpha);
 			view.startAnimation(animAlpha);
+			
 			//On arrête l'application où on la redémarre
 			CampagneThread.PAUSED = !CampagneThread.PAUSED;
+			if(CampagneThread.PAUSED){
+				MainActivity.this.setCampagneState("[EN PAUSE]", MainActivity.COLOR_YELLOW);
+			}
+			else{
+				MainActivity.this.setCampagneState(MainActivity.this.getString(R.string.statut_en_cours),MainActivity.COLOR_BLUE);
+			}
 		}
 	};
 	
@@ -243,6 +250,7 @@ public class MainActivity extends Activity {
 			Animation animAlpha = AnimationUtils.loadAnimation(MainActivity.this, R.anim.anim_alpha);
 			view.startAnimation(animAlpha);
 			MainActivity.this.setStepMessage(R.string.txt_step_init);
+			MainActivity.this.emptyLogs();
 			MainActivity.this.acceuilFlipper.setDisplayedChild(0);
 			MainActivity.this.flipLayout(0);
 		}
@@ -281,7 +289,7 @@ public class MainActivity extends Activity {
 	public void flipButtonAcceuil(){
 		this.runOnUiThread(new Runnable() {
 			public void run() {
-				if(!(MainActivity.this.acceuilFlipper.getDisplayedChild() == 0)) MainActivity.this.acceuilFlipper.setDisplayedChild(1);
+				if(MainActivity.this.acceuilFlipper.getDisplayedChild() == 0) MainActivity.this.acceuilFlipper.setDisplayedChild(1);
 			}
 		});
 	}

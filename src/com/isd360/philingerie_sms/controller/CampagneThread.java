@@ -79,6 +79,27 @@ public class CampagneThread extends Thread{
 		
 		LOOP: for (Destinataire d : this.listDest)
 		{
+			//On arrête le thread si la variable a été mise à jour autre part
+			if(CampagneThread.STOPPED) {
+				this.main.setCampagneState("[ARRÊTER", MainActivity.COLOR_RED);
+				message_traitement = "Traitement arrêté";
+				//this.main.flipButtonAcceuil();
+				break;
+			}
+			
+			//Si on met l'application en pause on tourne dans la boucle 
+			//TODO: La boucle ne devrait pas tourner à l'infini
+			while(CampagneThread.PAUSED){
+				//this.main.setCampagneState("[EN PAUSE]", MainActivity.COLOR_YELLOW);
+				if(CampagneThread.STOPPED) {
+					this.main.setCampagneState("[ARRÊTER", MainActivity.COLOR_RED);
+					message_traitement = "Traitement arrêté";
+					//this.main.flipButtonAcceuil();
+					//On arrête la boucle mère
+					break LOOP;
+				}
+			}
+			
 			if(SmsSender.SendMessage(d,this.smsText))
 			{
 				logMsg = "Envoi [OK] : " + d.getLastName() + " " + d.getFirstName();
@@ -95,27 +116,7 @@ public class CampagneThread extends Thread{
 			this.main.addMessage(logMsg);
 			this.main.updateStatusCount(listDest.size(),countAll,countOk,countKo);
 			
-			//On arrête le thread si la variable a été mise à jour autre part
-			if(CampagneThread.STOPPED) {
-				this.main.setCampagneState("[ARRÊTER", MainActivity.COLOR_RED);
-				message_traitement = "Traitement arrêter";
-				this.main.flipButtonAcceuil();
-				break;
-			}
-			
-			//Si on met l'application en pause on tourne dans la boucle 
-			//TODO: La boucle ne devrait pas tourner à l'infini
-			while(CampagneThread.PAUSED){
-				this.main.setCampagneState("[EN PAUSE]", MainActivity.COLOR_YELLOW);
-				if(CampagneThread.STOPPED) {
-					this.main.setCampagneState("[ARRÊTER", MainActivity.COLOR_RED);
-					message_traitement = "Traitement arrêter";
-					this.main.flipButtonAcceuil();
-					//On arrête la boucle mère
-					break LOOP;
-				}
-			}
-			
+			//On temporise pour simuler le temps d'envoi
 			try 
 				{Thread.sleep(5000);} 
 			catch (InterruptedException e) 
