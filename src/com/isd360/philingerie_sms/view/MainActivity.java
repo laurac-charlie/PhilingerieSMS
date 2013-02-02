@@ -431,7 +431,7 @@ public class MainActivity extends Activity {
 		statusLastSent.setText(date.equals("") ? R.string.statut_KO : R.string.statut_OK);
 		statusLastSent.setTextColor(date.equals("") ? MainActivity.COLOR_RED : MainActivity.COLOR_BLUE);
 		
-		lastSent.setText(date.equals("") ? "N:A": date);
+		lastSent.setText(date.equals("") ? "N/A": date);
 	}
 	
 	/**

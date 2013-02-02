@@ -83,7 +83,7 @@ public class MainController {
 		this.main.setFtpState(ftpOK, errorFtp);
 		
 		//Date et heure du dernier envoi
-		this.main.setDateEnvoi(prefs.getString("date_envoi", "N/A"));
+		this.main.setDateEnvoi(prefs.getString("date_envoi", ""));
 		
 	}
 	
