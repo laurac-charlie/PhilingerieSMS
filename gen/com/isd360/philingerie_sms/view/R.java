@@ -61,7 +61,7 @@ public final class R {
         public static final int stat_ftpserv_type=0x7f07000f;
         public static final int stat_lastsent=0x7f070011;
         public static final int stat_lastsent_label=0x7f070010;
-        public static final int stat_lastsent_type=0x7f070012;
+        public static final int stat_lastsent_text=0x7f070012;
         public static final int stat_reseau=0x7f070009;
         public static final int stat_reseau_label=0x7f070008;
         public static final int stat_reseau_type=0x7f07000a;

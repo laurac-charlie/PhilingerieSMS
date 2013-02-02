@@ -82,7 +82,8 @@ public class MainController {
 		
 		this.main.setFtpState(ftpOK, errorFtp);
 		
-		//TODO:Gérer le dernier envoi qui sera stocké dans les préféences et devra être is à jour
+		//Date et heure du dernier envoi
+		this.main.setDateEnvoi(prefs.getString("date_envoi", "N/A"));
 		
 	}
 	

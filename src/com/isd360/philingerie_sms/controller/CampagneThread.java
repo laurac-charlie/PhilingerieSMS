@@ -1,6 +1,13 @@
 package com.isd360.philingerie_sms.controller;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.preference.PreferenceManager;
 
 import com.isd360.philingerie_sms.model.Destinataire;
 import com.isd360.philingerie_sms.util.SmsSender;
@@ -90,15 +97,20 @@ public class CampagneThread extends Thread{
 			
 			//On arrête le thread si la variable a été mise à jour autre part
 			if(CampagneThread.STOPPED) {
+				this.main.setCampagneState("[ARRÊTER", MainActivity.COLOR_RED);
 				message_traitement = "Traitement arrêter";
+				this.main.flipButtonAcceuil();
 				break;
 			}
 			
 			//Si on met l'application en pause on tourne dans la boucle 
 			//TODO: La boucle ne devrait pas tourner à l'infini
 			while(CampagneThread.PAUSED){
+				this.main.setCampagneState("[EN PAUSE]", MainActivity.COLOR_YELLOW);
 				if(CampagneThread.STOPPED) {
+					this.main.setCampagneState("[ARRÊTER", MainActivity.COLOR_RED);
 					message_traitement = "Traitement arrêter";
+					this.main.flipButtonAcceuil();
 					//On arrête la boucle mère
 					break LOOP;
 				}
@@ -112,10 +124,22 @@ public class CampagneThread extends Thread{
 		//On remet la varibale à faut à la fin du traitement
 		CampagneThread.RUNNING = false;
 		//On repasse sur les bouttons d'acceuil
-		//this.main.flipButton(0);
+		this.updateDateEnvoi();
 		this.main.flipButtonAcceuil();
 		this.main.updateStatusMsg(message_traitement,MainActivity.COLOR_BLUE,false);
 		this.main.setCampagneState("[TERMINE]", MainActivity.COLOR_GREEN);
 		
+	}
+	
+	private void updateDateEnvoi(){
+		//On récupère la date au format qui nosu intéresse
+		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+		String formatedDate = dateFormat.format(new Date());
+		
+		//On édite les préférences pour stocker la dernière date d'envoi
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.main);
+		Editor edit = prefs.edit();
+		edit.putString("date_envoi", formatedDate);
+		edit.commit();
 	}
 }

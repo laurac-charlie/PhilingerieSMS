@@ -132,7 +132,7 @@
             android:text="@string/statut_KO" />
         
         <TextView
-            android:id="@+id/stat_lastsent_type"
+            android:id="@+id/stat_lastsent_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="1dp"

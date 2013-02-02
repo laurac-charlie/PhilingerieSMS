@@ -215,8 +215,8 @@ public class MainActivity extends Activity {
 			//On lance l'animation alpha du boutton
 			Animation animAlpha = AnimationUtils.loadAnimation(MainActivity.this, R.anim.anim_alpha);
 			view.startAnimation(animAlpha);
-			//On arrête l'application
-			CampagneThread.PAUSED = true;
+			//On arrête l'application où on la redémarre
+			CampagneThread.PAUSED = !CampagneThread.PAUSED;
 		}
 	};
 	
@@ -272,7 +272,7 @@ public class MainActivity extends Activity {
 		if(this.startFlipper.getDisplayedChild() != pos) this.startFlipper.setDisplayedChild(pos);
 		if(this.stopFlipper.getDisplayedChild() != pos) this.stopFlipper.setDisplayedChild(pos);
 		//Pour le flip acceuil on doit juste s'assurer de le retirer mais pas l'ajouter ici
-		if(this.acceuilFlipper.getDisplayedChild() == 1) this.acceuilFlipper.setDisplayedChild(0);
+		if(this.acceuilFlipper.getDisplayedChild() != 0) this.acceuilFlipper.setDisplayedChild(0);
 	}
 	
 	/**
@@ -359,19 +359,6 @@ public class MainActivity extends Activity {
 	}
 	
 	/**
-	 * Permet d'activer ou désactiver le boutton
-	 * @param enable
-	 *
-	public void setButtonEnable(boolean enable){
-		final boolean ena = enable;
-		this.runOnUiThread(new Runnable() {
-			public void run() {
-				MainActivity.this.sendButton.setEnabled(ena);
-			}
-		});
-	}
-	/
-	/**
 	 * Vide la liste des log d'envoi de message
 	 */
 	public void emptyLogs(){
@@ -431,6 +418,20 @@ public class MainActivity extends Activity {
 		
 		ftpError.setText(error);
 		
+	}
+	
+	/**
+	 * Met à jour le statut dernier envoi
+	 * @param date Date/heure du dernier envoi
+	 */
+	public void setDateEnvoi(String date){
+		TextView statusLastSent = (TextView)this.findViewById(R.id.stat_lastsent);
+		TextView lastSent = (TextView)this.findViewById(R.id.stat_lastsent_text);
+		
+		statusLastSent.setText(date.equals("") ? R.string.statut_KO : R.string.statut_OK);
+		statusLastSent.setTextColor(date.equals("") ? MainActivity.COLOR_RED : MainActivity.COLOR_BLUE);
+		
+		lastSent.setText(date.equals("") ? "N:A": date);
 	}
 	
 	/**
