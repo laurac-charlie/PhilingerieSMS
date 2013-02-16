@@ -21,6 +21,9 @@ public class StringFormater {
 		phone = phone.replaceAll("\\p{Zs}", "");
 		//phone = phone.replaceAll("\\-", "");
 		
+		//Si le numéro est déjà formaté et fait donc déjà 12 ou 13 caractères, on arrête le traitement
+		if(phone.length() == 13 || phone.length() == 12) return phone;
+		
 		//On vérifie qu'il n'y a plus que des chiffres, sinon on arrête le traitement en renvoyant rien
 		try{
 			Integer.parseInt(phone);
